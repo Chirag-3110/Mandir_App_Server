@@ -1,6 +1,6 @@
 import express, { response } from 'express';
-import userModal from '../Modals/Auth.modal'
 import generateOTP from '../Middleware/HelperFunction';
+import { connection } from '../Config/DBConfig';
 const AuthRoute = express.Router();
 const jwt = require('jsonwebtoken');
 //create user
@@ -11,22 +11,27 @@ AuthRoute.post('/createUser', async (req, res) => {
         phone: request.phone,
         otp: otp
     }
-    let existingUser = await userModal.findOne({ phone: jsonObject.phone })
-    if (!existingUser) {
-        let user = await userModal.insertMany(jsonObject);
-        if (user) {
-            res.json({
+
+    const findUser = 'SELECT COUNT(*) as count FROM users WHERE phone_number = ?'
+    
+    let existingUser = await connection.query(findUser,[request.phone])
+    if (existingUser[0].count==0) {
+        const createUser = 'INSERT INTO users (phone_number) VALUES (?)';
+        connection.query(createUser,(err,result)=>{
+            if (err) {
+                res.json({
+                    status: 500,
+                    message: 'Internal Server Error',
+                    data: {}
+                })
+              }
+              res.json({
                 status: 200,
                 message: 'otp sent to your number',
-                data: user
+                data: result
             })
-        } else {
-            res.json({
-                status: 500,
-                message: 'Internal Server Error',
-                data: {}
-            })
-        }
+        })
+       
     } else {
         res.json({
             status: 303,
@@ -39,18 +44,30 @@ AuthRoute.post('/createUser', async (req, res) => {
 AuthRoute.post('/verify-otp', async (req, res) => {
     let request = req.body;
 
-    let user = await userModal.findOne({ phone: request.phone });
+    const findUser = 'SELECT COUNT(*) as count FROM users WHERE phone_number = ?'
+    
+    let existingUser = await connection.query(findUser,[request.phone])
+   
+    if (existingUser && request.otp === existingUser.otp) {
+        const updateQuery = 'UPDATE users SET is_verify = ? WHERE phone = ?';
 
-    if (user && request.otp === user.otp) {
-        let verifiedUser = await userModal.updateOne({ _id: user._id }, { $set: { isVerify: true } })
-        if (verifiedUser) {
+          connection.query(updateQuery,[false],(err,result)=>{
+            if(err){
+                res.json({
+                    status: 400,
+                    message: err,
+                    data: {}
+        
+                })
+            }
             res.json({
                 status: 200,
                 message: "Account Verified",
                 data: {}
 
             })
-        }
+          })
+       
     } else {
         res.json({
             status: 400,
@@ -66,9 +83,11 @@ AuthRoute.post('/verify-otp', async (req, res) => {
 AuthRoute.post('/complete-profile', async (req, res) => {
     let request = req.body;
 
-    let user = await userModal.findOne({ phone: request.phone });
-
-    if (user) {
+    const findUser = 'SELECT COUNT(*) as count FROM users WHERE phone_number = ?'
+    
+    let existingUser = await connection.query(findUser,[request.phone])
+   
+    if (existingUser) {
         let createProfile = await userModal.updateOne({ _id: user._id }, { $set: { isProfileCompleted: true, fullname: request.name, password: request.password, age: request.age, gotra: request.gotra, address: request.address } })
         if (createProfile) {
             res.json({

@@ -1,11 +1,20 @@
-import mongoose, { ConnectOptions } from "mongoose";
+var mysql = require('mysql'); 
 
-
-const configMongoDB = async (urlString: string) => {
-    await mongoose.connect(process.env.URLString, {
-        useNewUrlParser: true, useUnifiedTopology: true
-    } as ConnectOptions);
-
-    console.log('mongo database connected');
+export const  connection = mysql.createConnection({
+    host: process.env.HOST,
+    user: "root",
+    password: ''
+  });
+const configMongoDB = async (host:string,user:string,password:string) => {
+    connection.connect(function(err) {
+        if (err) throw err;
+        console.log("Connected!");
+        connection.query("CREATE DATABASE jainMandir",function (err, result) {
+            if (err) throw err;
+            console.log("Database created");
+          });
+        
+      });
+    
 }
 export default configMongoDB 

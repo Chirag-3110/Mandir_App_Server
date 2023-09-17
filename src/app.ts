@@ -1,6 +1,6 @@
 import express from 'express';
-import authRoute from './Routes/Auth';
-import searchRoute from './Routes/Search';
+// import authRoute from './Routes/Auth';
+// import searchRoute from './Routes/Search';
 import configMongoDB from './Config/DBConfig'
 const app = express();
 import config from 'dotenv'
@@ -10,9 +10,9 @@ const port = process.env.PORT || 8000;
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.listen(port, async () => {
-    await configMongoDB(process.env.URLString)
+    await configMongoDB(process.env.HOST,process.env.USER,process.env.PASSWORD)
     console.log(`listening at http://localhost:${port}`);
 });
-app.use(authRoute)
-app.use(searchRoute)
-app.use(NewsRouter)
+// app.use(authRoute)
+// app.use(searchRoute)
+// app.use(NewsRouter)

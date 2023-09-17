@@ -13,21 +13,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const Auth_1 = __importDefault(require("./Routes/Auth"));
-const Search_1 = __importDefault(require("./Routes/Search"));
+// import authRoute from './Routes/Auth';
+// import searchRoute from './Routes/Search';
 const DBConfig_1 = __importDefault(require("./Config/DBConfig"));
 const app = (0, express_1.default)();
 const dotenv_1 = __importDefault(require("dotenv"));
-const News_1 = __importDefault(require("./Routes/News"));
 dotenv_1.default.config();
 const port = process.env.PORT || 8000;
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 app.listen(port, () => __awaiter(void 0, void 0, void 0, function* () {
-    yield (0, DBConfig_1.default)(process.env.URLString);
+    yield (0, DBConfig_1.default)(process.env.HOST, process.env.USER, process.env.PASSWORD);
     console.log(`listening at http://localhost:${port}`);
 }));
-app.use(Auth_1.default);
-app.use(Search_1.default);
-app.use(News_1.default);
+// app.use(authRoute)
+// app.use(searchRoute)
+// app.use(NewsRouter)
 //# sourceMappingURL=app.js.map

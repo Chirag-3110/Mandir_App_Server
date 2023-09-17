@@ -8,16 +8,24 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const mongoose_1 = __importDefault(require("mongoose"));
-const configMongoDB = (urlString) => __awaiter(void 0, void 0, void 0, function* () {
-    yield mongoose_1.default.connect(process.env.URLString, {
-        useNewUrlParser: true, useUnifiedTopology: true
+var mysql = require('mysql');
+const configMongoDB = (host, user, password) => __awaiter(void 0, void 0, void 0, function* () {
+    let con = mysql.createConnection({
+        host: host,
+        user: "root",
+        password: ''
     });
-    console.log('mongo database connected');
+    con.connect(function (err) {
+        if (err)
+            throw err;
+        console.log("Connected!");
+        con.query("CREATE DATABASE jainMandir", function (err, result) {
+            if (err)
+                throw err;
+            console.log("Database created");
+        });
+    });
 });
 exports.default = configMongoDB;
 //# sourceMappingURL=DBConfig.js.map
