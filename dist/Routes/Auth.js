@@ -13,22 +13,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const HelperFunction_1 = __importDefault(require("../Middleware/HelperFunction"));
+const HelperFunction_1 = require("../Middleware/HelperFunction");
 const DBConfig_1 = require("../Config/DBConfig");
 const AuthRoute = express_1.default.Router();
 const jwt = require('jsonwebtoken');
 //create user
 AuthRoute.post('/createUser', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let request = req.body;
-    let otp = (0, HelperFunction_1.default)(4);
+    let otp = (0, HelperFunction_1.generateOTP)(4);
     const jsonObject = {
         phone: request.phone,
         otp: otp
     };
-    const findUser = 'SELECT COUNT(*) as count FROM users WHERE phone_number = ?';
+    const findUser = 'SELECT COUNT(*) as count FROM user WHERE phone_number = ?';
     let existingUser = yield DBConfig_1.connection.query(findUser, [request.phone]);
     if (existingUser[0].count == 0) {
-        const createUser = 'INSERT INTO users (phone_number) VALUES (?)';
+        const createUser = 'INSERT INTO user (phone_number) VALUES (?)';
         DBConfig_1.connection.query(createUser, (err, result) => {
             if (err) {
                 res.json({

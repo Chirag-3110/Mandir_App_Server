@@ -14,10 +14,11 @@ var mysql = require('mysql');
 exports.connection = mysql.createConnection({
     host: process.env.HOST,
     user: "root",
-    password: ''
+    password: '',
+    database: "jainMandir"
 });
 const configMongoDB = (host, user, password) => __awaiter(void 0, void 0, void 0, function* () {
-    exports.connection.connect(function (err) {
+    exports.connection.connect(function (err, result) {
         if (err)
             throw err;
         console.log("Connected!");

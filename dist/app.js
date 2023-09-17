@@ -18,6 +18,7 @@ const Auth_1 = __importDefault(require("./AdminApi/Auth"));
 const DBConfig_1 = __importDefault(require("./Config/DBConfig"));
 const app = (0, express_1.default)();
 const dotenv_1 = __importDefault(require("dotenv"));
+const User_1 = __importDefault(require("./AdminApi/User"));
 dotenv_1.default.config();
 const port = process.env.PORT || 8000;
 app.use(express_1.default.json());
@@ -27,6 +28,6 @@ app.listen(port, () => __awaiter(void 0, void 0, void 0, function* () {
     console.log(`listening at http://localhost:${port}`);
 }));
 app.use(Auth_1.default);
-// app.use(searchRoute)
+app.use(User_1.default);
 // app.use(NewsRouter)
 //# sourceMappingURL=app.js.map

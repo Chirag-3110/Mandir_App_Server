@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.addCutomRequest = exports.generateOTP = void 0;
 function generateOTP(length) {
     var digits = '0123456789';
     let OTP = '';
@@ -8,5 +9,8 @@ function generateOTP(length) {
     }
     return OTP;
 }
-exports.default = generateOTP;
+exports.generateOTP = generateOTP;
+function addCutomRequest(req) {
+}
+exports.addCutomRequest = addCutomRequest;
 //# sourceMappingURL=HelperFunction.js.map
