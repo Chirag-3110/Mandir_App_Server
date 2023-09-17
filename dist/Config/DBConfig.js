@@ -9,20 +9,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.connection = void 0;
 var mysql = require('mysql');
+exports.connection = mysql.createConnection({
+    host: process.env.HOST,
+    user: "root",
+    password: ''
+});
 const configMongoDB = (host, user, password) => __awaiter(void 0, void 0, void 0, function* () {
-    let con = mysql.createConnection({
-        host: host,
-        user: "root",
-        password: ''
-    });
-    con.connect(function (err) {
+    exports.connection.connect(function (err) {
         if (err)
             throw err;
         console.log("Connected!");
-        con.query("CREATE DATABASE jainMandir", function (err, result) {
-            if (err)
-                throw err;
+        exports.connection.query("CREATE DATABASE jainMandir", function (err, result) {
+            if (err) {
+                console.log("Database connected");
+            }
+            ;
             console.log("Database created");
         });
     });

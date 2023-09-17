@@ -1,4 +1,4 @@
-function generateOTP(length) {
+export  function generateOTP(length) {
     var digits = '0123456789';
     let OTP = '';
     for (let i = 0; i < length; i++) {
@@ -7,4 +7,6 @@ function generateOTP(length) {
     return OTP;
 }
 
-export default generateOTP;
+export function addCutomRequest(req){
+
+}
