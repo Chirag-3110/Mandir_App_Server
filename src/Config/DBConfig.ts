@@ -19,6 +19,7 @@ const configMongoDB = async () => {
     connection.query(`CREATE DATABASE IF NOT EXISTS dbujai`, async function (err, result) {
       if (err) {
         console.log(err, "err");
+        
       } else {
         console.log("Database created or already exists");
         connection.query(userTable)
