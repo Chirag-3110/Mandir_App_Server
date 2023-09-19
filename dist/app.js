@@ -13,19 +13,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-// import authRoute from './Routes/Auth';
 const Auth_1 = __importDefault(require("./AdminApi/Auth"));
 const DBConfig_1 = __importDefault(require("./Config/DBConfig"));
-const app = (0, express_1.default)();
 const dotenv_1 = __importDefault(require("dotenv"));
 const User_1 = __importDefault(require("./AdminApi/User"));
-dotenv_1.default.config();
+dotenv_1.default.configDotenv();
+const app = (0, express_1.default)();
 const port = process.env.PORT || 8000;
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 app.listen(port, () => __awaiter(void 0, void 0, void 0, function* () {
-    yield (0, DBConfig_1.default)(process.env.HOST, process.env.USER, process.env.PASSWORD);
-    console.log(`listening at http://localhost:${port}`);
+    console.log(port);
+    yield (0, DBConfig_1.default)();
 }));
 app.use(Auth_1.default);
 app.use(User_1.default);

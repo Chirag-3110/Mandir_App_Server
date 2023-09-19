@@ -10,24 +10,35 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.connection = void 0;
+const tables_1 = require("./tables");
 var mysql = require('mysql');
-exports.connection = mysql.createConnection({
-    host: process.env.HOST,
+const encrypt = require('bcrypt');
+const options = {
+    host: "localhost",
     user: "root",
-    password: '',
-    database: "jainMandir"
-});
-const configMongoDB = (host, user, password) => __awaiter(void 0, void 0, void 0, function* () {
+    password: "",
+    database: "dbujai"
+};
+const saltRounds = 10;
+exports.connection = mysql.createConnection(options);
+const configMongoDB = () => __awaiter(void 0, void 0, void 0, function* () {
     exports.connection.connect(function (err, result) {
         if (err)
             throw err;
-        console.log("Connected!");
-        exports.connection.query("CREATE DATABASE jainMandir", function (err, result) {
-            if (err) {
-                console.log("Database connected");
-            }
-            ;
-            console.log("Database created");
+        exports.connection.query(`CREATE DATABASE IF NOT EXISTS dbujai`, function (err, result) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    console.log("Database created or already exists");
+                    exports.connection.query(tables_1.userTable);
+                    exports.connection.query(tables_1.events);
+                    exports.connection.query(tables_1.news);
+                    exports.connection.query(tables_1.featured);
+                    exports.connection.query(tables_1.admins);
+                }
+            });
         });
     });
 });
