@@ -24,9 +24,7 @@ const port = process.env.PORT || 8000;
 const allowedOrigins = ['https://example.com'];
 app.use(express_1.default.json());
 const corsOptions = {
-    origin: 'https://example.com',
-    methods: 'GET,POST,PUT,DELETE',
-    allowedHeaders: 'Content-Type,Authorization', // Specify allowed headers
+    origin: 'http://localhost:3000',
 };
 app.use(cors(corsOptions));
 app.use(express_1.default.urlencoded({ extended: true }));
