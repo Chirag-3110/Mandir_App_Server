@@ -11,19 +11,22 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.connection = void 0;
 const tables_1 = require("./tables");
-var mysql = require('mysql');
+var mysql = require('mysql2');
 const encrypt = require('bcrypt');
+const env = require('dotenv');
+env.config();
 const options = {
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "dbujai"
+    host: "139.144.1.59",
+    user: "dbujai",
+    password: "DBUserStr@ngssw0d$&iu",
+    database: "jaiDB"
 };
 const saltRounds = 10;
 exports.connection = mysql.createConnection(options);
 const configMongoDB = () => __awaiter(void 0, void 0, void 0, function* () {
     exports.connection.connect(function (err, result) {
-        exports.connection.query(`CREATE DATABASE IF NOT EXISTS dbujai`, function (err, result) {
+        console.log(result, "error");
+        exports.connection.query(`CREATE DATABASE IF NOT EXISTS jaiDB`, function (err, result) {
             return __awaiter(this, void 0, void 0, function* () {
                 if (err) {
                     console.log(err, "err");
