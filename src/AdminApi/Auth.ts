@@ -6,6 +6,8 @@ const saltRounds = 10;
 
 AdminAuthRoute.post("/admin/admin-login",async (req,res)=>{
     let request = req.query;
+    console.log(request,"request");
+    
     const findUser = 'SELECT * FROM admin WHERE email = ?'
 
     connection.query(findUser,[request.email,request.password],async(err,result)=>{
