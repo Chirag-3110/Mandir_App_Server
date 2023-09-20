@@ -12,17 +12,12 @@ const port = process.env.PORT || 8000;
 const allowedOrigins = ['https://example.com'];
 
 app.use(express.json())
-app.use(cors(
-    {
-        origin: function (origin, callback) {
-          if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
-          } else {
-            callback(new Error('Not allowed by CORS'));
-          }
-        },
-      }
-));
+const corsOptions = {
+    origin: 'https://example.com', // Specify a single origin
+    methods: 'GET,POST,PUT,DELETE', // Specify allowed HTTP methods
+    allowedHeaders: 'Content-Type,Authorization', // Specify allowed headers
+  };
+app.use(cors(corsOptions));
 
 app.use(express.urlencoded({ extended: true }))
 

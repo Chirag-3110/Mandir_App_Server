@@ -23,16 +23,12 @@ const cors = require('cors');
 const port = process.env.PORT || 8000;
 const allowedOrigins = ['https://example.com'];
 app.use(express_1.default.json());
-app.use(cors({
-    origin: function (origin, callback) {
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
-        }
-        else {
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
-}));
+const corsOptions = {
+    origin: 'https://example.com',
+    methods: 'GET,POST,PUT,DELETE',
+    allowedHeaders: 'Content-Type,Authorization', // Specify allowed headers
+};
+app.use(cors(corsOptions));
 app.use(express_1.default.urlencoded({ extended: true }));
 app.listen(port, () => __awaiter(void 0, void 0, void 0, function* () {
     console.log(port);
