@@ -13,7 +13,7 @@ const allowedOrigins = ['https://example.com'];
 
 app.use(express.json())
 const corsOptions = {
-    origin: 'https://example.com', // Specify a single origin
+    origin: 'http://localhost:3000', // Specify a single origin
     methods: 'GET,POST,PUT,DELETE', // Specify allowed HTTP methods
     allowedHeaders: 'Content-Type,Authorization', // Specify allowed headers
   };
