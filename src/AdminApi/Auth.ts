@@ -11,8 +11,8 @@ AdminAuthRoute.post("/admin/admin-login",async (req,res)=>{
     connection.query(findUser,[request.email,request.password],async(err,result)=>{
         if(err){
             res.send({
-                status:false,
-                message:"something went wrong",
+                status:503,
+                message:"internal server error",
                 data:null
             })
         }
@@ -24,20 +24,20 @@ AdminAuthRoute.post("/admin/admin-login",async (req,res)=>{
            
             if(isCompared === true){
                 res.send({
-                    status:true,
+                    status:200,
                     message:"User Logged in",
                     data:existUser
                 })
             }else{
                 res.send({
-                    status:false,
+                    status:404,
                     message:"Incorrect password",
                     data:null
                 })
             }
         }else{
             res.send({
-                status:false,
+                status:404,
                 message:"user not found",
                 data:null
             })

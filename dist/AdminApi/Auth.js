@@ -23,8 +23,8 @@ AdminAuthRoute.post("/admin/admin-login", (req, res) => __awaiter(void 0, void 0
     DBConfig_1.connection.query(findUser, [request.email, request.password], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
         if (err) {
             res.send({
-                status: false,
-                message: "something went wrong",
+                status: 503,
+                message: "internal server error",
                 data: null
             });
         }
@@ -34,14 +34,14 @@ AdminAuthRoute.post("/admin/admin-login", (req, res) => __awaiter(void 0, void 0
             let isCompared = yield bcrypt.compare(request.password, existUser.password);
             if (isCompared === true) {
                 res.send({
-                    status: true,
+                    status: 200,
                     message: "User Logged in",
                     data: existUser
                 });
             }
             else {
                 res.send({
-                    status: false,
+                    status: 404,
                     message: "Incorrect password",
                     data: null
                 });
@@ -49,7 +49,7 @@ AdminAuthRoute.post("/admin/admin-login", (req, res) => __awaiter(void 0, void 0
         }
         else {
             res.send({
-                status: false,
+                status: 404,
                 message: "user not found",
                 data: null
             });
