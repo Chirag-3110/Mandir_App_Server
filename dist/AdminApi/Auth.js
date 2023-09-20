@@ -18,7 +18,7 @@ const bcrypt = require('bcrypt');
 const AdminAuthRoute = express_1.default.Router();
 const saltRounds = 10;
 AdminAuthRoute.post("/admin/admin-login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    let request = req.query;
+    let request = req.body;
     console.log(request, "request");
     const findUser = 'SELECT * FROM admin WHERE email = ?';
     DBConfig_1.connection.query(findUser, [request.email, request.password], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
