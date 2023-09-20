@@ -1,5 +1,7 @@
 import express, { response } from 'express';
 import { connection } from '../Config/DBConfig';
+const XLSX = require('xlsx');
+const multer = require('multer');
 const UserController = express.Router();
 
 UserController.get("/get-users", (req, res) => {
@@ -27,6 +29,33 @@ UserController.get("/get-users", (req, res) => {
             data: result
         })
     })
+
+})
+const storage = multer.memoryStorage(); // Store files in memory for parsing.
+const upload = multer({ storage: storage }).single('file'); // 'file' should match the 'name' attribute
+
+UserController.post("/get-file",upload,(req, res) => {
+    console.log(req.file);
+    if (!req) {
+        return res.status(400).send('No file uploaded.');
+      }
+      return res.status(400).send('No file uploaded.');
+
+      // connection.query(query, values, (err, result) => {
+    //     if (err) {
+    //         res.send({
+    //             status: false,
+    //             message: "Something went wrong",
+    //             data: err
+    //         })
+    //     }
+        
+    //     res.send({
+    //         status: true,
+    //         message: "Users get successully",
+    //         data: result
+    //     })
+    // })
 
 })
 

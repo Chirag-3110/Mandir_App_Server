@@ -19,8 +19,20 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const User_1 = __importDefault(require("./AdminApi/User"));
 dotenv_1.default.configDotenv();
 const app = (0, express_1.default)();
+const cors = require('cors');
 const port = process.env.PORT || 8000;
+const allowedOrigins = ['https://example.com'];
 app.use(express_1.default.json());
+app.use(cors({
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        }
+        else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+}));
 app.use(express_1.default.urlencoded({ extended: true }));
 app.listen(port, () => __awaiter(void 0, void 0, void 0, function* () {
     console.log(port);
