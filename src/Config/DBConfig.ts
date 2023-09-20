@@ -1,22 +1,25 @@
 import { admins, events, featured, news, userTable } from "./tables";
 
-var mysql = require('mysql');
+var mysql = require('mysql2');
 
 const encrypt = require('bcrypt');
-
-
+const env = require('dotenv')
+env.config()
 const options = {
-  host: "localhost",//process.env.HOST,
-  user: "root",
-  password: "",
-  database: "dbujai"
+  host: "139.144.1.59",//process.env.HOST,
+  user: "dbujai",
+  password: "DBUserStr@ngssw0d$&iu",
+  database: "jaiDB"
 }
 const saltRounds = 10;
 export const connection = mysql.createConnection(options);
 const configMongoDB = async () => {
 
   connection.connect(function (err, result) {
-    connection.query(`CREATE DATABASE IF NOT EXISTS dbujai`, async function (err, result) {
+    console.log(result,"error");
+    
+   
+    connection.query(`CREATE DATABASE IF NOT EXISTS jaiDB`, async function (err, result) {
       if (err) {
         console.log(err, "err");
         
