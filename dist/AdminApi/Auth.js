@@ -16,7 +16,9 @@ const express_1 = __importDefault(require("express"));
 const DBConfig_1 = require("../Config/DBConfig");
 const bcrypt = require('bcrypt');
 const AdminAuthRoute = express_1.default.Router();
-const saltRounds = 10;
+const env = require('dotenv');
+env.config();
+const jwt = require('jsonwebtoken');
 AdminAuthRoute.post("/admin/admin-login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let request = req.body;
     console.log(request, "body");
@@ -33,6 +35,14 @@ AdminAuthRoute.post("/admin/admin-login", (req, res) => __awaiter(void 0, void 0
         if (existUser) {
             let isCompared = yield bcrypt.compare(request.password, existUser.password);
             if (isCompared === true) {
+                let jwtSecretKey = process.env.JWT_SECRET_KEY;
+                let data = {
+                    userId: existUser.id,
+                    email: existUser.email
+                };
+                const token = jwt.sign(data, jwtSecretKey);
+                console.log(token);
+                existUser.token = token;
                 res.send({
                     status: 200,
                     message: "User Logged in",
