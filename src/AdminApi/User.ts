@@ -1,5 +1,6 @@
 import express, { response } from 'express';
 import { connection } from '../Config/DBConfig';
+import { verifyToken } from '../Middleware/HelperFunction';
 const XLSX = require('xlsx');
 const multer = require('multer');
 const UserController = express.Router();
@@ -8,6 +9,11 @@ const upload = multer({ storage: storage }).single('file'); // 'file' should mat
 
 
 UserController.get("/get-users", (req, res) => {
+    
+   const isVerified = verifyToken(req)
+   console.log(isVerified);
+   
+   if(isVerified===true){
     const page = 1;
     const pageSize = 10;
 
@@ -32,6 +38,13 @@ UserController.get("/get-users", (req, res) => {
             data: result
         })
     })
+   }else{
+    res.send({
+        status: 401,
+        message: "Unauthenticated",
+        data: null
+    })
+   }
 
 })
 
@@ -63,7 +76,8 @@ UserController.post("/get-file", upload, (req, res) => {
 })
 
 UserController.post("/add-user", (req, res) => {
-
+    const isVerified = verifyToken(req)
+   if(isVerified===true){
     let request = req.body;
     console.log(request, "body");
 
@@ -132,6 +146,13 @@ UserController.post("/add-user", (req, res) => {
         })
     }
 
+   }else{
+    res.send({
+        status: 401,
+        message: "Unauthenticated",
+        data: null
+    })
+   }
 })
 
 
