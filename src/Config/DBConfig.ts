@@ -11,7 +11,6 @@ const options = {
   password: process.env.PASSWORD,
   database: process.env.DBNAME,
 }
-const saltRounds = 10;
 export const connection = mysql.createConnection(options);
 const configMongoDB = async () => {
 console.log(options);

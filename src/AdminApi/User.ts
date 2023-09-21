@@ -69,9 +69,10 @@ UserController.post("/add-user", (req, res) => {
 
 
 
-    const query = `SELECT * FROM users WHERE phone = ?`;
+    if(request){
+        const getUser = "SELECT * FROM users WHERE phone = ? OR email = ?";
 
-    connection.query(query, [request.phone], async (err, result) => {
+    connection.query(getUser, [request.phone,,request.email], async (err, result) => {
         if (err) {
             res.send({
                 status: 503,
@@ -83,14 +84,15 @@ UserController.post("/add-user", (req, res) => {
         if (existUser) {
             res.send({
                 status: 404,
-                message: "user already exist",
+                message: "phone or email already exist",
                 data: null
             })
 
         } else {
-            const query = "INSERT INTO admin SET ?";
-
-            connection.query(query, request, async (err, result) => {
+            const setUser = "INSERT INTO users SET ?";
+            request.created_at = new Date().toUTCString()
+            connection.query(setUser, request, async (err, result) => {
+                console.log(err,"error is");
                 if (err) res.send({
                     status: 500,
                     message: "Internal server error",
@@ -98,17 +100,37 @@ UserController.post("/add-user", (req, res) => {
                 })
 
                 const query = "SELECT * FROM users WHERE phone = ?";
-               const resultData = await connection.query(query,[request.phone]);
+             connection.query(query,[request.phone],async (err, result)=>{
+                if (err) {
+                    console.log(err);
+                    
+                    res.send({
+                        status: 500,
+                        message: "Internal server error",
+                        data: null
+                    })
+                }
+            
+                
                 res.send({
-                    status: 200,
-                    message: "user added",
-                    data: resultData[0]
+                    status: 201,
+                    message: "user created",
+                    data: result[0]
                 })
+             });
+                
             })
 
         }
 
     })
+    }else{
+        res.send({
+            status: 404,
+            message: "request is empty",
+            data: null
+        })
+    }
 
 })
 

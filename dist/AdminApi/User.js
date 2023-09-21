@@ -65,8 +65,8 @@ UserController.post("/get-file", upload, (req, res) => {
 UserController.post("/add-user", (req, res) => {
     let request = req.body;
     console.log(request, "body");
-    const query = `SELECT * FROM users WHERE phone = ?`;
-    DBConfig_1.connection.query(query, [request.phone], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
+    const getUser = `SELECT * FROM users WHERE phone = ?`;
+    DBConfig_1.connection.query(getUser, [request.phone], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
         if (err) {
             res.send({
                 status: 503,
@@ -83,8 +83,8 @@ UserController.post("/add-user", (req, res) => {
             });
         }
         else {
-            const query = "INSERT INTO admin SET ?";
-            DBConfig_1.connection.query(query, request, (err, result) => __awaiter(void 0, void 0, void 0, function* () {
+            const setUser = "INSERT INTO users SET ?";
+            DBConfig_1.connection.query(setUser, request, (err, result) => __awaiter(void 0, void 0, void 0, function* () {
                 if (err)
                     res.send({
                         status: 500,
