@@ -42,11 +42,10 @@ AdminAuthRoute.post("/admin/admin-login", (req, res) => __awaiter(void 0, void 0
                 };
                 const token = jwt.sign(data, jwtSecretKey);
                 console.log(token);
-                existUser.token = token;
                 res.send({
                     status: 200,
                     message: "User Logged in",
-                    data: existUser
+                    data: token
                 });
             }
             else {
