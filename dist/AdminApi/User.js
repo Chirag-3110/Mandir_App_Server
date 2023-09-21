@@ -65,42 +65,62 @@ UserController.post("/get-file", upload, (req, res) => {
 UserController.post("/add-user", (req, res) => {
     let request = req.body;
     console.log(request, "body");
-    const getUser = `SELECT * FROM users WHERE phone = ?`;
-    DBConfig_1.connection.query(getUser, [request.phone], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
-        if (err) {
-            res.send({
-                status: 503,
-                message: "internal server error",
-                data: null
-            });
-        }
-        let existUser = result[0];
-        if (existUser) {
-            res.send({
-                status: 404,
-                message: "user already exist",
-                data: null
-            });
-        }
-        else {
-            const setUser = "INSERT INTO users SET ?";
-            DBConfig_1.connection.query(setUser, request, (err, result) => __awaiter(void 0, void 0, void 0, function* () {
-                if (err)
-                    res.send({
-                        status: 500,
-                        message: "Internal server error",
-                        data: null
-                    });
-                const query = "SELECT * FROM users WHERE phone = ?";
-                const resultData = yield DBConfig_1.connection.query(query, [request.phone]);
+    if (request) {
+        const getUser = "SELECT * FROM users WHERE phone = ? OR email = ?";
+        DBConfig_1.connection.query(getUser, [request.phone, , request.email], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
+            if (err) {
                 res.send({
-                    status: 200,
-                    message: "user added",
-                    data: resultData[0]
+                    status: 503,
+                    message: "internal server error",
+                    data: null
                 });
-            }));
-        }
-    }));
+            }
+            let existUser = result[0];
+            if (existUser) {
+                res.send({
+                    status: 404,
+                    message: "phone or email already exist",
+                    data: null
+                });
+            }
+            else {
+                const setUser = "INSERT INTO users SET ?";
+                request.created_at = new Date().toUTCString();
+                DBConfig_1.connection.query(setUser, request, (err, result) => __awaiter(void 0, void 0, void 0, function* () {
+                    console.log(err, "error is");
+                    if (err)
+                        res.send({
+                            status: 500,
+                            message: "Internal server error",
+                            data: null
+                        });
+                    const query = "SELECT * FROM users WHERE phone = ?";
+                    DBConfig_1.connection.query(query, [request.phone], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
+                        if (err) {
+                            console.log(err);
+                            res.send({
+                                status: 500,
+                                message: "Internal server error",
+                                data: null
+                            });
+                        }
+                        res.send({
+                            status: 201,
+                            message: "user created",
+                            data: result[0]
+                        });
+                    }));
+                }));
+            }
+        }));
+    }
+    else {
+        res.send({
+            status: 404,
+            message: "request is empty",
+            data: null
+        });
+    }
 });
 exports.default = UserController;
 //# sourceMappingURL=User.js.map
