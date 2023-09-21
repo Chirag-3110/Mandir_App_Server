@@ -1,6 +1,6 @@
 import express, { response } from 'express';
 import { connection } from '../Config/DBConfig';
-import { verifyToken } from '../Middleware/HelperFunction';
+import { generateRendomString, verifyToken } from '../Middleware/HelperFunction';
 const XLSX = require('xlsx');
 const multer = require('multer');
 const UserController = express.Router();
@@ -105,6 +105,9 @@ UserController.post("/add-user", (req, res) => {
                 } else {
                     const setUser = "INSERT INTO users SET ?";
                     request.created_at = new Date().toUTCString()
+                    request.password = generateRendomString()
+                    console.log(request);
+                    
                     connection.query(setUser, request, async (err, result) => {
                         console.log(err, "error is");
                         if (err) res.send({

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.verifyToken = exports.generateOTP = void 0;
+exports.generateRendomString = exports.verifyToken = exports.generateOTP = void 0;
 const env = require('dotenv');
 env.config();
 const jwt = require('jsonwebtoken');
@@ -34,4 +34,14 @@ const verifyToken = (req) => {
     }
 };
 exports.verifyToken = verifyToken;
+const generateRendomString = () => {
+    const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+";
+    let password = "";
+    for (let i = 0; i < 10; i++) {
+        const randomIndex = Math.floor(Math.random() * charset.length);
+        password += charset[randomIndex];
+    }
+    return password;
+};
+exports.generateRendomString = generateRendomString;
 //# sourceMappingURL=HelperFunction.js.map

@@ -100,6 +100,8 @@ UserController.post("/add-user", (req, res) => {
                 else {
                     const setUser = "INSERT INTO users SET ?";
                     request.created_at = new Date().toUTCString();
+                    request.password = (0, HelperFunction_1.generateRendomString)();
+                    console.log(request);
                     DBConfig_1.connection.query(setUser, request, (err, result) => __awaiter(void 0, void 0, void 0, function* () {
                         console.log(err, "error is");
                         if (err)
