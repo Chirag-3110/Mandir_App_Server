@@ -105,7 +105,8 @@ UserController.post("/add-user", (req, res) => {
                 } else {
                     const setUser = "INSERT INTO users SET ?";
                     request.created_at = new Date().toUTCString()
-                    request.password = generateRendomString()
+                    request.password = generateRendomString(),
+
                     console.log(request);
                     
                     connection.query(setUser, request, async (err, result) => {
@@ -113,7 +114,7 @@ UserController.post("/add-user", (req, res) => {
                         if (err) res.send({
                             status: 500,
                             message: "Internal server error",
-                            data: null
+                            data: err
                         })
 
                         const query = "SELECT id,full_name,email,phone,gotra,address,occupation,age,gender,postal_address FROM users WHERE phone = ?";
