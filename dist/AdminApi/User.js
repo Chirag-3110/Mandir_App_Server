@@ -32,13 +32,13 @@ UserController.get("/get-users", (req, res) => {
         DBConfig_1.connection.query(query, values, (err, result) => {
             if (err) {
                 res.send({
-                    status: false,
-                    message: "Something went wrong",
+                    status: 500,
+                    message: "Internal server error",
                     data: err
                 });
             }
             res.send({
-                status: true,
+                status: 200,
                 message: "Users get successully",
                 data: result
             });
@@ -86,7 +86,7 @@ UserController.post("/add-user", (req, res) => {
                     res.send({
                         status: 503,
                         message: "internal server error",
-                        data: null
+                        data: err
                     });
                 }
                 let existUser = result[0];
@@ -94,7 +94,7 @@ UserController.post("/add-user", (req, res) => {
                     res.send({
                         status: 404,
                         message: "phone or email already exist",
-                        data: null
+                        data: err
                     });
                 }
                 else {
@@ -115,7 +115,7 @@ UserController.post("/add-user", (req, res) => {
                                 res.send({
                                     status: 500,
                                     message: "Internal server error",
-                                    data: null
+                                    data: err
                                 });
                             }
                             res.send({
