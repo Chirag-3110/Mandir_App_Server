@@ -21,7 +21,7 @@ AdminAuthRoute.post("/admin/admin-login", (req, res) => __awaiter(void 0, void 0
     let request = req.body;
     console.log(request, "body");
     const findUser = 'SELECT * FROM admin WHERE email = ?';
-    DBConfig_1.connection.query(findUser, [request.email, request.password], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
+    DBConfig_1.connection.query(findUser, [request.email], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
         if (err) {
             res.send({
                 status: 503,
@@ -29,7 +29,6 @@ AdminAuthRoute.post("/admin/admin-login", (req, res) => __awaiter(void 0, void 0
                 data: null
             });
         }
-        console.log(result);
         let existUser = result[0];
         if (existUser) {
             let isCompared = yield bcrypt.compare(request.password, existUser.password);
@@ -42,7 +41,7 @@ AdminAuthRoute.post("/admin/admin-login", (req, res) => __awaiter(void 0, void 0
             }
             else {
                 res.send({
-                    status: 404,
+                    status: 401,
                     message: "Incorrect password",
                     data: null
                 });

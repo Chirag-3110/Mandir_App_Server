@@ -10,7 +10,7 @@ AdminAuthRoute.post("/admin/admin-login",async (req,res)=>{
     
     const findUser = 'SELECT * FROM admin WHERE email = ?'
 
-    connection.query(findUser,[request.email,request.password],async(err,result)=>{
+    connection.query(findUser,[request.email],async(err,result)=>{
         if(err){
             res.send({
                 status:503,
@@ -18,7 +18,6 @@ AdminAuthRoute.post("/admin/admin-login",async (req,res)=>{
                 data:null
             })
         }
-        console.log(result);
         let existUser  = result[0]; 
         if(existUser){
             
@@ -32,7 +31,7 @@ AdminAuthRoute.post("/admin/admin-login",async (req,res)=>{
                 })
             }else{
                 res.send({
-                    status:404,
+                    status:401,
                     message:"Incorrect password",
                     data:null
                 })

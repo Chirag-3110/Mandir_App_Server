@@ -16,16 +16,18 @@ const encrypt = require('bcrypt');
 const env = require('dotenv');
 env.config();
 const options = {
-    host: "139.144.1.59",
-    user: "dbujai",
-    password: "DBUserStr@ngssw0d$&iu",
-    database: "jaiDB"
+    host: process.env.HOST,
+    user: process.env.USER_NAME,
+    password: process.env.PASSWORD,
+    database: process.env.DBNAME,
 };
 const saltRounds = 10;
 exports.connection = mysql.createConnection(options);
 const configMongoDB = () => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(options);
+    console.log(process.env.USER_NAME);
     exports.connection.connect(function (err, result) {
-        console.log(result, "error");
+        console.log(err, "error");
         exports.connection.query(`CREATE DATABASE IF NOT EXISTS jaiDB`, function (err, result) {
             return __awaiter(this, void 0, void 0, function* () {
                 if (err) {
