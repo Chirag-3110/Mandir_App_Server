@@ -81,7 +81,7 @@ UserController.post("/add-user", (req, res) => {
         console.log(request, "body");
         if (request) {
             const getUser = "SELECT * FROM users WHERE phone = ? OR email = ?";
-            DBConfig_1.connection.query(getUser, [request.phone, , request.email], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
+            DBConfig_1.connection.query(getUser, [request.phone, request.email], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
                 if (err) {
                     res.send({
                         status: 503,

@@ -86,7 +86,7 @@ UserController.post("/add-user", (req, res) => {
         if (request) {
             const getUser = "SELECT * FROM users WHERE phone = ? OR email = ?";
 
-            connection.query(getUser, [request.phone, , request.email], async (err, result) => {
+            connection.query(getUser, [request.phone,request.email], async (err, result) => {
                 if (err) {
                     res.send({
                         status: 503,
