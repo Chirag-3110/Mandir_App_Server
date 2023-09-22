@@ -4,9 +4,13 @@ const express = require('express')
 
 const ClearDB = express.Router()
 
+import { verifyToken } from '../Middleware/HelperFunction';
+
 const getTablesQuery = 'SHOW TABLES';
 let isDeleted = false;
 ClearDB.get("/clear-db",(req,res)=>{
+    const isVerified = verifyToken(req);
+   if(isVerified===true){
     connection.query(getTablesQuery,(err,result)=>{
         if(err){
             res.send({
@@ -47,6 +51,13 @@ ClearDB.get("/clear-db",(req,res)=>{
         
         
     })
+   }else{
+    res.send({
+        status: 401,
+        message: "Unauthenticated",
+        data: null
+    })
+   }
 })
 
 
