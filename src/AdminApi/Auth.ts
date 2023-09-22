@@ -17,9 +17,11 @@ AdminAuthRoute.post("/admin/admin-login", async (req, res) => {
             res.send({
                 status: 503,
                 message: "internal server error",
-                data: null
+                data: err
             })
         }
+        
+        
         let existUser = result[0];
         if (existUser) {
 

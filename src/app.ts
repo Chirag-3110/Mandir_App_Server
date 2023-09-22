@@ -3,6 +3,7 @@ import AdminAuthRoute from './AdminApi/Auth';
 import configMongoDB from './Config/DBConfig'
 import config from 'dotenv'
 import UserController from './AdminApi/User';
+import EventController from './AdminApi/Events';
 config.configDotenv()
 const app = express();
 const cors = require('cors');
@@ -28,4 +29,6 @@ app.listen(port, async () => {
 app.use(AdminAuthRoute)
 
 app.use(UserController)
+
+app.use(EventController)
 // app.use(NewsRouter)

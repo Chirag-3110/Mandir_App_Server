@@ -17,6 +17,7 @@ const Auth_1 = __importDefault(require("./AdminApi/Auth"));
 const DBConfig_1 = __importDefault(require("./Config/DBConfig"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const User_1 = __importDefault(require("./AdminApi/User"));
+const Events_1 = __importDefault(require("./AdminApi/Events"));
 dotenv_1.default.configDotenv();
 const app = (0, express_1.default)();
 const cors = require('cors');
@@ -34,5 +35,6 @@ app.listen(port, () => __awaiter(void 0, void 0, void 0, function* () {
 }));
 app.use(Auth_1.default);
 app.use(User_1.default);
+app.use(Events_1.default);
 // app.use(NewsRouter)
 //# sourceMappingURL=app.js.map
