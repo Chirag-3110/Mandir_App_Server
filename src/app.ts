@@ -11,6 +11,7 @@ const cors = require('cors');
 
 const port = process.env.PORT || 8000;
 const allowedOrigins = ['https://example.com'];
+const dec = require('../doc/index.html') 
 
 app.use(express.json())
 const corsOptions = {
@@ -31,4 +32,8 @@ app.use(AdminAuthRoute)
 app.use(UserController)
 
 app.use(EventController)
+
+app.get("/api-doc",(erq,res)=>{
+  res.sendFile(dec);
+})
 // app.use(NewsRouter)

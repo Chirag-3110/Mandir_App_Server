@@ -41,6 +41,34 @@ EventController.get("/events/list", async (req, res) => {
     }
 })
 
+EventController.get("/events/details", async (req, res) => {
+    const isVerified = verifyToken(req)
+    if (isVerified === true) {
+        const request= req.query.id;
+        let getEvents = "Select * FROM events WHERE id = ?";
+        connection.query(getEvents,[request], async (err, result) => {
+            if (err) {
+                res.send({
+                    status: 500,
+                    message: "Internal server error",
+                    data: err
+                })
+            }
+            res.send({
+                status: 200,
+                message: "events get success fully",
+                data: result[0]
+            })
+        })
+    } else {
+        res.send({
+            status: 401,
+            message: "Unauthenticated",
+            data: null
+        })
+    }
+})
+
 EventController.get("/events/add", async (req, res) => {
     const isVerified = verifyToken(req)
     if (isVerified === true) {
