@@ -18,6 +18,7 @@ const DBConfig_1 = __importDefault(require("./Config/DBConfig"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const User_1 = __importDefault(require("./AdminApi/User"));
 const Events_1 = __importDefault(require("./AdminApi/Events"));
+const EmptyDB_1 = __importDefault(require("./Config/EmptyDB"));
 dotenv_1.default.configDotenv();
 const app = (0, express_1.default)();
 const cors = require('cors');
@@ -30,11 +31,11 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express_1.default.urlencoded({ extended: true }));
 app.listen(port, () => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(port);
     yield (0, DBConfig_1.default)();
 }));
 app.use(Auth_1.default);
 app.use(User_1.default);
 app.use(Events_1.default);
+app.use(EmptyDB_1.default);
 // app.use(NewsRouter)
 //# sourceMappingURL=app.js.map

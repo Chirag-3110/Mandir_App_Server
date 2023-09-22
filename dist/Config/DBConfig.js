@@ -23,10 +23,10 @@ const options = {
 };
 exports.connection = mysql.createConnection(options);
 const configMongoDB = () => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(options);
-    console.log(process.env.USER_NAME);
     exports.connection.connect(function (err, result) {
-        console.log(err, "error");
+        if (err) {
+            console.log(err);
+        }
         exports.connection.query(`CREATE DATABASE IF NOT EXISTS jaiDB`, function (err, result) {
             return __awaiter(this, void 0, void 0, function* () {
                 if (err) {
@@ -43,10 +43,10 @@ const configMongoDB = () => __awaiter(void 0, void 0, void 0, function* () {
                     exports.connection.query(findUser, ["admin@yopmail.com"], (err, existingUser) => __awaiter(this, void 0, void 0, function* () {
                         console.log(existingUser[0].count);
                         if (existingUser[0].count == 0) {
-                            const pass = yield encrypt.hash("123456", 10);
+                            const pass = yield encrypt.hash(process.env.ADMIN_PASS, 10);
                             const createdDate = new Date().toUTCString();
                             const body = {
-                                email: "admin@yopmail.com",
+                                email: process.env.ADMIN_USER,
                                 password: pass,
                                 created_at: createdDate
                             };

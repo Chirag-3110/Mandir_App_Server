@@ -8,18 +8,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
+const express = require('express');
 const HelperFunction_1 = require("../Middleware/HelperFunction");
 const DBConfig_1 = require("../Config/DBConfig");
-const EventController = express_1.default.Router();
-EventController.get("/events/list", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const NewsController = express.Router();
+NewsController.get("/news/list", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const isVerified = (0, HelperFunction_1.verifyToken)(req);
     if (isVerified === true) {
-        let getEvents = "Select * FROM events";
+        let getEvents = "Select * FROM news";
         DBConfig_1.connection.query(getEvents, (err, result) => __awaiter(void 0, void 0, void 0, function* () {
             if (err) {
                 res.send({
@@ -30,7 +27,7 @@ EventController.get("/events/list", (req, res) => __awaiter(void 0, void 0, void
             }
             res.send({
                 status: 200,
-                message: "events get success fully",
+                message: "news get success fully",
                 data: result[0]
             });
         }));
@@ -43,11 +40,11 @@ EventController.get("/events/list", (req, res) => __awaiter(void 0, void 0, void
         });
     }
 }));
-EventController.get("/events/details", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+NewsController.get("/news/details", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const isVerified = (0, HelperFunction_1.verifyToken)(req);
     if (isVerified === true) {
         const request = req.query.id;
-        let getEvents = "Select * FROM events WHERE id = ?";
+        let getEvents = "Select * FROM news WHERE id = ?";
         DBConfig_1.connection.query(getEvents, [request], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
             if (err) {
                 res.send({
@@ -58,7 +55,7 @@ EventController.get("/events/details", (req, res) => __awaiter(void 0, void 0, v
             }
             res.send({
                 status: 200,
-                message: "events get success fully",
+                message: "news get successfully",
                 data: result[0]
             });
         }));
@@ -71,11 +68,11 @@ EventController.get("/events/details", (req, res) => __awaiter(void 0, void 0, v
         });
     }
 }));
-EventController.get("/events/add", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+NewsController.get("/news/add", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const isVerified = (0, HelperFunction_1.verifyToken)(req);
     if (isVerified === true) {
         let request = req.body;
-        let addEvent = "INSERT INTO events SET ?";
+        let addEvent = "INSERT INTO news SET ?";
         DBConfig_1.connection.query(addEvent, request, (err, result) => __awaiter(void 0, void 0, void 0, function* () {
             if (err) {
                 res.send({
@@ -86,7 +83,7 @@ EventController.get("/events/add", (req, res) => __awaiter(void 0, void 0, void 
             }
             res.send({
                 status: 200,
-                message: "events get success fully",
+                message: "news get success fully",
                 data: result[0]
             });
         }));
@@ -99,12 +96,12 @@ EventController.get("/events/add", (req, res) => __awaiter(void 0, void 0, void 
         });
     }
 }));
-EventController.post("/events/change-status", (req, res) => {
+NewsController.post("/news/change-status", (req, res) => {
     const isVerified = (0, HelperFunction_1.verifyToken)(req);
     if (isVerified == true) {
         let request = req.body;
-        const updateQuery = 'UPDATE events SET is_active = ? WHERE id = ?';
-        const getEvent = 'Select * FROM events WHERE id = ?';
+        const updateQuery = 'UPDATE news SET is_active = ? WHERE id = ?';
+        const getEvent = 'Select * FROM news WHERE id = ?';
         DBConfig_1.connection.query(getEvent, [request.id], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
             if (err) {
                 res.send({
@@ -138,12 +135,12 @@ EventController.post("/events/change-status", (req, res) => {
         });
     }
 });
-EventController.post("/events/delete-status", (req, res) => {
+NewsController.post("/news/delete-status", (req, res) => {
     const isVerified = (0, HelperFunction_1.verifyToken)(req);
     if (isVerified == true) {
         let request = req.body;
-        const updateQuery = 'UPDATE events SET is_delete = ? WHERE id = ?';
-        const getEvent = 'Select * FROM events WHERE id = ?';
+        const updateQuery = 'UPDATE news SET is_delete = ? WHERE id = ?';
+        const getEvent = 'Select * FROM news WHERE id = ?';
         DBConfig_1.connection.query(getEvent, [request.id], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
             if (err) {
                 res.send({
@@ -177,5 +174,5 @@ EventController.post("/events/delete-status", (req, res) => {
         });
     }
 });
-exports.default = EventController;
-//# sourceMappingURL=Events.js.map
+exports.default = NewsController;
+//# sourceMappingURL=News.js.map

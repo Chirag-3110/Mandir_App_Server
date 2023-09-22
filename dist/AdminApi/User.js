@@ -146,5 +146,83 @@ UserController.post("/add-user", (req, res) => {
         });
     }
 });
+UserController.post("/user-status", (req, res) => {
+    const isVerified = (0, HelperFunction_1.verifyToken)(req);
+    if (isVerified == true) {
+        let request = req.body;
+        const updateQuery = 'UPDATE users SET is_active = ? WHERE id = ?';
+        const getEvent = 'Select * FROM users WHERE id = ?';
+        DBConfig_1.connection.query(getEvent, [request.id], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
+            if (err) {
+                res.send({
+                    status: 500,
+                    message: "Internal server error",
+                    data: err
+                });
+            }
+            const eventData = result[0];
+            DBConfig_1.connection.query(updateQuery, [!eventData.is_active, request.id], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
+                if (err) {
+                    res.send({
+                        status: 500,
+                        message: "Internal server error",
+                        data: err
+                    });
+                }
+                res.send({
+                    status: 200,
+                    message: "Status Updated",
+                    data: null
+                });
+            }));
+        }));
+    }
+    else {
+        res.send({
+            status: 401,
+            message: "Unauthenticated",
+            data: null
+        });
+    }
+});
+UserController.post("/delete-user", (req, res) => {
+    const isVerified = (0, HelperFunction_1.verifyToken)(req);
+    if (isVerified == true) {
+        let request = req.body;
+        const updateQuery = 'UPDATE users SET is_delete = ? WHERE id = ?';
+        const getEvent = 'Select * FROM users WHERE id = ?';
+        DBConfig_1.connection.query(getEvent, [request.id], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
+            if (err) {
+                res.send({
+                    status: 500,
+                    message: "Internal server error",
+                    data: err
+                });
+            }
+            const eventData = result[0];
+            DBConfig_1.connection.query(updateQuery, [!eventData.is_delete, request.id], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
+                if (err) {
+                    res.send({
+                        status: 500,
+                        message: "Internal server error",
+                        data: err
+                    });
+                }
+                res.send({
+                    status: 200,
+                    message: "User deleted",
+                    data: null
+                });
+            }));
+        }));
+    }
+    else {
+        res.send({
+            status: 401,
+            message: "Unauthenticated",
+            data: null
+        });
+    }
+});
 exports.default = UserController;
 //# sourceMappingURL=User.js.map
