@@ -33,7 +33,7 @@ const configMongoDB = async () => {
 
         const findUser = 'SELECT COUNT(*) as count FROM admin WHERE email = ?'
         connection.query(findUser, ["admin@yopmail.com"], async (err, existingUser) => {
-          console.log(existingUser[0].count);
+          //console.log(existingUser[0].count);
           if (existingUser[0].count == 0) {
             const pass = await encrypt.hash(process.env.ADMIN_PASS, 10);
             const createdDate = new Date().toUTCString()

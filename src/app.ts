@@ -9,12 +9,17 @@ config.configDotenv()
 const app = express();
 const cors = require('cors');
 const port = process.env.PORT || 8000;
-const allowedOrigins = ['https://example.com'];
+
+import path from 'path';
 app.use(express.json())
+
+
 const corsOptions = {
     origin: 'http://localhost:3000',
   };
+
 app.use(cors(corsOptions));
+
 
 app.use(express.urlencoded({ extended: true }))
 
@@ -23,11 +28,13 @@ app.listen(port, async () => {
     await configMongoDB()
 });
 
+
 app.use(AdminAuthRoute)
 
 app.use(UserController)
 
 app.use(EventController)
+app.use('/apiDoc', express.static(path.join(__dirname, 'public')));
 
 app.use(ClearDB)
 

@@ -6,19 +6,10 @@ const env = require('dotenv')
 env.config()
 const jwt = require('jsonwebtoken');
 
-/**
- * @api {POST} /admin/admin-login
- * @apiName Amin Login
- * @apiGroup Admin
- * @apiDescription Admin Login.
- *
- * @apiSuccess {String} email.
- * @apiSuccess {Object[]} password.
- */
-
 AdminAuthRoute.post("/admin/admin-login", async (req, res) => {
     let request = req.body;
     console.log(request, "body");
+    
 
     const findUser = 'SELECT * FROM admin WHERE email = ?'
 

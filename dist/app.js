@@ -23,7 +23,7 @@ dotenv_1.default.configDotenv();
 const app = (0, express_1.default)();
 const cors = require('cors');
 const port = process.env.PORT || 8000;
-const allowedOrigins = ['https://example.com'];
+const path_1 = __importDefault(require("path"));
 app.use(express_1.default.json());
 const corsOptions = {
     origin: 'http://localhost:3000',
@@ -36,6 +36,7 @@ app.listen(port, () => __awaiter(void 0, void 0, void 0, function* () {
 app.use(Auth_1.default);
 app.use(User_1.default);
 app.use(Events_1.default);
+app.use('/apiDoc', express_1.default.static(path_1.default.join(__dirname, 'public')));
 app.use(EmptyDB_1.default);
 // app.use(NewsRouter)
 //# sourceMappingURL=app.js.map

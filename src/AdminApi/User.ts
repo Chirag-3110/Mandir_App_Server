@@ -1,19 +1,25 @@
 import express, { response } from 'express';
 import { connection } from '../Config/DBConfig';
-import { generateRendomString, verifyToken } from '../Middleware/HelperFunction';
+import { generateRendomString,  verifyToken } from '../Middleware/HelperFunction';
 const XLSX = require('xlsx');
 const multer = require('multer');
 const UserController = express.Router();
 const storage = multer.memoryStorage(); // Store files in memory for parsing.
 const upload = multer({ storage: storage }).single('file'); // 'file' should match the 'name' attribute
+const Joi = require('joi');
 
-
+/**
+* @api {get} /user Request User information
+* @apiName GetUser
+* @apiGroup User
+*/
 UserController.get("/get-users", (req, res) => {
 
     const isVerified = verifyToken(req)
     console.log(isVerified);
 
     if (isVerified === true) {
+       
         const page = 1;
         const pageSize = 10;
 
