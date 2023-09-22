@@ -21,7 +21,6 @@ const EventController = express_1.default.Router();
  * @apiName GetEvents
  * @apiGroup Events
  *
- * @apiParam {String} token User's unique ID.
  *
  * @apiSuccess {String} firstname Firstname of the User.
  * @apiSuccess {String} lastname  Lastname of the User.
@@ -31,6 +30,34 @@ EventController.get("/events/list", (req, res) => __awaiter(void 0, void 0, void
     if (isVerified === true) {
         let getEvents = "Select * FROM events";
         DBConfig_1.connection.query(getEvents, (err, result) => __awaiter(void 0, void 0, void 0, function* () {
+            if (err) {
+                res.send({
+                    status: 500,
+                    message: "Internal server error",
+                    data: err
+                });
+            }
+            res.send({
+                status: 200,
+                message: "events get success fully",
+                data: result[0]
+            });
+        }));
+    }
+    else {
+        res.send({
+            status: 401,
+            message: "Unauthenticated",
+            data: null
+        });
+    }
+}));
+EventController.get("/events/details", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const isVerified = (0, HelperFunction_1.verifyToken)(req);
+    if (isVerified === true) {
+        const request = req.query.id;
+        let getEvents = "Select * FROM events WHERE id = ?";
+        DBConfig_1.connection.query(getEvents, [request], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
             if (err) {
                 res.send({
                     status: 500,

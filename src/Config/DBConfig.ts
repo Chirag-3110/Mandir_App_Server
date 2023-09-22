@@ -13,13 +13,11 @@ const options = {
 }
 export const connection = mysql.createConnection(options);
 const configMongoDB = async () => {
-console.log(options);
-console.log(process.env.USER_NAME);
-
 
   connection.connect(function (err, result) {
-    console.log(err,"error");
-    
+    if(err){
+      console.log(err);
+    }
    
     connection.query(`CREATE DATABASE IF NOT EXISTS jaiDB`, async function (err, result) {
       if (err) {
@@ -37,10 +35,10 @@ console.log(process.env.USER_NAME);
         connection.query(findUser, ["admin@yopmail.com"], async (err, existingUser) => {
           console.log(existingUser[0].count);
           if (existingUser[0].count == 0) {
-            const pass = await encrypt.hash("123456", 10);
+            const pass = await encrypt.hash(process.env.ADMIN_PASS, 10);
             const createdDate = new Date().toUTCString()
             const body = {
-              email: "admin@yopmail.com",
+              email: process.env.ADMIN_USER,
               password: pass,
               created_at: createdDate
             }

@@ -71,4 +71,5 @@ AdminAuthRoute.post("/admin/admin-login", async (req, res) => {
 
     })
 })
+
 export default AdminAuthRoute;

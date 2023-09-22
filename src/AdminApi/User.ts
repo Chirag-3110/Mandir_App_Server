@@ -81,8 +81,6 @@ UserController.post("/add-user", (req, res) => {
         let request = req.body;
         console.log(request, "body");
 
-
-
         if (request) {
             const getUser = "SELECT * FROM users WHERE phone = ? OR email = ?";
 
@@ -159,5 +157,84 @@ UserController.post("/add-user", (req, res) => {
     }
 })
 
+UserController.post("/user-status",(req,res)=>{
+    const isVerified = verifyToken(req)
+    if(isVerified==true){
+        let request = req.body;
+        const updateQuery = 'UPDATE users SET is_active = ? WHERE id = ?'
+        const getEvent = 'Select * FROM users WHERE id = ?'
+        connection.query(getEvent,[request.id], async (err, result) => {
+            if (err) {
+                res.send({
+                    status: 500,
+                    message: "Internal server error",
+                    data: err
+                })
+            }
+            const eventData = result[0];
+            connection.query(updateQuery,[!eventData.is_active,request.id], async (err, result) => {
+                if (err) {
+                    res.send({
+                        status: 500,
+                        message: "Internal server error",
+                        data: err
+                    })
+                }
+                res.send({
+                    status: 200,
+                    message: "Status Updated",
+                    data: null
+                })
+                
+            })  
+        })
+    }else{
+        res.send({
+            status: 401,
+            message: "Unauthenticated",
+            data: null
+        })
+    }
+})
+
+UserController.post("/delete-user",(req,res)=>{
+    const isVerified = verifyToken(req)
+    if(isVerified==true){
+        let request = req.body;
+        const updateQuery = 'UPDATE users SET is_delete = ? WHERE id = ?'
+        const getEvent = 'Select * FROM users WHERE id = ?'
+        connection.query(getEvent,[request.id], async (err, result) => {
+            if (err) {
+                res.send({
+                    status: 500,
+                    message: "Internal server error",
+                    data: err
+                })
+            }
+            const eventData = result[0];
+            connection.query(updateQuery,[!eventData.is_delete,request.id], async (err, result) => {
+                if (err) {
+                    res.send({
+                        status: 500,
+                        message: "Internal server error",
+                        data: err
+                    })
+                }
+                res.send({
+                    status: 200,
+                    message: "User deleted",
+                    data: null
+                })
+                
+            })  
+        })
+    }else{
+        res.send({
+            status: 401,
+            message: "Unauthenticated",
+            data: null
+        })
+    }
+})
 
 export default UserController;

@@ -1,13 +1,12 @@
-import express from 'express';
+const express = require('express')
 import { verifyToken } from '../Middleware/HelperFunction';
 import { connection } from '../Config/DBConfig';
-const EventController = express.Router();
+const NewsController = express.Router()
 
-
-EventController.get("/events/list", async (req, res) => {
+NewsController.get("/news/list", async (req, res) => {
     const isVerified = verifyToken(req)
     if (isVerified === true) {
-        let getEvents = "Select * FROM events";
+        let getEvents = "Select * FROM news";
         connection.query(getEvents, async (err, result) => {
             if (err) {
                 res.send({
@@ -18,7 +17,7 @@ EventController.get("/events/list", async (req, res) => {
             }
             res.send({
                 status: 200,
-                message: "events get success fully",
+                message: "news get success fully",
                 data: result[0]
             })
         })
@@ -31,11 +30,11 @@ EventController.get("/events/list", async (req, res) => {
     }
 })
 
-EventController.get("/events/details", async (req, res) => {
+NewsController.get("/news/details", async (req, res) => {
     const isVerified = verifyToken(req)
     if (isVerified === true) {
         const request= req.query.id;
-        let getEvents = "Select * FROM events WHERE id = ?";
+        let getEvents = "Select * FROM news WHERE id = ?";
         connection.query(getEvents,[request], async (err, result) => {
             if (err) {
                 res.send({
@@ -46,7 +45,7 @@ EventController.get("/events/details", async (req, res) => {
             }
             res.send({
                 status: 200,
-                message: "events get success fully",
+                message: "news get successfully",
                 data: result[0]
             })
         })
@@ -61,11 +60,11 @@ EventController.get("/events/details", async (req, res) => {
 
 
 
-EventController.get("/events/add", async (req, res) => {
+NewsController.get("/news/add", async (req, res) => {
     const isVerified = verifyToken(req)
     if (isVerified === true) {
         let request = req.body;
-        let addEvent = "INSERT INTO events SET ?";
+        let addEvent = "INSERT INTO news SET ?";
         connection.query(addEvent,request, async (err, result) => {
             if (err) {
                 res.send({
@@ -76,7 +75,7 @@ EventController.get("/events/add", async (req, res) => {
             }
             res.send({
                 status: 200,
-                message: "events get success fully",
+                message: "news get success fully",
                 data: result[0]
             })
         })
@@ -89,12 +88,12 @@ EventController.get("/events/add", async (req, res) => {
     }
 })
 
-EventController.post("/events/change-status",(req,res)=>{
+NewsController.post("/news/change-status",(req,res)=>{
     const isVerified = verifyToken(req)
     if(isVerified==true){
         let request = req.body;
-        const updateQuery = 'UPDATE events SET is_active = ? WHERE id = ?'
-        const getEvent = 'Select * FROM events WHERE id = ?'
+        const updateQuery = 'UPDATE news SET is_active = ? WHERE id = ?'
+        const getEvent = 'Select * FROM news WHERE id = ?'
         connection.query(getEvent,[request.id], async (err, result) => {
             if (err) {
                 res.send({
@@ -129,12 +128,12 @@ EventController.post("/events/change-status",(req,res)=>{
     }
 })
 
-EventController.post("/events/delete-status",(req,res)=>{
+NewsController.post("/news/delete-status",(req,res)=>{
     const isVerified = verifyToken(req)
     if(isVerified==true){
         let request = req.body;
-        const updateQuery = 'UPDATE events SET is_delete = ? WHERE id = ?'
-        const getEvent = 'Select * FROM events WHERE id = ?'
+        const updateQuery = 'UPDATE news SET is_delete = ? WHERE id = ?'
+        const getEvent = 'Select * FROM news WHERE id = ?'
         connection.query(getEvent,[request.id], async (err, result) => {
             if (err) {
                 res.send({
@@ -168,4 +167,4 @@ EventController.post("/events/delete-status",(req,res)=>{
         })
     }
 })
-export default EventController;
+export default NewsController

@@ -19,6 +19,15 @@ const AdminAuthRoute = express_1.default.Router();
 const env = require('dotenv');
 env.config();
 const jwt = require('jsonwebtoken');
+/**
+ * @api {POST} /admin/admin-login
+ * @apiName Amin Login
+ * @apiGroup Admin
+ * @apiDescription Admin Login.
+ *
+ * @apiSuccess {String} email.
+ * @apiSuccess {Object[]} password.
+ */
 AdminAuthRoute.post("/admin/admin-login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let request = req.body;
     console.log(request, "body");
