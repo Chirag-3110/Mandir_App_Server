@@ -27,10 +27,10 @@ UserController.get("/get-users", (req, res) => {
         const offset = (page - 1) * pageSize;
 
 
-        const query = `SELECT id,full_name,email,phone,gotra,address,occupation,age,gender,postal_address,is_active,is_delete,created_at FROM users LIMIT ? OFFSET ?`;
-        const values = [pageSize, offset];
+        const query = `SELECT id,full_name,email,phone,gotra,address,occupation,age,gender,postal_address,is_active,is_delete,created_at FROM users`;
+        
 
-        connection.query(query, values, (err, result) => {
+        connection.query(query, (err, result) => {
             if (err) {
                 res.send({
                     status: 500,
