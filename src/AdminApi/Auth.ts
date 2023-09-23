@@ -31,7 +31,6 @@ AdminAuthRoute.post("/admin/admin-login", async (req, res) => {
             if (isCompared === true) {
                 let jwtSecretKey = process.env.JWT_SECRET_KEY;
                 let data = {
-                    
                     userId: existUser.id,
                     email:  existUser.email
                 }

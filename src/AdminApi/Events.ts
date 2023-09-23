@@ -1,6 +1,7 @@
 import express from 'express';
 import { verifyToken } from '../Middleware/HelperFunction';
 import { connection } from '../Config/DBConfig';
+import { upload } from '../Middleware/image_upload';
 const EventController = express.Router();
 
 
@@ -61,10 +62,12 @@ EventController.get("/events/details", async (req, res) => {
 
 
 
-EventController.get("/events/add", async (req, res) => {
+EventController.get("/events/add", upload.single("file"), async (req, res) => {
     const isVerified = verifyToken(req)
     if (isVerified === true) {
+        let filePath = req.file.path;
         let request = req.body;
+        request.image = filePath;
         let addEvent = "INSERT INTO events SET ?";
         connection.query(addEvent,request, async (err, result) => {
             if (err) {

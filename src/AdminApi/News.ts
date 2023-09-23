@@ -1,6 +1,7 @@
 const express = require('express')
 import { verifyToken } from '../Middleware/HelperFunction';
 import { connection } from '../Config/DBConfig';
+import { upload } from '../Middleware/image_upload';
 const NewsController = express.Router()
 
 NewsController.get("/news/list", async (req, res) => {
@@ -60,10 +61,12 @@ NewsController.get("/news/details", async (req, res) => {
 
 
 
-NewsController.get("/news/add", async (req, res) => {
+NewsController.get("/news/add",upload.single("file"), async (req, res) => {
     const isVerified = verifyToken(req)
     if (isVerified === true) {
         let request = req.body;
+        let filePath = req.file.path;
+        request.image = filePath;
         let addEvent = "INSERT INTO news SET ?";
         connection.query(addEvent,request, async (err, result) => {
             if (err) {
