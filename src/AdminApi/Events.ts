@@ -68,6 +68,7 @@ EventController.post("/events/add", upload.single("file"), async (req, res) => {
         let filePath = req.file.path;
         let request = req.body;
         request.image = filePath;
+        request.created_at=new Date()
         let addEvent = "INSERT INTO events SET ?";
         connection.query(addEvent,request, async (err, result) => {
             if (err) {
