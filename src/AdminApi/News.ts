@@ -19,7 +19,7 @@ NewsController.get("/news/list", async (req, res) => {
             res.send({
                 status: 200,
                 message: "news get success fully",
-                data: result[0]
+                data: result
             })
         })
     } else {
@@ -31,7 +31,7 @@ NewsController.get("/news/list", async (req, res) => {
     }
 })
 
-NewsController.get("/news/details", async (req, res) => {
+NewsController.post("/news/details", async (req, res) => {
     const isVerified = verifyToken(req)
     if (isVerified === true) {
         const request= req.query.id;
@@ -47,7 +47,7 @@ NewsController.get("/news/details", async (req, res) => {
             res.send({
                 status: 200,
                 message: "news get successfully",
-                data: result[0]
+                data: result
             })
         })
     } else {
@@ -61,7 +61,7 @@ NewsController.get("/news/details", async (req, res) => {
 
 
 
-NewsController.get("/news/add",upload.single("file"), async (req, res) => {
+NewsController.post("/news/add",upload.single("file"), async (req, res) => {
     const isVerified = verifyToken(req)
     if (isVerified === true) {
         let request = req.body;
@@ -79,7 +79,7 @@ NewsController.get("/news/add",upload.single("file"), async (req, res) => {
             res.send({
                 status: 200,
                 message: "news get success fully",
-                data: result[0]
+                data: {}
             })
         })
     } else {

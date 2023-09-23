@@ -39,20 +39,11 @@ app.use(EventController)
 
 app.use(ClearDB)
 
-const imagesDirectory = path.join(__dirname, 'Images'); // Replace 'Images' with your image directory's name
-
+const imagesDirectory = path.join(__dirname, '../Images'); // Replace 'Images' with your image directory's name
 // Create a route to serve images
-app.use('/images', express.static(imagesDirectory));
+app.use('/Images', express.static(imagesDirectory));
 
 
 app.use(NewsController)
 
-// app.use(NewsRouter)
-
-app.post("/upload",upload.single("file"),(req,res)=>{
-  const filePath = req.file.path;
-
-  console.log(filePath);
-  
-  res.send({mesasge:"uploaded"})
-})
+// app.use(NewsRouter

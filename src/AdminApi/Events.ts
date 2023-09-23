@@ -20,7 +20,7 @@ EventController.get("/events/list", async (req, res) => {
             res.send({
                 status: 200,
                 message: "events get success fully",
-                data: result[0]
+                data: result
             })
         })
     } else {
@@ -32,10 +32,10 @@ EventController.get("/events/list", async (req, res) => {
     }
 })
 
-EventController.get("/events/details", async (req, res) => {
+EventController.post("/events/details", async (req, res) => {
     const isVerified = verifyToken(req)
     if (isVerified === true) {
-        const request= req.query.id;
+        const request= req.body.id;
         let getEvents = "Select * FROM events WHERE id = ?";
         connection.query(getEvents,[request], async (err, result) => {
             if (err) {
@@ -48,7 +48,7 @@ EventController.get("/events/details", async (req, res) => {
             res.send({
                 status: 200,
                 message: "events get success fully",
-                data: result[0]
+                data: result
             })
         })
     } else {
@@ -62,7 +62,7 @@ EventController.get("/events/details", async (req, res) => {
 
 
 
-EventController.get("/events/add", upload.single("file"), async (req, res) => {
+EventController.post("/events/add", upload.single("file"), async (req, res) => {
     const isVerified = verifyToken(req)
     if (isVerified === true) {
         let filePath = req.file.path;
