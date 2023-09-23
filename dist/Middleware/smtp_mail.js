@@ -21,7 +21,7 @@ const sendMail = (userdata, subject) => {
             <title>Welcome to Our Service</title>
         </head>
         <body>
-            <p>Dear ${userdata.first_name},</p>
+            <p>Dear ${userdata.full_name},</p>
         
             <p>Welcome to Shree Mahaveer Jain Digambar Mandir! We are excited to have you as a member of our community.</p>
         
