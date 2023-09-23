@@ -1,6 +1,7 @@
 import express, { response } from 'express';
 import { connection } from '../Config/DBConfig';
 import { generateRendomString,  verifyToken } from '../Middleware/HelperFunction';
+import { sendMail } from '../Middleware/smtp_mail';
 const XLSX = require('xlsx');
 const multer = require('multer');
 const UserController = express.Router();
@@ -112,6 +113,8 @@ UserController.post("/add-user", (req, res) => {
                     request.password = generateRendomString(),
 
                     console.log(request);
+
+                    
                     
                     connection.query(setUser, request, async (err, result) => {
                         console.log(err, "error is");
@@ -121,7 +124,7 @@ UserController.post("/add-user", (req, res) => {
                             data: err
                         })
 
-                        const query = "SELECT id,full_name,email,phone,gotra,address,occupation,age,gender,postal_address FROM users WHERE phone = ?";
+                        const query = "SELECT * FROM users WHERE phone = ?";
                         connection.query(query, [request.phone], async (err, result) => {
                             if (err) {
                                 console.log(err);
@@ -132,12 +135,12 @@ UserController.post("/add-user", (req, res) => {
                                     data: err
                                 })
                             }
-
+                            sendMail(result[0],"Welcome Mail");
 
                             res.send({
                                 status: 201,
                                 message: "user created",
-                                data: result[0]
+                                data: result[0].id
                             })
                         });
 

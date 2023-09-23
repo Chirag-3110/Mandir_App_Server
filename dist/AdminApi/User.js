@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const DBConfig_1 = require("../Config/DBConfig");
 const HelperFunction_1 = require("../Middleware/HelperFunction");
+const smtp_mail_1 = require("../Middleware/smtp_mail");
 const XLSX = require('xlsx');
 const multer = require('multer');
 const UserController = express_1.default.Router();
@@ -116,7 +117,7 @@ UserController.post("/add-user", (req, res) => {
                                 message: "Internal server error",
                                 data: err
                             });
-                        const query = "SELECT id,full_name,email,phone,gotra,address,occupation,age,gender,postal_address FROM users WHERE phone = ?";
+                        const query = "SELECT * FROM users WHERE phone = ?";
                         DBConfig_1.connection.query(query, [request.phone], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
                             if (err) {
                                 console.log(err);
@@ -126,10 +127,11 @@ UserController.post("/add-user", (req, res) => {
                                     data: err
                                 });
                             }
+                            (0, smtp_mail_1.sendMail)(result[0], "Welcome Mail");
                             res.send({
                                 status: 201,
                                 message: "user created",
-                                data: result[0]
+                                data: result[0].id
                             });
                         }));
                     }));

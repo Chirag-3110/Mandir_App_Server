@@ -13,6 +13,7 @@ const path = require('path');
 const port = process.env.PORT || 8000;
 import NewsController from './AdminApi/News';
 import { upload } from './Middleware/image_upload';
+import { sendMail } from './Middleware/smtp_mail';
 app.use(express.json())
 
 
@@ -26,7 +27,7 @@ app.use(cors(corsOptions));
 app.use(express.urlencoded({ extended: true }))
 
 app.listen(port, async () => {
-    
+  
     await configMongoDB()
 });
 
