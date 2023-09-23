@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express = require('express');
 const HelperFunction_1 = require("../Middleware/HelperFunction");
 const DBConfig_1 = require("../Config/DBConfig");
+const image_upload_1 = require("../Middleware/image_upload");
 const NewsController = express.Router();
 NewsController.get("/news/list", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const isVerified = (0, HelperFunction_1.verifyToken)(req);
@@ -68,10 +69,12 @@ NewsController.get("/news/details", (req, res) => __awaiter(void 0, void 0, void
         });
     }
 }));
-NewsController.get("/news/add", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+NewsController.get("/news/add", image_upload_1.upload.single("file"), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const isVerified = (0, HelperFunction_1.verifyToken)(req);
     if (isVerified === true) {
         let request = req.body;
+        let filePath = req.file.path;
+        request.image = filePath;
         let addEvent = "INSERT INTO news SET ?";
         DBConfig_1.connection.query(addEvent, request, (err, result) => __awaiter(void 0, void 0, void 0, function* () {
             if (err) {

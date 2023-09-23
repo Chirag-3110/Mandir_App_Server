@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const HelperFunction_1 = require("../Middleware/HelperFunction");
 const DBConfig_1 = require("../Config/DBConfig");
+const image_upload_1 = require("../Middleware/image_upload");
 const EventController = express_1.default.Router();
 EventController.get("/events/list", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const isVerified = (0, HelperFunction_1.verifyToken)(req);
@@ -71,10 +72,12 @@ EventController.get("/events/details", (req, res) => __awaiter(void 0, void 0, v
         });
     }
 }));
-EventController.get("/events/add", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+EventController.get("/events/add", image_upload_1.upload.single("file"), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const isVerified = (0, HelperFunction_1.verifyToken)(req);
     if (isVerified === true) {
+        let filePath = req.file.path;
         let request = req.body;
+        request.image = filePath;
         let addEvent = "INSERT INTO events SET ?";
         DBConfig_1.connection.query(addEvent, request, (err, result) => __awaiter(void 0, void 0, void 0, function* () {
             if (err) {
