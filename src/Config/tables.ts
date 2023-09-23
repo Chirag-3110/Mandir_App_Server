@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS news (
   image TEXT,
   created_at TEXT,
   is_active INT DEFAULT 1,
-  is_delete INT DEFAULT 0,
+  is_delete INT DEFAULT 0
 )
 `;
 

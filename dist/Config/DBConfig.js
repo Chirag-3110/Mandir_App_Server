@@ -41,7 +41,8 @@ const configMongoDB = () => __awaiter(void 0, void 0, void 0, function* () {
                     exports.connection.query(tables_1.admins);
                     const findUser = 'SELECT COUNT(*) as count FROM admin WHERE email = ?';
                     exports.connection.query(findUser, ["admin@yopmail.com"], (err, existingUser) => __awaiter(this, void 0, void 0, function* () {
-                        //console.log(existingUser[0].count);
+                        console.log(existingUser);
+                        console.log(err);
                         if (existingUser[0].count == 0) {
                             const pass = yield encrypt.hash(process.env.ADMIN_PASS, 10);
                             const createdDate = new Date().toUTCString();

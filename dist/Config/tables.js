@@ -51,8 +51,8 @@ CREATE TABLE IF NOT EXISTS news (
   content TEXT,
   image TEXT,
   created_at TEXT,
-  is_active BOOLEAN DEFAULT true,
-  is_delete BOOLEAN DEFAULT false,
+  is_active INT DEFAULT 1,
+  is_delete INT DEFAULT 0
 )
 `;
 exports.featured = `
