@@ -32,7 +32,7 @@ EventController.get("/events/list", (req, res) => __awaiter(void 0, void 0, void
             res.send({
                 status: 200,
                 message: "events get success fully",
-                data: result[0]
+                data: result
             });
         }));
     }
@@ -44,10 +44,10 @@ EventController.get("/events/list", (req, res) => __awaiter(void 0, void 0, void
         });
     }
 }));
-EventController.get("/events/details", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+EventController.post("/events/details", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const isVerified = (0, HelperFunction_1.verifyToken)(req);
     if (isVerified === true) {
-        const request = req.query.id;
+        const request = req.body.id;
         let getEvents = "Select * FROM events WHERE id = ?";
         DBConfig_1.connection.query(getEvents, [request], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
             if (err) {
@@ -60,7 +60,7 @@ EventController.get("/events/details", (req, res) => __awaiter(void 0, void 0, v
             res.send({
                 status: 200,
                 message: "events get success fully",
-                data: result[0]
+                data: result
             });
         }));
     }
@@ -72,7 +72,7 @@ EventController.get("/events/details", (req, res) => __awaiter(void 0, void 0, v
         });
     }
 }));
-EventController.get("/events/add", image_upload_1.upload.single("file"), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+EventController.post("/events/add", image_upload_1.upload.single("file"), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const isVerified = (0, HelperFunction_1.verifyToken)(req);
     if (isVerified === true) {
         let filePath = req.file.path;

@@ -29,7 +29,7 @@ NewsController.get("/news/list", (req, res) => __awaiter(void 0, void 0, void 0,
             res.send({
                 status: 200,
                 message: "news get success fully",
-                data: result[0]
+                data: result
             });
         }));
     }
@@ -41,7 +41,7 @@ NewsController.get("/news/list", (req, res) => __awaiter(void 0, void 0, void 0,
         });
     }
 }));
-NewsController.get("/news/details", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+NewsController.post("/news/details", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const isVerified = (0, HelperFunction_1.verifyToken)(req);
     if (isVerified === true) {
         const request = req.query.id;
@@ -57,7 +57,7 @@ NewsController.get("/news/details", (req, res) => __awaiter(void 0, void 0, void
             res.send({
                 status: 200,
                 message: "news get successfully",
-                data: result[0]
+                data: result
             });
         }));
     }
@@ -69,12 +69,13 @@ NewsController.get("/news/details", (req, res) => __awaiter(void 0, void 0, void
         });
     }
 }));
-NewsController.get("/news/add", image_upload_1.upload.single("file"), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+NewsController.post("/news/add", image_upload_1.upload.single("file"), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const isVerified = (0, HelperFunction_1.verifyToken)(req);
     if (isVerified === true) {
         let request = req.body;
         let filePath = req.file.path;
         request.image = filePath;
+        request.created_at = new Date().toUTCString();
         let addEvent = "INSERT INTO news SET ?";
         DBConfig_1.connection.query(addEvent, request, (err, result) => __awaiter(void 0, void 0, void 0, function* () {
             if (err) {
@@ -86,8 +87,8 @@ NewsController.get("/news/add", image_upload_1.upload.single("file"), (req, res)
             }
             res.send({
                 status: 200,
-                message: "news get success fully",
-                data: result[0]
+                message: "news add success fully",
+                data: {}
             });
         }));
     }

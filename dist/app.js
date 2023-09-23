@@ -25,7 +25,6 @@ const cors = require('cors');
 const path = require('path');
 const port = process.env.PORT || 8000;
 const News_1 = __importDefault(require("./AdminApi/News"));
-const image_upload_1 = require("./Middleware/image_upload");
 app.use(express_1.default.json());
 const corsOptions = {
     origin: 'http://localhost:3000',
@@ -39,14 +38,9 @@ app.use(Auth_1.default);
 app.use(User_1.default);
 app.use(Events_1.default);
 app.use(EmptyDB_1.default);
-const imagesDirectory = path.join(__dirname, 'Images'); // Replace 'Images' with your image directory's name
+const imagesDirectory = path.join(__dirname, '../Images'); // Replace 'Images' with your image directory's name
 // Create a route to serve images
-app.use('/images', express_1.default.static(imagesDirectory));
+app.use('/Images', express_1.default.static(imagesDirectory));
 app.use(News_1.default);
-// app.use(NewsRouter)
-app.post("/upload", image_upload_1.upload.single("file"), (req, res) => {
-    const filePath = req.file.path;
-    console.log(filePath);
-    res.send({ mesasge: "uploaded" });
-});
+// app.use(NewsRouter
 //# sourceMappingURL=app.js.map

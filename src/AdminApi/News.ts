@@ -16,6 +16,7 @@ NewsController.get("/news/list", async (req, res) => {
                     data: err
                 })
             }
+            
             res.send({
                 status: 200,
                 message: "news get success fully",
@@ -35,6 +36,7 @@ NewsController.post("/news/details", async (req, res) => {
     const isVerified = verifyToken(req)
     if (isVerified === true) {
         const request= req.query.id;
+        
         let getEvents = "Select * FROM news WHERE id = ?";
         connection.query(getEvents,[request], async (err, result) => {
             if (err) {
@@ -67,6 +69,7 @@ NewsController.post("/news/add",upload.single("file"), async (req, res) => {
         let request = req.body;
         let filePath = req.file.path;
         request.image = filePath;
+        request.created_at=new Date().toUTCString()
         let addEvent = "INSERT INTO news SET ?";
         connection.query(addEvent,request, async (err, result) => {
             if (err) {
@@ -78,7 +81,7 @@ NewsController.post("/news/add",upload.single("file"), async (req, res) => {
             }
             res.send({
                 status: 200,
-                message: "news get success fully",
+                message: "news add success fully",
                 data: {}
             })
         })
