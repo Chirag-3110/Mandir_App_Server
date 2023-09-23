@@ -49,7 +49,9 @@ CREATE TABLE IF NOT EXISTS news (
   title TEXT NOT NULL,
   content TEXT,
   image TEXT,
-  created_at TEXT
+  created_at TEXT,
+  is_active BOOLEAN DEFAULT true,
+  is_delete BOOLEAN DEFAULT false,
 )
 `;
 
