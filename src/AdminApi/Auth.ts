@@ -10,6 +10,7 @@ AdminAuthRoute.post("/admin/admin-login", async (req, res) => {
     let request = req.body;
     console.log(request, "body");
     
+if(request){
 
     const findUser = 'SELECT * FROM admin WHERE email = ?'
 
@@ -60,6 +61,13 @@ AdminAuthRoute.post("/admin/admin-login", async (req, res) => {
         }
 
     })
+}else{
+    res.send({
+        status: 404,
+        message: "Request is empty",
+        data: null
+    })
+}
 })
 
 export default AdminAuthRoute;

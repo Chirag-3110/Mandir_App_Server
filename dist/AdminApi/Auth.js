@@ -22,48 +22,57 @@ const jwt = require('jsonwebtoken');
 AdminAuthRoute.post("/admin/admin-login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let request = req.body;
     console.log(request, "body");
-    const findUser = 'SELECT * FROM admin WHERE email = ?';
-    DBConfig_1.connection.query(findUser, [request.email], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
-        if (err) {
-            res.send({
-                status: 503,
-                message: "internal server error",
-                data: err
-            });
-        }
-        let existUser = result[0];
-        if (existUser) {
-            let isCompared = yield bcrypt.compare(request.password, existUser.password);
-            if (isCompared === true) {
-                let jwtSecretKey = process.env.JWT_SECRET_KEY;
-                let data = {
-                    userId: existUser.id,
-                    email: existUser.email
-                };
-                const token = jwt.sign(data, jwtSecretKey);
-                console.log(token);
+    if (request) {
+        const findUser = 'SELECT * FROM admin WHERE email = ?';
+        DBConfig_1.connection.query(findUser, [request.email], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
+            if (err) {
                 res.send({
-                    status: 200,
-                    message: "User Logged in",
-                    data: token
+                    status: 503,
+                    message: "internal server error",
+                    data: err
                 });
+            }
+            let existUser = result[0];
+            if (existUser) {
+                let isCompared = yield bcrypt.compare(request.password, existUser.password);
+                if (isCompared === true) {
+                    let jwtSecretKey = process.env.JWT_SECRET_KEY;
+                    let data = {
+                        userId: existUser.id,
+                        email: existUser.email
+                    };
+                    const token = jwt.sign(data, jwtSecretKey);
+                    console.log(token);
+                    res.send({
+                        status: 200,
+                        message: "User Logged in",
+                        data: token
+                    });
+                }
+                else {
+                    res.send({
+                        status: 401,
+                        message: "Incorrect password",
+                        data: null
+                    });
+                }
             }
             else {
                 res.send({
-                    status: 401,
-                    message: "Incorrect password",
+                    status: 404,
+                    message: "user not found",
                     data: null
                 });
             }
-        }
-        else {
-            res.send({
-                status: 404,
-                message: "user not found",
-                data: null
-            });
-        }
-    }));
+        }));
+    }
+    else {
+        res.send({
+            status: 404,
+            message: "Request is empty",
+            data: null
+        });
+    }
 }));
 exports.default = AdminAuthRoute;
 //# sourceMappingURL=Auth.js.map
