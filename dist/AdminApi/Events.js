@@ -75,12 +75,12 @@ EventController.post("/events/details", (req, res) => __awaiter(void 0, void 0, 
 EventController.post("/events/add", image_upload_1.upload.single("file"), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const isVerified = (0, HelperFunction_1.verifyToken)(req);
     if (isVerified === true) {
+        console.log(req.file);
         let filePath = req.file.path;
         let request = req.body;
         request.image = filePath;
         request.created_at = new Date();
         console.log(request);
-        console.log(req.file);
         let addEvent = "INSERT INTO events SET ?";
         DBConfig_1.connection.query(addEvent, request, (err, result) => __awaiter(void 0, void 0, void 0, function* () {
             if (err) {
