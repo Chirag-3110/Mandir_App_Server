@@ -67,7 +67,7 @@ NewsController.post("/news/add",upload.single("file"), async (req, res) => {
     const isVerified = verifyToken(req)
     if (isVerified === true) {
         let request = req.body;
-        let filePath = req.file.path;
+        let filePath = req.file.filename    ;
         request.image = filePath;
         request.created_at=new Date().toUTCString()
         let addEvent = "INSERT INTO news SET ?";
