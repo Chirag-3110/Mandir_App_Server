@@ -65,30 +65,38 @@ EventController.post("/events/details", async (req, res) => {
 EventController.post("/events/add", upload.single("file"), async (req, res) => {
     const isVerified = verifyToken(req)
     if (isVerified === true) {
-        console.log(req.file);
-        let filePath = req.file.path;
-        let request = req.body;
-        request.image = filePath;
-        request.created_at=new Date()
-        console.log(request);
-       
-        
-        
-        let addEvent = "INSERT INTO events SET ?";
-        connection.query(addEvent,request, async (err, result) => {
-            if (err) {
+    if (req.file) {
+            console.log(req.file);
+            let filePath = req.file.path;
+            let request = req.body;
+            request.image = filePath;
+            request.created_at=new Date()
+            console.log(request);
+           
+            
+            
+            let addEvent = "INSERT INTO events SET ?";
+            connection.query(addEvent,request, async (err, result) => {
+                if (err) {
+                    res.send({
+                        status: 500,
+                        message: "Internal server error",
+                        data: err
+                    })
+                }
                 res.send({
-                    status: 500,
-                    message: "Internal server error",
-                    data: err
+                    status: 200,
+                    message: "events get success fully",
+                    data: result[0]
                 })
-            }
-            res.send({
-                status: 200,
-                message: "events get success fully",
-                data: result[0]
             })
+    }else{
+        res.send({
+            status: 404,
+            message: "No Image Uploaded",
+            data: null
         })
+    }
     } else {
         res.send({
             status: 401,

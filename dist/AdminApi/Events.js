@@ -75,27 +75,36 @@ EventController.post("/events/details", (req, res) => __awaiter(void 0, void 0, 
 EventController.post("/events/add", image_upload_1.upload.single("file"), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const isVerified = (0, HelperFunction_1.verifyToken)(req);
     if (isVerified === true) {
-        console.log(req.file);
-        let filePath = req.file.path;
-        let request = req.body;
-        request.image = filePath;
-        request.created_at = new Date();
-        console.log(request);
-        let addEvent = "INSERT INTO events SET ?";
-        DBConfig_1.connection.query(addEvent, request, (err, result) => __awaiter(void 0, void 0, void 0, function* () {
-            if (err) {
+        if (req.file) {
+            console.log(req.file);
+            let filePath = req.file.path;
+            let request = req.body;
+            request.image = filePath;
+            request.created_at = new Date();
+            console.log(request);
+            let addEvent = "INSERT INTO events SET ?";
+            DBConfig_1.connection.query(addEvent, request, (err, result) => __awaiter(void 0, void 0, void 0, function* () {
+                if (err) {
+                    res.send({
+                        status: 500,
+                        message: "Internal server error",
+                        data: err
+                    });
+                }
                 res.send({
-                    status: 500,
-                    message: "Internal server error",
-                    data: err
+                    status: 200,
+                    message: "events get success fully",
+                    data: result[0]
                 });
-            }
+            }));
+        }
+        else {
             res.send({
-                status: 200,
-                message: "events get success fully",
-                data: result[0]
+                status: 404,
+                message: "No Image Uploaded",
+                data: null
             });
-        }));
+        }
     }
     else {
         res.send({
