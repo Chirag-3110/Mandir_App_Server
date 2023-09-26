@@ -93,6 +93,10 @@ EventController.post("/events/add", upload.single("file"), async (req, res) => {
                 })
             })
     }else{
+        console.log(req.file,"req.file");
+        console.log(req.files,"req.files");
+        console.log(req.body,"req.body");
+        
         res.send({
             status: 404,
             message: "No Image Uploaded",
