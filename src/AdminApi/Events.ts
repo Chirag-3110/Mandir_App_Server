@@ -65,13 +65,15 @@ EventController.post("/events/details", async (req, res) => {
 EventController.post("/events/add", upload.single("file"), async (req, res) => {
     const isVerified = verifyToken(req)
     if (isVerified === true) {
+        console.log(req.headers);
+        
     if (req.file) {
             console.log(req.file);
-            let filePath = req.file.path;
+            let filePath = req.file.filename;
             let request = req.body;
             request.image = filePath;
             request.created_at=new Date()
-            console.log(request);
+            console.log(request,"request");
            
             
             
