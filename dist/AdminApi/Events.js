@@ -80,6 +80,7 @@ EventController.post("/events/add", image_upload_1.upload.single("file"), (req, 
         request.image = filePath;
         request.created_at = new Date();
         console.log(request);
+        console.log(req.file);
         let addEvent = "INSERT INTO events SET ?";
         DBConfig_1.connection.query(addEvent, request, (err, result) => __awaiter(void 0, void 0, void 0, function* () {
             if (err) {
