@@ -75,6 +75,8 @@ UserController.post('/get-file', upload, (req, res) => {
         let password = generateRendomString()
         Promise.all(
             sheetData.map((row) => {
+                console.log(row,"row");
+                
                 const { full_name, phone, email, address, gotra, occupation, age, gender } = row;
 
                 // Check if phone or email already exists

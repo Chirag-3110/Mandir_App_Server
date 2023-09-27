@@ -74,6 +74,7 @@ UserController.post('/get-file', upload, (req, res) => {
         let created_at = new Date().toUTCString();
         let password = (0, HelperFunction_1.generateRendomString)();
         Promise.all(sheetData.map((row) => {
+            console.log(row, "row");
             const { full_name, phone, email, address, gotra, occupation, age, gender } = row;
             // Check if phone or email already exists
             const checkQuery = 'SELECT * FROM users WHERE phone = ? OR email = ?';
