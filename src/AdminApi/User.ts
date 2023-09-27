@@ -55,102 +55,10 @@ UserController.get("/get-users", (req, res) => {
 
 })
 
-UserController.post("/get-file", upload, (req, res) => {
-    console.log(req.file);
-
-    if (!req.file) {
-        res.send({
-            status: 404,
-            message: "No File Uploaded",
-            data: null
-        })
-    }
-    const isVerified = verifyToken(req)
-
-
-    if (isVerified === true) {
-        const uploadedFile = req.file;
-        let newData = [];
-        var dataInserted = false;
-        // Check if the uploaded file is an Excel file (xlsx)
-        if (uploadedFile.mimetype !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
-            return res.status(400).send('Uploaded file is not an Excel file.');
-        }
-        const workbook = XLSX.read(uploadedFile.buffer); // Use uploadedFile.buffer to access the file data
-        const sheetName = workbook.SheetNames[1];
-        const sheetData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
-
-        let created_at = new Date().toUTCString()
-        let password = generateRendomString()
-        const sql = 'INSERT INTO users (full_name, phone, email, address , gotra , occupation , age , gender , created_at , password ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-        const getUser = "SELECT * FROM users WHERE phone = ? OR email = ?";
-
-        for (let i = 0; i < sheetData.length; i++) {
-            connection.query(getUser, [sheetData[i].phone, sheetData[i].email], async (err, result) => {
-                if (err) {
-                    res.send({
-                        status: 503,
-                        message: "internal server error",
-                        data: err
-                    })
-                }
-                let existUser = result[0];
-                if (!existUser) {
-                    newData.push(sheetData[i]);
-
-                }
-
-            })
-        }
-
-        for (let j = 0; j < newData.length; j++) {
-            newData[j].created_at = created_at;
-            newData[j].password = password;
-            connection.query(sql, newData[j], async (err, result) => {
-                if (err) {
-                    res.send({
-                        status: 503,
-                        message: "internal server error",
-                        data: err
-                    })
-                    dataInserted = false;
-                    return;
-                }
-                dataInserted = true;
-            })
-        }
-
-        if (dataInserted !== false) {
-            res.send({
-                status: 200,
-                message: "Data Inserted Successfully",
-                data: null
-            })
-        } else {
-            res.send({
-                status: 500,
-                message: "Something went wrong",
-                data: null
-            })
-        }
-
-        // request.created_at = new Date().toUTCString()
-        // request.password = generateRendomString(),
 
 
 
-    } else {
-        res.send({
-            status: 401,
-            message: "Unauthenticated",
-            data: null
-        })
-    }
-
-})
-
-
-UserController.post('/get-file', upload.single('file'), (req, res) => {
+UserController.post('/get-file', upload, (req, res) => {
     if (!req.file) {
         return res.status(400).send('No file uploaded.');
     }
@@ -204,7 +112,7 @@ UserController.post('/get-file', upload.single('file'), (req, res) => {
                 });
             })
             .catch((error) => {
-                res.status(500).send({ message: 'An error occurred while processing the data.', data:error});
+                res.status(500).send({ message: 'An error occurred while processing the data.', data: error });
             });
     } else {
         res.send({
