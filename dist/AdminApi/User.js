@@ -60,25 +60,84 @@ UserController.get("/get-users", (req, res) => {
 });
 UserController.post("/get-file", upload, (req, res) => {
     console.log(req.file);
-    const workbook = XLSX.read(req.file.buffer);
-    if (!req) {
-        return res.status(400).send('No file uploaded.');
+    if (!req.file) {
+        res.send({
+            status: 404,
+            message: "No File Uploaded",
+            data: null
+        });
     }
-    return res.status(400).send('No file uploaded.');
-    // connection.query(query, values, (err, result) => {
-    //     if (err) {
-    //         res.send({
-    //             status: false,
-    //             message: "Something went wrong",
-    //             data: err
-    //         })
-    //     }
-    //     res.send({
-    //         status: true,
-    //         message: "Users get successully",
-    //         data: result
-    //     })
-    // })
+    const isVerified = (0, HelperFunction_1.verifyToken)(req);
+    if (isVerified === true) {
+        const uploadedFile = req.file;
+        let newData = [];
+        var dataInserted = false;
+        // Check if the uploaded file is an Excel file (xlsx)
+        if (uploadedFile.mimetype !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+            return res.status(400).send('Uploaded file is not an Excel file.');
+        }
+        const workbook = XLSX.read(uploadedFile.buffer); // Use uploadedFile.buffer to access the file data
+        const sheetName = workbook.SheetNames[1];
+        const sheetData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
+        let created_at = new Date().toUTCString();
+        let password = (0, HelperFunction_1.generateRendomString)();
+        const sql = 'INSERT INTO users (full_name, phone, email, address , gotra , occupation , age , gender , created_at , password ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+        const getUser = "SELECT * FROM users WHERE phone = ? OR email = ?";
+        for (let i = 0; i < sheetData.length; i++) {
+            DBConfig_1.connection.query(getUser, [sheetData[i].phone, sheetData[i].email], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
+                if (err) {
+                    res.send({
+                        status: 503,
+                        message: "internal server error",
+                        data: err
+                    });
+                }
+                let existUser = result[0];
+                if (!existUser) {
+                    newData.push(sheetData[i]);
+                }
+            }));
+        }
+        for (let j = 0; j < newData.length; j++) {
+            newData[j].created_at = created_at;
+            newData[j].password = password;
+            DBConfig_1.connection.query(sql, newData[j], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
+                if (err) {
+                    res.send({
+                        status: 503,
+                        message: "internal server error",
+                        data: err
+                    });
+                    dataInserted = false;
+                    return;
+                }
+                dataInserted = true;
+            }));
+        }
+        if (dataInserted !== false) {
+            res.send({
+                status: 200,
+                message: "Data Inserted Successfully",
+                data: null
+            });
+        }
+        else {
+            res.send({
+                status: 500,
+                message: "Something went wrong",
+                data: null
+            });
+        }
+        // request.created_at = new Date().toUTCString()
+        // request.password = generateRendomString(),
+    }
+    else {
+        res.send({
+            status: 401,
+            message: "Unauthenticated",
+            data: null
+        });
+    }
 });
 UserController.post("/add-user", (req, res) => {
     const isVerified = (0, HelperFunction_1.verifyToken)(req);

@@ -1,6 +1,6 @@
 import express, { response } from 'express';
 import { connection } from '../Config/DBConfig';
-import { generateRendomString,  verifyToken } from '../Middleware/HelperFunction';
+import { generateRendomString, verifyToken } from '../Middleware/HelperFunction';
 import { sendMail } from '../Middleware/smtp_mail';
 const XLSX = require('xlsx');
 const multer = require('multer');
@@ -20,7 +20,7 @@ UserController.get("/get-users", (req, res) => {
     console.log(isVerified);
 
     if (isVerified === true) {
-       
+
         const page = 1;
         const pageSize = 10;
 
@@ -28,7 +28,7 @@ UserController.get("/get-users", (req, res) => {
 
 
         const query = `SELECT id,full_name,email,phone,gotra,address,occupation,age,gender,postal_address,is_active,is_delete,created_at FROM users`;
-        
+
 
         connection.query(query, (err, result) => {
             if (err) {
@@ -58,27 +58,94 @@ UserController.get("/get-users", (req, res) => {
 UserController.post("/get-file", upload, (req, res) => {
     console.log(req.file);
 
-    const workbook = XLSX.read(req.file.buffer)
-    if (!req) {
-        return res.status(400).send('No file uploaded.');
+    if (!req.file) {
+        res.send({
+            status: 404,
+            message: "No File Uploaded",
+            data: null
+        })
     }
-    return res.status(400).send('No file uploaded.');
+    const isVerified = verifyToken(req)
 
-    // connection.query(query, values, (err, result) => {
-    //     if (err) {
-    //         res.send({
-    //             status: false,
-    //             message: "Something went wrong",
-    //             data: err
-    //         })
-    //     }
 
-    //     res.send({
-    //         status: true,
-    //         message: "Users get successully",
-    //         data: result
-    //     })
-    // })
+    if (isVerified === true) {
+        const uploadedFile = req.file;
+        let newData = [];
+        var dataInserted = false;
+        // Check if the uploaded file is an Excel file (xlsx)
+        if (uploadedFile.mimetype !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+            return res.status(400).send('Uploaded file is not an Excel file.');
+        }
+        const workbook = XLSX.read(uploadedFile.buffer); // Use uploadedFile.buffer to access the file data
+        const sheetName = workbook.SheetNames[1];
+        const sheetData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
+
+        let created_at = new Date().toUTCString()
+        let password = generateRendomString()
+        const sql = 'INSERT INTO users (full_name, phone, email, address , gotra , occupation , age , gender , created_at , password ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+        const getUser = "SELECT * FROM users WHERE phone = ? OR email = ?";
+
+        for (let i = 0; i < sheetData.length; i++) {
+            connection.query(getUser, [sheetData[i].phone, sheetData[i].email], async (err, result) => {
+                if (err) {
+                    res.send({
+                        status: 503,
+                        message: "internal server error",
+                        data: err
+                    })
+                }
+                let existUser = result[0];
+                if (!existUser) {
+                    newData.push(sheetData[i]);
+
+                }
+
+            })
+        }
+
+        for(let j = 0; j< newData.length;j++){
+            newData[j].created_at = created_at;
+            newData[j].password = password;
+            connection.query(sql, newData[j], async (err, result) => {
+                if (err) {
+                    res.send({
+                        status: 503,
+                        message: "internal server error",
+                        data: err
+                    })
+                    dataInserted = false;
+                    return;
+                }
+                dataInserted = true;
+            })
+        }
+
+        if(dataInserted!==false){
+            res.send({
+                status: 200,
+                message: "Data Inserted Successfully",
+                data: null
+            })
+        }else{
+            res.send({
+                status: 500,
+                message: "Something went wrong",
+                data: null
+            })
+        }
+
+        // request.created_at = new Date().toUTCString()
+        // request.password = generateRendomString(),
+
+       
+
+    } else {
+        res.send({
+            status: 401,
+            message: "Unauthenticated",
+            data: null
+        })
+    }
 
 })
 
@@ -91,7 +158,7 @@ UserController.post("/add-user", (req, res) => {
         if (request) {
             const getUser = "SELECT * FROM users WHERE phone = ? OR email = ?";
 
-            connection.query(getUser, [request.phone,request.email], async (err, result) => {
+            connection.query(getUser, [request.phone, request.email], async (err, result) => {
                 if (err) {
                     res.send({
                         status: 503,
@@ -112,10 +179,10 @@ UserController.post("/add-user", (req, res) => {
                     request.created_at = new Date().toUTCString()
                     request.password = generateRendomString(),
 
-                    console.log(request);
+                        console.log(request);
 
-                    
-                    
+
+
                     connection.query(setUser, request, async (err, result) => {
                         console.log(err, "error is");
                         if (err) res.send({
@@ -135,7 +202,7 @@ UserController.post("/add-user", (req, res) => {
                                     data: err
                                 })
                             }
-                            sendMail(result[0],"Welcome Mail");
+                            sendMail(result[0], "Welcome Mail");
 
                             res.send({
                                 status: 201,
@@ -166,13 +233,13 @@ UserController.post("/add-user", (req, res) => {
     }
 })
 
-UserController.post("/user-status",(req,res)=>{
+UserController.post("/user-status", (req, res) => {
     const isVerified = verifyToken(req)
-    if(isVerified==true){
+    if (isVerified == true) {
         let request = req.body;
         const updateQuery = 'UPDATE users SET is_active = ? WHERE id = ?'
         const getEvent = 'Select * FROM users WHERE id = ?'
-        connection.query(getEvent,[request.id], async (err, result) => {
+        connection.query(getEvent, [request.id], async (err, result) => {
             if (err) {
                 res.send({
                     status: 500,
@@ -181,7 +248,7 @@ UserController.post("/user-status",(req,res)=>{
                 })
             }
             const eventData = result[0];
-            connection.query(updateQuery,[!eventData.is_active,request.id], async (err, result) => {
+            connection.query(updateQuery, [!eventData.is_active, request.id], async (err, result) => {
                 if (err) {
                     res.send({
                         status: 500,
@@ -194,10 +261,10 @@ UserController.post("/user-status",(req,res)=>{
                     message: "Status Updated",
                     data: null
                 })
-                
-            })  
+
+            })
         })
-    }else{
+    } else {
         res.send({
             status: 401,
             message: "Unauthenticated",
@@ -206,13 +273,13 @@ UserController.post("/user-status",(req,res)=>{
     }
 })
 
-UserController.post("/delete-user",(req,res)=>{
+UserController.post("/delete-user", (req, res) => {
     const isVerified = verifyToken(req)
-    if(isVerified==true){
+    if (isVerified == true) {
         let request = req.body;
         const updateQuery = 'UPDATE users SET is_delete = ? WHERE id = ?'
         const getEvent = 'Select * FROM users WHERE id = ?'
-        connection.query(getEvent,[request.id], async (err, result) => {
+        connection.query(getEvent, [request.id], async (err, result) => {
             if (err) {
                 res.send({
                     status: 500,
@@ -221,7 +288,7 @@ UserController.post("/delete-user",(req,res)=>{
                 })
             }
             const eventData = result[0];
-            connection.query(updateQuery,[!eventData.is_delete,request.id], async (err, result) => {
+            connection.query(updateQuery, [!eventData.is_delete, request.id], async (err, result) => {
                 if (err) {
                     res.send({
                         status: 500,
@@ -234,10 +301,10 @@ UserController.post("/delete-user",(req,res)=>{
                     message: "User deleted",
                     data: null
                 })
-                
-            })  
+
+            })
         })
-    }else{
+    } else {
         res.send({
             status: 401,
             message: "Unauthenticated",
