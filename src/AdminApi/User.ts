@@ -103,7 +103,7 @@ UserController.post("/get-file", upload, (req, res) => {
             })
         }
 
-        for(let j = 0; j< newData.length;j++){
+        for (let j = 0; j < newData.length; j++) {
             newData[j].created_at = created_at;
             newData[j].password = password;
             connection.query(sql, newData[j], async (err, result) => {
@@ -120,13 +120,13 @@ UserController.post("/get-file", upload, (req, res) => {
             })
         }
 
-        if(dataInserted!==false){
+        if (dataInserted !== false) {
             res.send({
                 status: 200,
                 message: "Data Inserted Successfully",
                 data: null
             })
-        }else{
+        } else {
             res.send({
                 status: 500,
                 message: "Something went wrong",
@@ -137,7 +137,7 @@ UserController.post("/get-file", upload, (req, res) => {
         // request.created_at = new Date().toUTCString()
         // request.password = generateRendomString(),
 
-       
+
 
     } else {
         res.send({
@@ -148,6 +148,73 @@ UserController.post("/get-file", upload, (req, res) => {
     }
 
 })
+
+
+UserController.post('/get-file', upload.single('file'), (req, res) => {
+    if (!req.file) {
+        return res.status(400).send('No file uploaded.');
+    }
+    if (req.file.mimetype !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+        return res.status(400).send('Uploaded file is not an Excel file.');
+    }
+    const isVerified = verifyToken(req)
+    // Parse the uploaded XLS file
+    if (isVerified === true) {
+        const workbook = XLSX.read(req.file.buffer);
+        const sheetName = workbook.SheetNames[0];
+        const sheetData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
+        let created_at = new Date().toUTCString()
+        let password = generateRendomString()
+        Promise.all(
+            sheetData.map((row) => {
+                const { full_name, phone, email, address, gotra, occupation, age, gender } = row;
+
+                // Check if phone or email already exists
+                const checkQuery = 'SELECT * FROM users WHERE phone = ? OR email = ?';
+                return new Promise((resolve, reject) => {
+                    connection.query(checkQuery, [phone, email], (checkErr, results) => {
+                        if (checkErr) {
+                            console.error('Error checking existing records:', checkErr);
+                            reject(checkErr);
+                        } else if (results.length === 0) {
+                            // No existing records with the same phone or email, insert the data
+                            const insertQuery = 'INSERT INTO users (full_name, phone, email, address, gotra, occupation, age, gender, created_at, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+                            const values = [full_name, phone, email, address, gotra, occupation, age, gender, created_at, password];
+
+                            connection.query(insertQuery, values, (insertErr) => {
+                                if (insertErr) {
+                                    console.error('Error inserting data:', insertErr);
+                                    reject(insertErr);
+                                } else {
+                                    resolve('Data inserted successfully.');
+                                }
+                            });
+                        } else {
+                            console.log('Record with phone or email already exists:', phone, email);
+                            resolve('Record with phone or email already exists.');
+                        }
+                    });
+                });
+            })
+        )
+            .then((results) => {
+                res.send({
+                    status: 200,
+                    message: 'File uploaded and data processed.', data: null
+                });
+            })
+            .catch((error) => {
+                res.status(500).send({ message: 'An error occurred while processing the data.', data:error});
+            });
+    } else {
+        res.send({
+            status: 401,
+            message: "Unauthenticated",
+            data: null
+        })
+    }
+});
+
 
 UserController.post("/add-user", (req, res) => {
     const isVerified = verifyToken(req)
