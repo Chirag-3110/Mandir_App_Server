@@ -60,10 +60,16 @@ UserController.get("/get-users", (req, res) => {
 });
 UserController.post('/get-file', upload, (req, res) => {
     if (!req.file) {
-        return res.status(400).send('No file uploaded.');
+        return res.send({
+            status: 400,
+            message: 'No file uploaded.'
+        });
     }
     if (req.file.mimetype !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
-        return res.status(400).send('Uploaded file is not an Excel file.');
+        return res.send({
+            status: 400,
+            message: 'Uploaded file is not an Excel file.'
+        });
     }
     const isVerified = (0, HelperFunction_1.verifyToken)(req);
     // Parse the uploaded XLS file
@@ -112,7 +118,7 @@ UserController.post('/get-file', upload, (req, res) => {
             });
         })
             .catch((error) => {
-            res.status(500).send({ message: 'An error occurred while processing the data.', data: error });
+            res.send({ status: 500, message: 'An error occurred while processing the data.', data: error });
         });
     }
     else {
