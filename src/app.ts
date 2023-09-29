@@ -1,6 +1,6 @@
 import express from 'express';
 import AdminAuthRoute from './AdminApi/Auth';
-import configMongoDB from './Config/DBConfig'
+import configMongoDB, { connection } from './Config/DBConfig'
 import config from 'dotenv'
 import UserController from './AdminApi/User';
 import EventController from './AdminApi/Events';
@@ -34,7 +34,6 @@ app.use(cors(corsOptions));
 app.use(express.urlencoded({ extended: true }))
 
 app.listen(port, async () => {
-  
     await configMongoDB()
 });
 
