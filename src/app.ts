@@ -18,8 +18,10 @@ app.use(express.json())
 
 
 const corsOptions = {
-    origin: 'http://139.144.1.59/',
+  origin: ['http://139.144.1.59:80', 'http://139.144.1.59:9999'],
   };
+
+  
 
 app.use(cors(corsOptions));
 

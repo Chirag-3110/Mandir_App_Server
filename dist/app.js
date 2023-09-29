@@ -27,7 +27,7 @@ const port = process.env.PORT || 8000;
 const News_1 = __importDefault(require("./AdminApi/News"));
 app.use(express_1.default.json());
 const corsOptions = {
-    origin: 'http://139.144.1.59/',
+    origin: ['http://139.144.1.59:80', 'http://139.144.1.59:9999'],
 };
 app.use(cors(corsOptions));
 app.use(express_1.default.urlencoded({ extended: true }));
