@@ -4,7 +4,6 @@ import configMongoDB, { connection } from './Config/DBConfig'
 import config from 'dotenv'
 import UserController from './AdminApi/User';
 import EventController from './AdminApi/Events';
-import ClearDB from './Config/EmptyDB';
 config.configDotenv()
 const app = express();
 const cors = require('cors');
@@ -12,9 +11,6 @@ const cors = require('cors');
 const path = require('path');
 const port = process.env.PORT || 8000;
 import NewsController from './AdminApi/News';
-import { upload } from './Middleware/image_upload';
-import { sendMail } from './Middleware/smtp_mail';
-import clearDb from './Config/EmptyDB';
 app.use(express.json())
 
 
@@ -46,7 +42,6 @@ app.use(UserController)
 
 app.use(EventController)
 
-app.use(ClearDB)
 
 const imagesDirectory = path.join(__dirname, '../Images'); // Replace 'Images' with your image directory's name
 // Create a route to serve images

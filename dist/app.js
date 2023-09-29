@@ -18,7 +18,6 @@ const DBConfig_1 = __importDefault(require("./Config/DBConfig"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const User_1 = __importDefault(require("./AdminApi/User"));
 const Events_1 = __importDefault(require("./AdminApi/Events"));
-const EmptyDB_1 = __importDefault(require("./Config/EmptyDB"));
 dotenv_1.default.configDotenv();
 const app = (0, express_1.default)();
 const cors = require('cors');
@@ -43,7 +42,6 @@ app.listen(port, () => __awaiter(void 0, void 0, void 0, function* () {
 app.use(Auth_1.default);
 app.use(User_1.default);
 app.use(Events_1.default);
-app.use(EmptyDB_1.default);
 const imagesDirectory = path.join(__dirname, '../Images'); // Replace 'Images' with your image directory's name
 // Create a route to serve images
 app.use('/Images', express_1.default.static(imagesDirectory));
