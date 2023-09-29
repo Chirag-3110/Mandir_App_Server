@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS users (
   id INT AUTO_INCREMENT PRIMARY KEY,
   full_name TEXT NOT NULL,
   phone VARCHAR(15) NOT NULL,
-  email TEXT NOT NULL,
+  email TEXT,
   address TEXT,
   gotra TEXT,
   password TEXT,

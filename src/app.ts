@@ -14,11 +14,12 @@ const port = process.env.PORT || 8000;
 import NewsController from './AdminApi/News';
 import { upload } from './Middleware/image_upload';
 import { sendMail } from './Middleware/smtp_mail';
+import clearDb from './Config/EmptyDB';
 app.use(express.json())
 
 
 const corsOptions = {
-  origin: ['http://139.144.1.59:80', 'http://139.144.1.59:9999'],
+  origin: ['http://139.144.1.59:80', 'http://139.144.1.59:9999','http://localhost:3000'],
   };
 
   
@@ -35,6 +36,7 @@ app.use(express.urlencoded({ extended: true }))
 
 app.listen(port, async () => {
     await configMongoDB()
+    clearDb()
 });
 
 

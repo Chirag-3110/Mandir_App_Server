@@ -25,9 +25,10 @@ const cors = require('cors');
 const path = require('path');
 const port = process.env.PORT || 8000;
 const News_1 = __importDefault(require("./AdminApi/News"));
+const EmptyDB_2 = __importDefault(require("./Config/EmptyDB"));
 app.use(express_1.default.json());
 const corsOptions = {
-    origin: ['http://139.144.1.59:80', 'http://139.144.1.59:9999'],
+    origin: ['http://139.144.1.59:80', 'http://139.144.1.59:9999', 'http://localhost:3000'],
 };
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', 'http://139.144.1.59');
@@ -39,6 +40,7 @@ app.use(cors(corsOptions));
 app.use(express_1.default.urlencoded({ extended: true }));
 app.listen(port, () => __awaiter(void 0, void 0, void 0, function* () {
     yield (0, DBConfig_1.default)();
+    (0, EmptyDB_2.default)();
 }));
 app.use(Auth_1.default);
 app.use(User_1.default);
