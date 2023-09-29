@@ -36,7 +36,7 @@ app.use(express.urlencoded({ extended: true }))
 
 app.listen(port, async () => {
     await configMongoDB()
-    clearDb()
+   
 });
 
 
