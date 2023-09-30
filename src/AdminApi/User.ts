@@ -94,7 +94,7 @@ UserController.post('/get-file', upload, (req, res) => {
                             reject(checkErr);
                         } else if (results.length === 0) {
                             // No existing records with the same phone or email, insert the data
-                           
+
                             const insertQuery = 'INSERT INTO users (full_name, phone, email, address, gotra, occupation, age, gender, created_at, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
                             const values = [full_name, phone, email, address, gotra, occupation, age, gender, created_at, password];
 
@@ -106,7 +106,7 @@ UserController.post('/get-file', upload, (req, res) => {
                                     resolve('Data inserted successfully.');
                                 }
                             });
-                           
+
                         } else {
                             console.log('Record with phone or email already exists:', phone, email);
                             resolve('Record with phone or email already exists.');
@@ -208,6 +208,47 @@ UserController.post("/add-user", (req, res) => {
                 data: null
             })
         }
+
+    } else {
+        res.send({
+            status: 401,
+            message: "Unauthenticated",
+            data: null
+        })
+    }
+})
+
+UserController.post("/edit-user", (req, res) => {
+    const isVerified = verifyToken(req)
+    if (isVerified === true) {
+        const { id, full_name, phone, email, gender, occupation, age, gotra, address, } = req.body;
+        const updateQuery = 'UPDATE users SET full_name = ?,phone = ?,email = ?,gender = ?,occupation = ?,age = ?,gotra = ?,address = ? WHERE id = ?'
+        const getEvent = 'Select * FROM users WHERE id = ?'
+        connection.query(getEvent, [id], async (err, result) => {
+            if (err) {
+                res.send({
+                    status: 500,
+                    message: "Internal server error",
+                    data: err
+                })
+            }
+            const eventData = result[0];
+            connection.query(updateQuery, [full_name, phone, email, gender, occupation, age, gotra, address, id], async (err, result) => {
+                if (err) {
+                    res.send({
+                        status: 500,
+                        message: "Internal server error",
+                        data: err
+                    })
+                }
+                res.send({
+                    status: 200,
+                    message: "User Updated",
+                    data: null
+                })
+
+            })
+        })
 
     } else {
         res.send({
