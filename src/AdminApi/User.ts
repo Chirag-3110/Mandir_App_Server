@@ -223,8 +223,7 @@ UserController.post("/edit-user", (req, res) => {
     if (isVerified === true) {
         const { id, full_name, phone, email, gender, occupation, age, gotra, address, } = req.body;
         const updateQuery = 'UPDATE users SET full_name = ?,phone = ?,email = ?,gender = ?,occupation = ?,age = ?,gotra = ?,address = ? WHERE id = ?'
-        const getEvent = 'Select * FROM users WHERE id = ?'
-        connection.query(getEvent, [id], async (err, result) => {
+        connection.query(updateQuery, [full_name, phone, email, gender, occupation, age, gotra, address, id], async (err, result) => {
             if (err) {
                 res.send({
                     status: 500,
@@ -232,22 +231,12 @@ UserController.post("/edit-user", (req, res) => {
                     data: err
                 })
             }
-            const eventData = result[0];
-            connection.query(updateQuery, [full_name, phone, email, gender, occupation, age, gotra, address, id], async (err, result) => {
-                if (err) {
-                    res.send({
-                        status: 500,
-                        message: "Internal server error",
-                        data: err
-                    })
-                }
-                res.send({
-                    status: 200,
-                    message: "User Updated",
-                    data: null
-                })
-
+            res.send({
+                status: 200,
+                message: "User Updated",
+                data: null
             })
+
         })
 
     } else {

@@ -202,6 +202,34 @@ UserController.post("/add-user", (req, res) => {
         });
     }
 });
+UserController.post("/edit-user", (req, res) => {
+    const isVerified = (0, HelperFunction_1.verifyToken)(req);
+    if (isVerified === true) {
+        const { id, full_name, phone, email, gender, occupation, age, gotra, address, } = req.body;
+        const updateQuery = 'UPDATE users SET full_name = ?,phone = ?,email = ?,gender = ?,occupation = ?,age = ?,gotra = ?,address = ? WHERE id = ?';
+        DBConfig_1.connection.query(updateQuery, [full_name, phone, email, gender, occupation, age, gotra, address, id], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
+            if (err) {
+                res.send({
+                    status: 500,
+                    message: "Internal server error",
+                    data: err
+                });
+            }
+            res.send({
+                status: 200,
+                message: "User Updated",
+                data: null
+            });
+        }));
+    }
+    else {
+        res.send({
+            status: 401,
+            message: "Unauthenticated",
+            data: null
+        });
+    }
+});
 UserController.post("/user-status", (req, res) => {
     const isVerified = (0, HelperFunction_1.verifyToken)(req);
     if (isVerified == true) {
