@@ -22,15 +22,15 @@ UserController.get("/get-users", (req, res) => {
 
     if (isVerified === true) {
 
-        const page = req.body.page || 1;
-
-        const pageSize = 10;
-
+        const page = parseInt(req.query.page as string, 10) || 1;
+        const pageSize = parseInt(req.query.pageSize as string, 10) || 10;
         const offset = (page - 1) * pageSize;
 
 
-        const query = `SELECT id,full_name,email,phone,gotra,address,occupation,age,gender,postal_address,is_active,is_delete,created_at FROM users  LIMIT ?, ?`;
 
+        const query = `SELECT id,full_name,email,phone,gotra,address,occupation,age,gender,postal_address,is_active,is_delete,created_at FROM users  LIMIT ?, ?`;
+            console.log(page,"page");
+            
 
         connection.query(query,[offset, pageSize], (err, result) => {
             if (err) {
