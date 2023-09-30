@@ -5,7 +5,7 @@ exports.userTable = `
 CREATE TABLE IF NOT EXISTS users (
   id INT AUTO_INCREMENT PRIMARY KEY,
   full_name TEXT NOT NULL,
-  phone VARCHAR(15) NOT NULL,
+  phone VARCHAR(15),
   email TEXT,
   address TEXT,
   gotra TEXT,

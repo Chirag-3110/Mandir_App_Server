@@ -94,7 +94,7 @@ UserController.post('/get-file', upload, (req, res) => {
                             reject(checkErr);
                         } else if (results.length === 0) {
                             // No existing records with the same phone or email, insert the data
-                           if(phone !== null || phone !== ''){
+                           
                             const insertQuery = 'INSERT INTO users (full_name, phone, email, address, gotra, occupation, age, gender, created_at, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
                             const values = [full_name, phone, email, address, gotra, occupation, age, gender, created_at, password];
 
@@ -106,7 +106,7 @@ UserController.post('/get-file', upload, (req, res) => {
                                     resolve('Data inserted successfully.');
                                 }
                             });
-                           }
+                           
                         } else {
                             console.log('Record with phone or email already exists:', phone, email);
                             resolve('Record with phone or email already exists.');

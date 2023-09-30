@@ -11,6 +11,7 @@ const cors = require('cors');
 const path = require('path');
 const port = process.env.PORT || 8000;
 import NewsController from './AdminApi/News';
+import clearDb from './Config/EmptyDB';
 app.use(express.json())
 
 
@@ -32,7 +33,6 @@ app.use(express.urlencoded({ extended: true }))
 
 app.listen(port, async () => {
     await configMongoDB()
-   
 });
 
 

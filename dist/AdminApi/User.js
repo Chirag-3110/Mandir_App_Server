@@ -92,19 +92,17 @@ UserController.post('/get-file', upload, (req, res) => {
                     }
                     else if (results.length === 0) {
                         // No existing records with the same phone or email, insert the data
-                        if (phone !== null || phone !== '') {
-                            const insertQuery = 'INSERT INTO users (full_name, phone, email, address, gotra, occupation, age, gender, created_at, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-                            const values = [full_name, phone, email, address, gotra, occupation, age, gender, created_at, password];
-                            DBConfig_1.connection.query(insertQuery, values, (insertErr) => {
-                                if (insertErr) {
-                                    console.error('Error inserting data:', insertErr);
-                                    reject(insertErr);
-                                }
-                                else {
-                                    resolve('Data inserted successfully.');
-                                }
-                            });
-                        }
+                        const insertQuery = 'INSERT INTO users (full_name, phone, email, address, gotra, occupation, age, gender, created_at, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+                        const values = [full_name, phone, email, address, gotra, occupation, age, gender, created_at, password];
+                        DBConfig_1.connection.query(insertQuery, values, (insertErr) => {
+                            if (insertErr) {
+                                console.error('Error inserting data:', insertErr);
+                                reject(insertErr);
+                            }
+                            else {
+                                resolve('Data inserted successfully.');
+                            }
+                        });
                     }
                     else {
                         console.log('Record with phone or email already exists:', phone, email);
