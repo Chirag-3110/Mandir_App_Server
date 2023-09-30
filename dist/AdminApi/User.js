@@ -31,11 +31,11 @@ UserController.get("/get-users", (req, res) => {
     const isVerified = (0, HelperFunction_1.verifyToken)(req);
     console.log(isVerified);
     if (isVerified === true) {
-        const page = 1;
+        const page = req.body.page || 1;
         const pageSize = 10;
         const offset = (page - 1) * pageSize;
-        const query = `SELECT id,full_name,email,phone,gotra,address,occupation,age,gender,postal_address,is_active,is_delete,created_at FROM users`;
-        DBConfig_1.connection.query(query, (err, result) => {
+        const query = `SELECT id,full_name,email,phone,gotra,address,occupation,age,gender,postal_address,is_active,is_delete,created_at FROM users  LIMIT ?, ?`;
+        DBConfig_1.connection.query(query, [offset, pageSize], (err, result) => {
             if (err) {
                 res.send({
                     status: 500,
@@ -43,11 +43,38 @@ UserController.get("/get-users", (req, res) => {
                     data: err
                 });
             }
-            res.send({
-                status: 200,
-                message: "Users get successully",
-                data: result
+            const countQuery = `SELECT COUNT(*) AS total FROM users`;
+            DBConfig_1.connection.query(countQuery, (countErr, countResult) => {
+                if (countErr) {
+                    res.status(500).json({
+                        status: 500,
+                        message: "Internal server error",
+                        data: countErr
+                    });
+                }
+                else {
+                    const totalUsers = countResult[0].total;
+                    const totalPages = Math.ceil(totalUsers / pageSize);
+                    res.status(200).json({
+                        status: 200,
+                        message: "Users fetched successfully",
+                        data: {
+                            users: result,
+                            pagination: {
+                                page: page,
+                                pageSize: pageSize,
+                                totalPages: totalPages,
+                                totalUsers: totalUsers
+                            }
+                        }
+                    });
+                }
             });
+            // res.send({
+            //     status: 200,
+            //     message: "Users get successully",
+            //     data: result
+            // })
         });
     }
     else {
