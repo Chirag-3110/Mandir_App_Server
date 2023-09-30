@@ -55,7 +55,20 @@ UserController.get("/get-users", (req, res) => {
                 else {
                     const totalUsers = countResult[0].total;
                     const totalPages = Math.ceil(totalUsers / pageSize);
-                    res.status(200).json({
+                    console.log({
+                        status: 200,
+                        message: "Users fetched successfully",
+                        data: {
+                            users: result,
+                            pagination: {
+                                page: page,
+                                pageSize: pageSize,
+                                totalPages: totalPages,
+                                totalUsers: totalUsers
+                            }
+                        }
+                    }, "response");
+                    res.json({
                         status: 200,
                         message: "Users fetched successfully",
                         data: {
