@@ -11,8 +11,7 @@ const cors = require('cors');
 const path = require('path');
 const port = process.env.PORT || 8000;
 import NewsController from './AdminApi/News';
-import clearDb from './Config/EmptyDB';
-import Auth from './App/Auth';
+import AppAuth from './App/AppAuth';
 app.use(express.json())
 
 
@@ -56,4 +55,4 @@ app.use(NewsController)
 // app.use(NewsRouter
 //approutes
 
-app.use(Auth)
+app.use(AppAuth)

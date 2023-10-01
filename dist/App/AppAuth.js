@@ -13,10 +13,10 @@ const DBConfig_1 = require("../Config/DBConfig");
 const HelperFunction_1 = require("../Middleware/HelperFunction");
 const jwt = require('jsonwebtoken');
 const express = require('express');
-const Auth = express.Router;
+const AppAuth = express.Router;
 const env = require('dotenv');
 env.config();
-Auth.post('/app/send-otp', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+AppAuth.post('/app/send-otp', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { phone } = req.body;
     const countQuery = `SELECT * FROM users WHERE phone = ?`;
     DBConfig_1.connection.query(countQuery, [phone], (err, result) => {
@@ -73,7 +73,7 @@ Auth.post('/app/send-otp', (req, res) => __awaiter(void 0, void 0, void 0, funct
         }
     });
 }));
-Auth.post("/app/verify_otp", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+AppAuth.post("/app/verify_otp", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { phone, otp } = req.body;
     const countQuery = `SELECT * FROM users WHERE phone = ?`;
     DBConfig_1.connection.query(countQuery, [phone], (err, result) => {
@@ -108,7 +108,7 @@ Auth.post("/app/verify_otp", (req, res) => __awaiter(void 0, void 0, void 0, fun
         }
     });
 }));
-Auth.post("/app/complete-profile", (req, res) => {
+AppAuth.post("/app/complete-profile", (req, res) => {
     const isVerified = (0, HelperFunction_1.verifyToken)(req);
     if (isVerified === true) {
         const { id, full_name, email, gender, occupation, age, gotra, address, } = req.body;
@@ -133,10 +133,10 @@ Auth.post("/app/complete-profile", (req, res) => {
     else {
         res.send({
             status: 401,
-            message: "Unauthenticated",
+            message: "UnAppAuthenticated",
             data: null
         });
     }
 });
-exports.default = Auth;
-//# sourceMappingURL=Auth.js.map
+exports.default = AppAuth;
+//# sourceMappingURL=AppAuth.js.map

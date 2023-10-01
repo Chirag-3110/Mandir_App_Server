@@ -4,12 +4,12 @@ const jwt = require('jsonwebtoken');
 
 const express = require('express')
 
-const Auth = express.Router
+const AppAuth = express.Router
 
 const env = require('dotenv')
 env.config()
 
-Auth.post('/app/send-otp', async (req, res) => {
+AppAuth.post('/app/send-otp', async (req, res) => {
 
     const { phone } = req.body;
 
@@ -71,7 +71,7 @@ Auth.post('/app/send-otp', async (req, res) => {
 })
 
 
-Auth.post("/app/verify_otp", async (req, res) => {
+AppAuth.post("/app/verify_otp", async (req, res) => {
     const { phone, otp } = req.body;
 
     const countQuery = `SELECT * FROM users WHERE phone = ?`
@@ -110,7 +110,7 @@ Auth.post("/app/verify_otp", async (req, res) => {
 })
 
 
-Auth.post("/app/complete-profile", (req, res) => {
+AppAuth.post("/app/complete-profile", (req, res) => {
 
     const isVerified = verifyToken(req)
     if (isVerified === true) {
@@ -136,7 +136,7 @@ Auth.post("/app/complete-profile", (req, res) => {
     } else {
         res.send({
             status: 401,
-            message: "Unauthenticated",
+            message: "UnAppAuthenticated",
             data: null
         })
     }
@@ -146,4 +146,4 @@ Auth.post("/app/complete-profile", (req, res) => {
 
 
 
-export default Auth
+export default AppAuth
