@@ -68,7 +68,7 @@ Auth.post('/app/send-otp', (req, res) => __awaiter(void 0, void 0, void 0, funct
             res.send({
                 status: 404,
                 message: "No User Found",
-                data: {}
+                data: null
             });
         }
     });

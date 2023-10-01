@@ -12,6 +12,7 @@ const path = require('path');
 const port = process.env.PORT || 8000;
 import NewsController from './AdminApi/News';
 import clearDb from './Config/EmptyDB';
+import Auth from './App/Auth';
 app.use(express.json())
 
 
@@ -43,6 +44,8 @@ app.use(UserController)
 app.use(EventController)
 
 
+
+
 const imagesDirectory = path.join(__dirname, '../Images'); // Replace 'Images' with your image directory's name
 // Create a route to serve images
 app.use('/Images', express.static(imagesDirectory));
@@ -51,3 +54,6 @@ app.use('/Images', express.static(imagesDirectory));
 app.use(NewsController)
 
 // app.use(NewsRouter
+//approutes
+
+app.use(Auth)

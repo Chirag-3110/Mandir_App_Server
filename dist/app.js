@@ -24,6 +24,7 @@ const cors = require('cors');
 const path = require('path');
 const port = process.env.PORT || 8000;
 const News_1 = __importDefault(require("./AdminApi/News"));
+const Auth_2 = __importDefault(require("./App/Auth"));
 app.use(express_1.default.json());
 const corsOptions = {
     origin: ['http://139.144.1.59:80', 'http://139.144.1.59:9999', 'http://localhost:3000'],
@@ -47,4 +48,6 @@ const imagesDirectory = path.join(__dirname, '../Images'); // Replace 'Images' w
 app.use('/Images', express_1.default.static(imagesDirectory));
 app.use(News_1.default);
 // app.use(NewsRouter
+//approutes
+app.use(Auth_2.default);
 //# sourceMappingURL=app.js.map
