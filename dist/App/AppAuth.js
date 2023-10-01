@@ -13,7 +13,7 @@ const DBConfig_1 = require("../Config/DBConfig");
 const HelperFunction_1 = require("../Middleware/HelperFunction");
 const jwt = require('jsonwebtoken');
 const express = require('express');
-const AppAuth = express.Router;
+const AppAuth = express.Router();
 const env = require('dotenv');
 env.config();
 AppAuth.post('/app/send-otp', (req, res) => __awaiter(void 0, void 0, void 0, function* () {

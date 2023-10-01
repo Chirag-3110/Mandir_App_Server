@@ -2,7 +2,7 @@ import { verifyToken } from "../Middleware/HelperFunction"
 
 const express = require('express')
 
-const Events = express.Router 
+const Events = express.Router() 
 
 Events.get("/app/eventsList",(req,res)=>{
     const isVerified = verifyToken(req)

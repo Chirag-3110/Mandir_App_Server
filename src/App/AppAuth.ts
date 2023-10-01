@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 
 const express = require('express')
 
-const AppAuth = express.Router
+const AppAuth = express.Router()
 
 const env = require('dotenv')
 env.config()
