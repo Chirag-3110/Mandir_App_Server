@@ -69,7 +69,7 @@ UserController.get("/get-users", (req, res) => {
                             }
                         }
                     }, "response");
-                    res.json({
+                    res.send({
                         status: 200,
                         message: "Users fetched successfully",
                         data: {
