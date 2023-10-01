@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS users (
   gender ENUM('Male', 'Female', 'Other'),
   postal_address TEXT,
   is_active BOOLEAN DEFAULT true,
+  isProfileCompleted BOOLEAN DEFAULT false,
   is_delete BOOLEAN DEFAULT false,
   created_at TEXT
 )
