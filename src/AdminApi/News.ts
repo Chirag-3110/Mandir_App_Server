@@ -7,8 +7,12 @@ const NewsController = express.Router()
 NewsController.get("/news/list", async (req, res) => {
     const isVerified = verifyToken(req)
     if (isVerified === true) {
-        let getEvents = "Select * FROM news";
-        connection.query(getEvents, async (err, result) => {
+        const page = parseInt(req.query.page as string, 10) || 1;
+        const pageSize = parseInt(req.query.pageSize as string, 10) || 10;
+        const offset = (page - 1) * pageSize;
+
+        let getEvents = "Select * FROM news LIMIT ?, ?";
+        connection.query(getEvents,[offset, pageSize], async (err, result) => {
             if (err) {
                 res.send({
                     status: 500,
@@ -17,11 +21,34 @@ NewsController.get("/news/list", async (req, res) => {
                 })
             }
             
-            res.send({
-                status: 200,
-                message: "news get success fully",
-                data: result
-            })
+            const countQuery = `SELECT COUNT(*) AS total FROM news`;
+            
+            connection.query(countQuery, (countErr, countResult) => {
+                if (countErr) {
+                    res.status(500).json({
+                        status: 500,
+                        message: "Internal server error",
+                        data: countErr
+                    });
+                } else {
+                    const totalUsers = countResult[0].total;
+                    const totalPages = Math.ceil(totalUsers / pageSize);
+                   
+                    res.send({
+                        status: 200,
+                        message: "News fetched successfully",
+                        data: {
+                            news: result,
+                            pagination: {
+                                page: page,
+                                pageSize: pageSize,
+                                totalPages: totalPages,
+                                totalUsers: totalUsers
+                            }
+                        }
+                    });
+                }
+            });
         })
     } else {
         res.send({

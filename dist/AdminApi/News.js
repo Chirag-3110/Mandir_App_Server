@@ -17,8 +17,11 @@ const NewsController = express.Router();
 NewsController.get("/news/list", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const isVerified = (0, HelperFunction_1.verifyToken)(req);
     if (isVerified === true) {
-        let getEvents = "Select * FROM news";
-        DBConfig_1.connection.query(getEvents, (err, result) => __awaiter(void 0, void 0, void 0, function* () {
+        const page = parseInt(req.query.page, 10) || 1;
+        const pageSize = parseInt(req.query.pageSize, 10) || 10;
+        const offset = (page - 1) * pageSize;
+        let getEvents = "Select * FROM news LIMIT ?, ?";
+        DBConfig_1.connection.query(getEvents, [offset, pageSize], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
             if (err) {
                 res.send({
                     status: 500,
@@ -26,10 +29,32 @@ NewsController.get("/news/list", (req, res) => __awaiter(void 0, void 0, void 0,
                     data: err
                 });
             }
-            res.send({
-                status: 200,
-                message: "news get success fully",
-                data: result
+            const countQuery = `SELECT COUNT(*) AS total FROM news`;
+            DBConfig_1.connection.query(countQuery, (countErr, countResult) => {
+                if (countErr) {
+                    res.status(500).json({
+                        status: 500,
+                        message: "Internal server error",
+                        data: countErr
+                    });
+                }
+                else {
+                    const totalUsers = countResult[0].total;
+                    const totalPages = Math.ceil(totalUsers / pageSize);
+                    res.send({
+                        status: 200,
+                        message: "News fetched successfully",
+                        data: {
+                            news: result,
+                            pagination: {
+                                page: page,
+                                pageSize: pageSize,
+                                totalPages: totalPages,
+                                totalUsers: totalUsers
+                            }
+                        }
+                    });
+                }
             });
         }));
     }

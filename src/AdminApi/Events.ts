@@ -8,8 +8,13 @@ const EventController = express.Router();
 EventController.get("/events/list", async (req, res) => {
     const isVerified = verifyToken(req)
     if (isVerified === true) {
-        let getEvents = "Select * FROM events";
-        connection.query(getEvents, async (err, result) => {
+        const page = parseInt(req.query.page as string, 10) || 1;
+        const pageSize = parseInt(req.query.pageSize as string, 10) || 10;
+        const offset = (page - 1) * pageSize;
+
+
+        let getEvents = "Select * FROM events LIMIT ?, ?";
+        connection.query(getEvents,[offset, pageSize], async (err, result) => {
             if (err) {
                 res.send({
                     status: 500,
@@ -17,11 +22,34 @@ EventController.get("/events/list", async (req, res) => {
                     data: err
                 })
             }
-            res.send({
-                status: 200,
-                message: "events get success fully",
-                data: result
-            })
+            const countQuery = `SELECT COUNT(*) AS total FROM events`;
+            
+            connection.query(countQuery, (countErr, countResult) => {
+                if (countErr) {
+                    res.status(500).json({
+                        status: 500,
+                        message: "Internal server error",
+                        data: countErr
+                    });
+                } else {
+                    const totalUsers = countResult[0].total;
+                    const totalPages = Math.ceil(totalUsers / pageSize);
+                   
+                    res.send({
+                        status: 200,
+                        message: "Events fetched successfully",
+                        data: {
+                            events: result,
+                            pagination: {
+                                page: page,
+                                pageSize: pageSize,
+                                totalPages: totalPages,
+                                totalUsers: totalUsers
+                            }
+                        }
+                    });
+                }
+            });
         })
     } else {
         res.send({
