@@ -92,11 +92,12 @@ AppAuth.post("/app/verify_otp", async (req, res) => {
             }
 
             const token = jwt.sign(data, jwtSecretKey);
-            existUser.token = token;
+            
             res.send({
                 status: 200,
                 message: "OTP verified successfully",
-                data: existUser
+                data: existUser,
+                token:token
             })
         } else {
             res.send({
