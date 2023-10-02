@@ -14,6 +14,8 @@ import NewsController from './AdminApi/News';
 import AppAuth from './App/AppAuth';
 import Events from './AdminApi/Events';
 import AppEvents from './App/Events';
+import AppProfile from './App/Users';
+import AppNews from './App/News';
 app.use(express.json())
 
 
@@ -59,3 +61,9 @@ app.use(NewsController)
 
 app.use(AppAuth)
 app.use(AppEvents)
+
+
+app.use(AppProfile)
+app.use(AppNews)
+
+
