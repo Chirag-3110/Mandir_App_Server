@@ -112,8 +112,8 @@ AppAuth.post("/app/complete-profile", (req, res) => {
     const isVerified = (0, HelperFunction_1.verifyToken)(req);
     if (isVerified === true) {
         const { id, full_name, email, gender, occupation, age, gotra, address, } = req.body;
-        const updateQuery = 'UPDATE users SET full_name = ?,email = ?,gender = ?,occupation = ?,age = ?,gotra = ?,address = ? WHERE id = ?';
-        DBConfig_1.connection.query(updateQuery, [full_name, email, gender, occupation, age, gotra, address, id], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
+        const updateQuery = 'UPDATE users SET full_name = ?,email = ?,gender = ?,occupation = ?,age = ?,gotra = ?,address = ?,isProfileCompleted = ? WHERE id = ?';
+        DBConfig_1.connection.query(updateQuery, [full_name, email, gender, occupation, age, gotra, address, 1, id], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
             if (err) {
                 res.send({
                     status: 500,
@@ -122,10 +122,22 @@ AppAuth.post("/app/complete-profile", (req, res) => {
                 });
             }
             else {
-                res.send({
-                    status: 200,
-                    message: "User Updated",
-                    data: null
+                DBConfig_1.connection.query('Select * from users WHERE id = ?', [id], (err, result) => {
+                    if (err) {
+                        res.send({
+                            status: 500,
+                            message: "Internal server error",
+                            data: err
+                        });
+                    }
+                    else {
+                        let existUser = result[0];
+                        res.send({
+                            status: 200,
+                            message: "User Data",
+                            data: existUser
+                        });
+                    }
                 });
             }
         }));

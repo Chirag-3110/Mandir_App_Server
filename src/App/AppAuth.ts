@@ -118,8 +118,8 @@ AppAuth.post("/app/complete-profile", (req, res) => {
         const { id, full_name, email, gender, occupation, age, gotra, address, } = req.body;
 
 
-        const updateQuery = 'UPDATE users SET full_name = ?,email = ?,gender = ?,occupation = ?,age = ?,gotra = ?,address = ? WHERE id = ?'
-        connection.query(updateQuery, [full_name, email, gender, occupation, age, gotra, address, id], async (err, result) => {
+        const updateQuery = 'UPDATE users SET full_name = ?,email = ?,gender = ?,occupation = ?,age = ?,gotra = ?,address = ?,isProfileCompleted = ? WHERE id = ?'
+        connection.query(updateQuery, [full_name, email, gender, occupation, age, gotra, address,1, id], async (err, result) => {
             if (err) {
                 res.send({
                     status: 500,
@@ -127,11 +127,24 @@ AppAuth.post("/app/complete-profile", (req, res) => {
                     data: err
                 })
             } else {
-                res.send({
-                    status: 200,
-                    message: "User Updated",
-                    data: null
+                connection.query('Select * from users WHERE id = ?',[id],(err,result)=>{
+                    if (err) {
+                        res.send({
+                            status: 500,
+                            message: "Internal server error",
+                            data: err
+                        })
+                    }else{
+                        let existUser = result[0];
+                        res.send({
+                            status: 200,
+                            message: "User Data",
+                            data: existUser
+                        })
+                    }
                 })
+
+                
             }
         })
     } else {
