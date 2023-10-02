@@ -122,7 +122,7 @@ AppAuth.post("/app/complete-profile", (req, res) => {
                 });
             }
             else {
-                DBConfig_1.connection.query('Select * from users WHERE id = ?', [id], (err, result) => {
+                DBConfig_1.connection.query('SELECT * FROM users WHERE id = ?', [id], (err, result) => {
                     if (err) {
                         res.send({
                             status: 500,

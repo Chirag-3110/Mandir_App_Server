@@ -127,7 +127,7 @@ AppAuth.post("/app/complete-profile", (req, res) => {
                     data: err
                 })
             } else {
-                connection.query('Select * from users WHERE id = ?',[id],(err,result)=>{
+                connection.query('SELECT * FROM users WHERE id = ?',[id],(err,result)=>{
                     if (err) {
                         res.send({
                             status: 500,
