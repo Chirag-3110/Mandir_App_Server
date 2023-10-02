@@ -7,7 +7,10 @@ const Events = express.Router()
 
 Events.get("/app/eventsList",(req,res)=>{
     const isVerified = verifyToken(req)
-
+    console.log(req.query,"req.query");
+    console.log(req.params,"req.query");
+    
+    
     if(isVerified === true){
         const page = parseInt(req.query.page as string, 10) || 1;
         const pageSize = parseInt(req.query.pageSize as string, 10) || 10;
