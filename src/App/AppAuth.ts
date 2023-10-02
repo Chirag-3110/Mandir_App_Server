@@ -150,7 +150,7 @@ AppAuth.post("/app/complete-profile", (req, res) => {
     } else {
         res.send({
             status: 401,
-            message: "UnAppAuthenticated",
+            message: "UnAuthenticated",
             data: null
         })
     }
