@@ -9,6 +9,8 @@ AppEvents.get("/app/eventsList",(req,res)=>{
     const isVerified = verifyToken(req)
     console.log(req.query,"req.query");
     console.log(req.params,"req.query");
+
+    console.log(req.headers.authorization,"req.headers");
     
     
     if(isVerified === true){
