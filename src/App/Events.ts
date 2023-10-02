@@ -3,9 +3,9 @@ import { verifyToken } from "../Middleware/HelperFunction"
 
 const express = require('express')
 
-const Events = express.Router() 
+const AppEvents = express.Router() 
 
-Events.get("/app/eventsList",(req,res)=>{
+AppEvents.get("/app/eventsList",(req,res)=>{
     const isVerified = verifyToken(req)
     console.log(req.query,"req.query");
     console.log(req.params,"req.query");
@@ -15,8 +15,8 @@ Events.get("/app/eventsList",(req,res)=>{
         const page = parseInt(req.query.page as string, 10) || 1;
         const pageSize = parseInt(req.query.pageSize as string, 10) || 10;
         const offset = (page - 1) * pageSize;
-        let getEvents = "Select * FROM events WHERE is_active = ? AND is_delete = ? LIMIT ?, ?";
-        connection.query(getEvents,[1,0,offset, pageSize], async (err, result) =>{
+        let getAppEvents = "Select * FROM events WHERE is_active = ? AND is_delete = ? LIMIT ?, ?";
+        connection.query(getAppEvents,[1,0,offset, pageSize], async (err, result) =>{
             if (err) {
                 res.send({
                     status: 500,
@@ -38,7 +38,7 @@ Events.get("/app/eventsList",(req,res)=>{
                    
                     res.send({
                         status: 200,
-                        message: "Events fetched successfully",
+                        message: "AppEvents fetched successfully",
                         data: {
                             events: result,
                             pagination: {
@@ -63,4 +63,4 @@ Events.get("/app/eventsList",(req,res)=>{
       
 })
 
-export default Events
+export default AppEvents

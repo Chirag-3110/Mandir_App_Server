@@ -12,8 +12,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const DBConfig_1 = require("../Config/DBConfig");
 const HelperFunction_1 = require("../Middleware/HelperFunction");
 const express = require('express');
-const Events = express.Router();
-Events.get("/app/eventsList", (req, res) => {
+const AppEvents = express.Router();
+AppEvents.get("/app/eventsList", (req, res) => {
     const isVerified = (0, HelperFunction_1.verifyToken)(req);
     console.log(req.query, "req.query");
     console.log(req.params, "req.query");
@@ -21,8 +21,8 @@ Events.get("/app/eventsList", (req, res) => {
         const page = parseInt(req.query.page, 10) || 1;
         const pageSize = parseInt(req.query.pageSize, 10) || 10;
         const offset = (page - 1) * pageSize;
-        let getEvents = "Select * FROM events WHERE is_active = ? AND is_delete = ? LIMIT ?, ?";
-        DBConfig_1.connection.query(getEvents, [1, 0, offset, pageSize], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
+        let getAppEvents = "Select * FROM events WHERE is_active = ? AND is_delete = ? LIMIT ?, ?";
+        DBConfig_1.connection.query(getAppEvents, [1, 0, offset, pageSize], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
             if (err) {
                 res.send({
                     status: 500,
@@ -44,7 +44,7 @@ Events.get("/app/eventsList", (req, res) => {
                     const totalPages = Math.ceil(totalUsers / pageSize);
                     res.send({
                         status: 200,
-                        message: "Events fetched successfully",
+                        message: "AppEvents fetched successfully",
                         data: {
                             events: result,
                             pagination: {
@@ -67,5 +67,5 @@ Events.get("/app/eventsList", (req, res) => {
         });
     }
 });
-exports.default = Events;
+exports.default = AppEvents;
 //# sourceMappingURL=Events.js.map

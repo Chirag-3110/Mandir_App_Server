@@ -25,7 +25,7 @@ const path = require('path');
 const port = process.env.PORT || 8000;
 const News_1 = __importDefault(require("./AdminApi/News"));
 const AppAuth_1 = __importDefault(require("./App/AppAuth"));
-const Events_2 = __importDefault(require("./AdminApi/Events"));
+const Events_2 = __importDefault(require("./App/Events"));
 app.use(express_1.default.json());
 const corsOptions = {
     origin: ['http://139.144.1.59:80', 'http://139.144.1.59:9999', 'http://localhost:3000'],

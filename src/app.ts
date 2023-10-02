@@ -13,6 +13,7 @@ const port = process.env.PORT || 8000;
 import NewsController from './AdminApi/News';
 import AppAuth from './App/AppAuth';
 import Events from './AdminApi/Events';
+import AppEvents from './App/Events';
 app.use(express.json())
 
 
@@ -57,4 +58,4 @@ app.use(NewsController)
 //approutes
 
 app.use(AppAuth)
-app.use(Events)
+app.use(AppEvents)
