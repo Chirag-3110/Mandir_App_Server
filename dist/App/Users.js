@@ -22,6 +22,13 @@ AppProfile.get("/app/get-profile", (req, res) => {
             });
         });
     }
+    else {
+        res.send({
+            status: 401,
+            message: "Unauthenticated",
+            data: null
+        });
+    }
 });
 exports.default = AppProfile;
 //# sourceMappingURL=Users.js.map

@@ -22,6 +22,12 @@ AppProfile.get("/app/get-profile",(req,res)=>{
                 data: result
             });
         })
+    }else{
+        res.send({
+            status: 401,
+            message: "Unauthenticated",
+            data: null
+        })
     }
 })
 
