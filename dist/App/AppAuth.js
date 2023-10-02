@@ -31,7 +31,7 @@ AppAuth.post('/app/send-otp', (req, res) => __awaiter(void 0, void 0, void 0, fu
         if (existUser) {
             if (existUser.is_active == 1) {
                 if (existUser.is_delete == 0) {
-                    const otp = (0, HelperFunction_1.generateOTP)(4);
+                    const otp = 1234; //generateOTP(4);
                     const updateUser = `UPDATE users SET otp = ${otp} WHERE phone = ?`;
                     DBConfig_1.connection.query(updateUser, [phone], (err, result) => {
                         if (err) {
