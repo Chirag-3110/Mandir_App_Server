@@ -111,9 +111,9 @@ AppAuth.post("/app/verify_otp", (req, res) => __awaiter(void 0, void 0, void 0, 
 AppAuth.post("/app/complete-profile", (req, res) => {
     const isVerified = (0, HelperFunction_1.verifyToken)(req);
     if (isVerified === true) {
-        const { id, full_name, email, gender, occupation, age, gotra, address, } = req.body;
-        const updateQuery = 'UPDATE users SET full_name = ?,email = ?,gender = ?,occupation = ?,age = ?,gotra = ?,address = ?,isProfileCompleted = ? WHERE id = ?';
-        DBConfig_1.connection.query(updateQuery, [full_name, email, gender, occupation, age, gotra, address, 1, id], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
+        const { id, full_name, email, gender, occupation, age, gotra, address, married } = req.body;
+        const updateQuery = 'UPDATE users SET full_name = ?,email = ?,gender = ?,occupation = ?,age = ?,gotra = ?,address = ?,isProfileCompleted = ?,married = ? WHERE id = ?';
+        DBConfig_1.connection.query(updateQuery, [full_name, email, gender, occupation, age, gotra, address, married, 1, id], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
             if (err) {
                 res.send({
                     status: 500,

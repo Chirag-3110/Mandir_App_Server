@@ -115,11 +115,11 @@ AppAuth.post("/app/complete-profile", (req, res) => {
 
     const isVerified = verifyToken(req)
     if (isVerified === true) {
-        const { id, full_name, email, gender, occupation, age, gotra, address, } = req.body;
+        const { id, full_name, email, gender, occupation, age, gotra, address,married } = req.body;
 
 
-        const updateQuery = 'UPDATE users SET full_name = ?,email = ?,gender = ?,occupation = ?,age = ?,gotra = ?,address = ?,isProfileCompleted = ? WHERE id = ?'
-        connection.query(updateQuery, [full_name, email, gender, occupation, age, gotra, address,1, id], async (err, result) => {
+        const updateQuery = 'UPDATE users SET full_name = ?,email = ?,gender = ?,occupation = ?,age = ?,gotra = ?,address = ?,isProfileCompleted = ?,married = ? WHERE id = ?'
+        connection.query(updateQuery, [full_name, email, gender, occupation, age, gotra, address,married,1, id], async (err, result) => {
             if (err) {
                 res.send({
                     status: 500,
