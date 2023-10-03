@@ -42,6 +42,7 @@ app.use(cors(corsOptions));
 app.use(express_1.default.urlencoded({ extended: true }));
 app.listen(port, () => __awaiter(void 0, void 0, void 0, function* () {
     yield (0, DBConfig_1.default)();
+    // connection.query("UPDATE users SET isProfileCompleted = ? WHERE id = ?",[0,398])
 }));
 app.use(Auth_1.default);
 app.use(User_1.default);
