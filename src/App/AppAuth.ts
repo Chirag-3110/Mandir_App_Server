@@ -119,7 +119,7 @@ AppAuth.post("/app/complete-profile", (req, res) => {
 
 
         const updateQuery = 'UPDATE users SET full_name = ?,email = ?,gender = ?,occupation = ?,age = ?,gotra = ?,address = ?,isProfileCompleted = ?,married = ? WHERE id = ?'
-        connection.query(updateQuery, [full_name, email, gender, occupation, age, gotra, address,married,1, id], async (err, result) => {
+        connection.query(updateQuery, [full_name, email, gender, occupation, age, gotra, address,1,married, id], async (err, result) => {
             if (err) {
                 res.send({
                     status: 500,
