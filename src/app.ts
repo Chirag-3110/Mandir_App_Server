@@ -38,7 +38,7 @@ import AddFamily from './App/add_family';
 
   app.listen(port, async () => {
       await configMongoDB()
-      // connection.query("UPDATE users SET isProfileCompleted = ? WHERE id = ?",[0,398])
+      connection.query("ALTER TABLE users ADD COLUMN members JSON")
       
   });
 

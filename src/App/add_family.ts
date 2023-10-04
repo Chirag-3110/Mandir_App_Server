@@ -10,48 +10,24 @@ AddFamily.post("/add-member",async (req,res)=>{
         const { full_name , email , phone , gender , occupation , age , address , married } = members[index];
         connection.query("SELECT * FROM users WHERE email = ? OR phone = ?",[email,phone],(err,result)=>{
             if(err){
-                console.log(err);
-                
+               res.send({
+                status:500,
+                message:"Internal Server error",
+                data:null
+               })
             }
     
             const userExist = result
             if(userExist){
-                console.log(userExist);
+               
             }else{
-                console.log(userExist);
-                return {
-                    status:false,
-                    data:null
-                }
+                
             }
         })
         
     }
 })
 
-function checkUser(email,phone){
-    connection.query("SELECT * FROM users WHERE email = ? OR phone = ?",[email,phone],(err,result)=>{
-        if(err){
-            return {
-                status:false,
-                data:null
-            }
-        }
-
-        const userExist = result
-        if(userExist){
-            return {
-                status:true,
-                data:userExist
-            }
-        }else{
-            return {
-                status:false,
-                data:null
-            }
-        }
-    })
-}
 
 
 export default AddFamily

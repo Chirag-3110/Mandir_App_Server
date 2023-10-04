@@ -18,44 +18,19 @@ AddFamily.post("/add-member", (req, res) => __awaiter(void 0, void 0, void 0, fu
         const { full_name, email, phone, gender, occupation, age, address, married } = members[index];
         DBConfig_1.connection.query("SELECT * FROM users WHERE email = ? OR phone = ?", [email, phone], (err, result) => {
             if (err) {
-                console.log(err);
+                res.send({
+                    status: 500,
+                    message: "Internal Server error",
+                    data: null
+                });
             }
             const userExist = result;
             if (userExist) {
-                console.log(userExist);
             }
             else {
-                console.log(userExist);
-                return {
-                    status: false,
-                    data: null
-                };
             }
         });
     }
 }));
-function checkUser(email, phone) {
-    DBConfig_1.connection.query("SELECT * FROM users WHERE email = ? OR phone = ?", [email, phone], (err, result) => {
-        if (err) {
-            return {
-                status: false,
-                data: null
-            };
-        }
-        const userExist = result;
-        if (userExist) {
-            return {
-                status: true,
-                data: userExist
-            };
-        }
-        else {
-            return {
-                status: false,
-                data: null
-            };
-        }
-    });
-}
 exports.default = AddFamily;
 //# sourceMappingURL=add_family.js.map
