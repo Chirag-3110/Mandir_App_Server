@@ -38,8 +38,6 @@ import AddFamily from './App/add_family';
 
   app.listen(port, async () => {
       await configMongoDB()
-      connection.query("ALTER TABLE users ADD COLUMN members JSON")
-      
   });
 
 
