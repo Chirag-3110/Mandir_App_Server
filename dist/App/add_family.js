@@ -28,7 +28,7 @@ function checkUser(email, phone) {
                 data: null
             };
         }
-        const userExist = result[0];
+        const userExist = result;
         if (userExist) {
             return {
                 status: true,
