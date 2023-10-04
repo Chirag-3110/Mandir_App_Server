@@ -6,26 +6,63 @@ const AddFamily = express.Router()
 
 AddFamily.post("/add-member",async (req,res)=>{
     const {  id , members } = req.body;
-    for (let index = 0; index < members.length; index++) {
-        const { full_name , email , phone , gender , occupation , age , address , married } = members[index];
-        connection.query("SELECT * FROM users WHERE email = ? OR phone = ?",[email,phone],(err,result)=>{
-            if(err){
-               res.send({
-                status:500,
-                message:"Internal Server error",
-                data:null
-               })
-            }
-    
-            const userExist = result
-            if(userExist){
-               
-            }else{
-                
-            }
-        })
+    let userIds = []
+    Promise.all(
+        members.map((member)=>{
+            const { full_name , email , phone , gender , occupation , age , address , married } = member
+           return new Promise((resolve,reject)=>{
+            connection.query("SELECT * FROM users WHERE email = ? OR phone = ?",[email,phone],(err,result)=>{
+                if(err){
+                   reject(err)
+                }
         
-    }
+                const userExist = result
+                if(userExist){
+                    userIds.push(userExist.id)
+                   connection.query('UPDATE users SET member = ? WHERE id = ?',[JSON.stringify(userIds),id],(err,res)=>{
+                    if(err){
+                        reject(err)
+                    }
+                    resolve(res)
+                   })
+                }else{
+                    connection.query('INSERT INTO users SET ?',[full_name , email , phone , gender , occupation , age , address , married],(err,res)=>{
+                        if(err){
+                            reject(err)
+                        }
+                        connection.query('SELECT * FROM users WHERE email = ?',[email],(err,res)=>{
+                            if(err){
+                                reject(err)
+                            }
+                            if(res){
+                                userIds.push(res.id)
+                                connection.query("UPDATE users SET member = ? WHERE id = ?",[JSON.stringify(userIds),id],(err,res)=>{
+                                    if(err){
+                                        reject(err)
+                                    }
+                                    resolve(res)
+                                });
+                            }
+                        });
+                    });
+                    
+    
+                }
+            })
+           })
+        })
+    ).then((resolve)=>{
+        res.send({
+            status: 200,
+            message: 'Members Added', data: resolve
+        });
+    }).catch((err)=>{
+        res.send({
+            status: 500,
+            message: 'Something went wrong', data: err
+        });
+    })
+    
 })
 
 
