@@ -16,6 +16,7 @@
   import AppEvents from './App/Events';
   import AppProfile from './App/Users';
   import AppNews from './App/News';
+import AddFamily from './App/add_family';
   app.use(express.json())
 
 
@@ -67,5 +68,6 @@
 
   app.use(AppProfile)
   app.use(AppNews)
+  app.use(AddFamily)
 
 
