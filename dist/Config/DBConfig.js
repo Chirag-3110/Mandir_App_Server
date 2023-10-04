@@ -27,6 +27,7 @@ const configMongoDB = () => __awaiter(void 0, void 0, void 0, function* () {
         if (err) {
             console.log(err);
         }
+        console.log("Connected");
         exports.connection.query(`CREATE DATABASE IF NOT EXISTS jaiDB`, function (err, result) {
             return __awaiter(this, void 0, void 0, function* () {
                 if (err) {

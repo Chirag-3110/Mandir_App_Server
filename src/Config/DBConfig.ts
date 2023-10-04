@@ -18,43 +18,44 @@ const configMongoDB = async () => {
     if(err){
       console.log(err);
     }
-   
-    connection.query(`CREATE DATABASE IF NOT EXISTS jaiDB`, async function (err, result) {
-      if (err) {
-        console.log(err, "err");
-        
-      } else {
-        console.log("Database created or already exists");
-        connection.query(userTable)
-        connection.query(events)
-        connection.query(news)
-        connection.query(featured)
-        connection.query(admins)
-
-        const findUser = 'SELECT COUNT(*) as count FROM admin WHERE email = ?'
-        connection.query(findUser, ["admin@yopmail.com"], async (err, existingUser) => {
-          console.log(existingUser);
-          console.log(err);
-
-          if (existingUser[0].count == 0) {
-            const pass = await encrypt.hash(process.env.ADMIN_PASS, 10);
-            const createdDate = new Date().toUTCString()
-            const body = {
-              email: process.env.ADMIN_USER,
-              password: pass,
-              created_at: createdDate
+      console.log("Connected");
+      connection.query(`CREATE DATABASE IF NOT EXISTS jaiDB`, async function (err, result) {
+        if (err) {
+          console.log(err, "err");
+          
+        } else {
+          console.log("Database created or already exists");
+          connection.query(userTable)
+          connection.query(events)
+          connection.query(news)
+          connection.query(featured)
+          connection.query(admins)
+  
+          const findUser = 'SELECT COUNT(*) as count FROM admin WHERE email = ?'
+          connection.query(findUser, ["admin@yopmail.com"], async (err, existingUser) => {
+            console.log(existingUser);
+            console.log(err);
+  
+            if (existingUser[0].count == 0) {
+              const pass = await encrypt.hash(process.env.ADMIN_PASS, 10);
+              const createdDate = new Date().toUTCString()
+              const body = {
+                email: process.env.ADMIN_USER,
+                password: pass,
+                created_at: createdDate
+              }
+              connection.query('INSERT INTO admin SET ?', body, (err, result) => {
+                console.log(err, "err");
+                console.log(result, "result");
+  
+              })
             }
-            connection.query('INSERT INTO admin SET ?', body, (err, result) => {
-              console.log(err, "err");
-              console.log(result, "result");
-
-            })
-          }
-        })
-
-      }
-
-    });
+          })
+  
+        }
+  
+      });
+      
 
   });
 
