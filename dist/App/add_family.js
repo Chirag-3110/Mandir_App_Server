@@ -16,8 +16,22 @@ AddFamily.post("/add-member", (req, res) => __awaiter(void 0, void 0, void 0, fu
     const { id, members } = req.body;
     for (let index = 0; index < members.length; index++) {
         const { full_name, email, phone, gender, occupation, age, address, married } = members[index];
-        let isUser = yield checkUser(email, phone);
-        console.log(isUser, "isUser");
+        DBConfig_1.connection.query("SELECT * FROM users WHERE email = ? OR phone = ?", [email, phone], (err, result) => {
+            if (err) {
+                console.log(err);
+            }
+            const userExist = result;
+            if (userExist) {
+                console.log(userExist);
+            }
+            else {
+                console.log(userExist);
+                return {
+                    status: false,
+                    data: null
+                };
+            }
+        });
     }
 }));
 function checkUser(email, phone) {
