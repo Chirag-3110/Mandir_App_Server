@@ -117,6 +117,7 @@ AppAuth.post("/app/complete-profile", upload.single("file"), (req, res) => {
     const isVerified = verifyToken(req)
     if (isVerified === true) {
         console.log(req.file,"req.file");
+        console.log(req.body,"req.body");
         
         let filePath = req.file.filename;
         let { id, full_name, email, gender, occupation, age, image, gotra, address,married } = req.body;
