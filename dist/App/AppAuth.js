@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const DBConfig_1 = require("../Config/DBConfig");
 const HelperFunction_1 = require("../Middleware/HelperFunction");
+const image_upload_1 = require("../Middleware/image_upload");
 const jwt = require('jsonwebtoken');
 const express = require('express');
 const AppAuth = express.Router();
@@ -108,12 +109,14 @@ AppAuth.post("/app/verify_otp", (req, res) => __awaiter(void 0, void 0, void 0, 
         }
     });
 }));
-AppAuth.post("/app/complete-profile", (req, res) => {
+AppAuth.post("/app/complete-profile", image_upload_1.upload.single("file"), (req, res) => {
     const isVerified = (0, HelperFunction_1.verifyToken)(req);
     if (isVerified === true) {
-        const { id, full_name, email, gender, occupation, age, gotra, address, married } = req.body;
-        const updateQuery = 'UPDATE users SET full_name = ?,email = ?,gender = ?,occupation = ?,age = ?,gotra = ?,address = ?,isProfileCompleted = ?,married = ? WHERE id = ?';
-        DBConfig_1.connection.query(updateQuery, [full_name, email, gender, occupation, age, gotra, address, 1, married, id], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
+        let filePath = req.file.filename;
+        let { id, full_name, email, gender, occupation, age, image, gotra, address, married } = req.body;
+        image = filePath;
+        const updateQuery = 'UPDATE users SET full_name = ?,email = ?,gender = ?,occupation = ?,age = ?,image = ?,gotra = ?,address = ?,isProfileCompleted = ?,married = ? WHERE id = ?';
+        DBConfig_1.connection.query(updateQuery, [full_name, email, gender, occupation, age, image, gotra, address, 1, married, id], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
             if (err) {
                 res.send({
                     status: 500,

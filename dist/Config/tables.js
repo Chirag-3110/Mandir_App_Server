@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS users (
   occupation TEXT,
   age TEXT,
   married TEXT,
+  image TEXT,
   members JSON,
   gender ENUM('Male', 'Female', 'Other'),
   postal_address TEXT,

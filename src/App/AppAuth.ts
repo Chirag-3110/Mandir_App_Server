@@ -1,5 +1,6 @@
 import { connection } from "../Config/DBConfig"
 import { generateOTP, verifyToken } from "../Middleware/HelperFunction"
+import { upload } from "../Middleware/image_upload";
 const jwt = require('jsonwebtoken');
 
 const express = require('express')
@@ -111,15 +112,17 @@ AppAuth.post("/app/verify_otp", async (req, res) => {
 })
 
 
-AppAuth.post("/app/complete-profile", (req, res) => {
+AppAuth.post("/app/complete-profile", upload.single("file"), (req, res) => {
 
     const isVerified = verifyToken(req)
     if (isVerified === true) {
-        const { id, full_name, email, gender, occupation, age, gotra, address,married } = req.body;
+        let filePath = req.file.filename;
+        let { id, full_name, email, gender, occupation, age, image, gotra, address,married } = req.body;
 
+            image = filePath;
 
-        const updateQuery = 'UPDATE users SET full_name = ?,email = ?,gender = ?,occupation = ?,age = ?,gotra = ?,address = ?,isProfileCompleted = ?,married = ? WHERE id = ?'
-        connection.query(updateQuery, [full_name, email, gender, occupation, age, gotra, address,1,married, id], async (err, result) => {
+        const updateQuery = 'UPDATE users SET full_name = ?,email = ?,gender = ?,occupation = ?,age = ?,image = ?,gotra = ?,address = ?,isProfileCompleted = ?,married = ? WHERE id = ?'
+        connection.query(updateQuery, [full_name, email, gender, occupation, age, image, gotra, address,1,married, id], async (err, result) => {
             if (err) {
                 res.send({
                     status: 500,

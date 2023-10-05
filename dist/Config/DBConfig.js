@@ -44,18 +44,20 @@ const configMongoDB = () => __awaiter(void 0, void 0, void 0, function* () {
                     exports.connection.query(findUser, ["admin@yopmail.com"], (err, existingUser) => __awaiter(this, void 0, void 0, function* () {
                         console.log(existingUser);
                         console.log(err);
-                        if (existingUser[0].count == 0) {
-                            const pass = yield encrypt.hash(process.env.ADMIN_PASS, 10);
-                            const createdDate = new Date().toUTCString();
-                            const body = {
-                                email: process.env.ADMIN_USER,
-                                password: pass,
-                                created_at: createdDate
-                            };
-                            exports.connection.query('INSERT INTO admin SET ?', body, (err, result) => {
-                                console.log(err, "err");
-                                console.log(result, "result");
-                            });
+                        if (existingUser) {
+                            if (existingUser[0].count == 0) {
+                                const pass = yield encrypt.hash(process.env.ADMIN_PASS, 10);
+                                const createdDate = new Date().toUTCString();
+                                const body = {
+                                    email: process.env.ADMIN_USER,
+                                    password: pass,
+                                    created_at: createdDate
+                                };
+                                exports.connection.query('INSERT INTO admin SET ?', body, (err, result) => {
+                                    console.log(err, "err");
+                                    console.log(result, "result");
+                                });
+                            }
                         }
                     }));
                 }
