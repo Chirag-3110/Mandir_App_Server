@@ -114,9 +114,11 @@ AppAuth.post("/app/complete-profile", image_upload_1.upload.single("file"), (req
     if (isVerified === true) {
         console.log(req.file, "req.file");
         console.log(req.body, "req.body");
-        let filePath = req.file.filename;
         let { id, full_name, email, gender, occupation, age, image, gotra, address, married } = req.body;
-        image = filePath;
+        if (req.file) {
+            let filePath = req.file.filename;
+            image = filePath;
+        }
         const updateQuery = 'UPDATE users SET full_name = ?,email = ?,gender = ?,occupation = ?,age = ?,image = ?,gotra = ?,address = ?,isProfileCompleted = ?,married = ? WHERE id = ?';
         DBConfig_1.connection.query(updateQuery, [full_name, email, gender, occupation, age, image, gotra, address, 1, married, id], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
             if (err) {

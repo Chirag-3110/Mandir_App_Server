@@ -119,10 +119,12 @@ AppAuth.post("/app/complete-profile", upload.single("file"), (req, res) => {
         console.log(req.file,"req.file");
         console.log(req.body,"req.body");
         
-        let filePath = req.file.filename;
+        
         let { id, full_name, email, gender, occupation, age, image, gotra, address,married } = req.body;
-
+        if(req.file){
+            let filePath = req.file.filename;
             image = filePath;
+        }
 
         const updateQuery = 'UPDATE users SET full_name = ?,email = ?,gender = ?,occupation = ?,age = ?,image = ?,gotra = ?,address = ?,isProfileCompleted = ?,married = ? WHERE id = ?'
         connection.query(updateQuery, [full_name, email, gender, occupation, age, image, gotra, address,1,married, id], async (err, result) => {
