@@ -9,7 +9,7 @@ Searh.post("/user/search", (req, res) => {
     if (isVerified === true) {
         const { query } = req.body;
         const sql = `SELECT * FROM users WHERE full_name LIKE ?`;
-        DBConfig_1.connection.query(sql, [name], (err, result) => {
+        DBConfig_1.connection.query(sql, [query], (err, result) => {
             if (err) {
                 res.send({
                     status: 500,

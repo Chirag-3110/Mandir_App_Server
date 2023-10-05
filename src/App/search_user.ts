@@ -10,7 +10,7 @@ Searh.post("/user/search",(req,res)=>{
         const { query } = req.body
         const sql = `SELECT * FROM users WHERE full_name LIKE ?`;
 
-        connection.query(sql,[name],(err,result)=>{
+        connection.query(sql,[query],(err,result)=>{
             if(err){
                 res.send({
                     status: 500,
