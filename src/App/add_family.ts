@@ -24,7 +24,7 @@ AddFamily.post("/add-member",async (req,res)=>{
                     const userExist = result
                     if(userExist){
                         userIds.push(userExist.id)
-                       connection.query('UPDATE users SET member = ? WHERE id = ?',[JSON.stringify(userIds),id],(err,res)=>{
+                       connection.query('UPDATE users SET members = ? WHERE id = ?',[JSON.stringify(userIds),id],(err,res)=>{
                         if(err){
                             reject(err)
                         }
