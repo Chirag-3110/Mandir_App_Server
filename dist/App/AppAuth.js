@@ -112,6 +112,7 @@ AppAuth.post("/app/verify_otp", (req, res) => __awaiter(void 0, void 0, void 0, 
 AppAuth.post("/app/complete-profile", image_upload_1.upload.single("file"), (req, res) => {
     const isVerified = (0, HelperFunction_1.verifyToken)(req);
     if (isVerified === true) {
+        console.log(req.file, "req.file");
         let filePath = req.file.filename;
         let { id, full_name, email, gender, occupation, age, image, gotra, address, married } = req.body;
         image = filePath;
