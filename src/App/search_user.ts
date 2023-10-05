@@ -21,7 +21,7 @@ Searh.post("/user/search",(req,res)=>{
             }
             res.send({
                 status: 200,
-                message: "Users list",
+                message: "Users List",
                 data: result
             })
         })
