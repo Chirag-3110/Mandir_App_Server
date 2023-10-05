@@ -17,6 +17,7 @@
   import AppProfile from './App/Users';
   import AppNews from './App/News';
 import AddFamily from './App/add_family';
+import Searh from './App/search_user';
   app.use(express.json())
 
 
@@ -67,5 +68,7 @@ import AddFamily from './App/add_family';
   app.use(AppProfile)
   app.use(AppNews)
   app.use(AddFamily)
+
+  app.use(Searh)
 
 

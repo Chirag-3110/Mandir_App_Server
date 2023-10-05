@@ -29,6 +29,7 @@ const Events_2 = __importDefault(require("./App/Events"));
 const Users_1 = __importDefault(require("./App/Users"));
 const News_2 = __importDefault(require("./App/News"));
 const add_family_1 = __importDefault(require("./App/add_family"));
+const search_user_1 = __importDefault(require("./App/search_user"));
 app.use(express_1.default.json());
 const corsOptions = {
     origin: ['http://139.144.1.59:80', 'http://139.144.1.59:9999', 'http://localhost:3000'],
@@ -58,4 +59,5 @@ app.use(Events_2.default);
 app.use(Users_1.default);
 app.use(News_2.default);
 app.use(add_family_1.default);
+app.use(search_user_1.default);
 //# sourceMappingURL=app.js.map
