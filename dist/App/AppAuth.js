@@ -19,6 +19,7 @@ const env = require('dotenv');
 env.config();
 AppAuth.post('/app/send-otp', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { phone } = req.body;
+    console.log(req.body);
     const countQuery = `SELECT * FROM users WHERE phone = ?`;
     DBConfig_1.connection.query(countQuery, [phone], (err, result) => {
         if (err) {

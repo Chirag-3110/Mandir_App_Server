@@ -14,6 +14,9 @@ AppAuth.post('/app/send-otp', async (req, res) => {
 
     const { phone } = req.body;
 
+    console.log(req.body);
+    
+
     const countQuery = `SELECT * FROM users WHERE phone = ?`
 
     connection.query(countQuery, [phone], (err, result) => {
