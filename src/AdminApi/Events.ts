@@ -153,10 +153,10 @@ EventController.post("/events/edit", upload.single("file"), async (req, res) => 
             request.created_at=new Date()
             console.log(request,"request");
            
-            const {name , start_date , end_date , description , type , address , image } = request;
+            const { id , name , start_date , end_date , description , type , address , image } = request;
             
-            let addEvent = "UPDATE TABLE events SET name = ?, start_date = ?, end_date = ?, description = ?,type = ?,address = ?,image = ?";
-            connection.query(addEvent,[name , start_date , end_date , description , type , address , image], async (err, result) => {
+            let addEvent = "UPDATE TABLE events SET name = ?, start_date = ?, end_date = ?, description = ?,type = ?,address = ?,image = ? WHERE id = ?";
+            connection.query(addEvent,[name , start_date , end_date , description , type , address , image , id], async (err, result) => {
                 if (err) {
                     res.send({
                         status: 500,

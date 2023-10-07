@@ -154,9 +154,9 @@ EventController.post("/events/edit", image_upload_1.upload.single("file"), (req,
             request.image = filePath;
             request.created_at = new Date();
             console.log(request, "request");
-            const { name, start_date, end_date, description, type, address, image } = request;
-            let addEvent = "UPDATE TABLE events SET name = ?, start_date = ?, end_date = ?, description = ?,type = ?,address = ?,image = ?";
-            DBConfig_1.connection.query(addEvent, [name, start_date, end_date, description, type, address, image], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
+            const { id, name, start_date, end_date, description, type, address, image } = request;
+            let addEvent = "UPDATE TABLE events SET name = ?, start_date = ?, end_date = ?, description = ?,type = ?,address = ?,image = ? WHERE id = ?";
+            DBConfig_1.connection.query(addEvent, [name, start_date, end_date, description, type, address, image, id], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
                 if (err) {
                     res.send({
                         status: 500,
