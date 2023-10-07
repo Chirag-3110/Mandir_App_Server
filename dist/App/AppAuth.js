@@ -44,11 +44,13 @@ AppAuth.post('/app/send-otp', (req, res) => __awaiter(void 0, void 0, void 0, fu
                                 data: err
                             });
                         }
-                        res.json({
-                            status: 200,
-                            message: "Otp Sent Successfully",
-                            otp: otp,
-                        });
+                        else {
+                            res.json({
+                                status: 200,
+                                message: "Otp Sent Successfully",
+                                otp: otp,
+                            });
+                        }
                     });
                 }
                 else {

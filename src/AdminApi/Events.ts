@@ -21,8 +21,8 @@ EventController.get("/events/list", async (req, res) => {
                     message: "Internal server error",
                     data: err
                 })
-            }
-            const countQuery = `SELECT COUNT(*) AS total FROM events`;
+            }else{
+                const countQuery = `SELECT COUNT(*) AS total FROM events`;
             
             connection.query(countQuery, (countErr, countResult) => {
                 if (countErr) {
@@ -50,6 +50,8 @@ EventController.get("/events/list", async (req, res) => {
                     });
                 }
             });
+            }
+            
         })
     } else {
         res.json({
@@ -74,14 +76,16 @@ EventController.post("/events/search", async (req, res) => {
                     message: "Internal server error",
                     data: err
                 })
-            }
-            console.log(err,"err");
+            }else{
+                console.log(err,"err");
            
-            res.json({
-                status: 200,
-                message: "Events fetched successfully",
-                data: result, 
-            });
+                res.json({
+                    status: 200,
+                    message: "Events fetched successfully",
+                    data: result, 
+                });
+            }
+           
         })
     } else {
         res.json({
@@ -145,12 +149,14 @@ EventController.post("/events/add", upload.single("file"), async (req, res) => {
                         message: "Internal server error",
                         data: err
                     })
+                }else{
+                    res.json({
+                        status: 200,
+                        message: "events get success fully",
+                        data: result[0]
+                    })
                 }
-                res.json({
-                    status: 200,
-                    message: "events get success fully",
-                    data: result[0]
-                })
+               
             })
     }else{
         console.log(req.file,"req.file");
@@ -195,12 +201,14 @@ EventController.post("/events/edit", upload.single("file"), async (req, res) => 
                         message: "Internal server error",
                         data: err
                     })
+                }else{
+                    res.json({
+                        status: 200,
+                        message: "events Updated success fully",
+                        data: result
+                    })
                 }
-                res.json({
-                    status: 200,
-                    message: "events Updated success fully",
-                    data: result
-                })
+                
             })
     }else{
         
@@ -241,12 +249,14 @@ EventController.post("/events/change-status",(req,res)=>{
                         message: "Internal server error",
                         data: err
                     })
+                }else{
+                    res.json({
+                        status: 200,
+                        message: "Status Updated",
+                        data: null
+                    })
                 }
-                res.json({
-                    status: 200,
-                    message: "Status Updated",
-                    data: null
-                })
+               
                 
             })  
         })
@@ -272,23 +282,25 @@ EventController.post("/events/delete-status",(req,res)=>{
                     message: "Internal server error",
                     data: err
                 })
-            }
-            const eventData = result[0];
-            connection.query(updateQuery,[!eventData.is_delete,request.id], async (err, result) => {
-                if (err) {
+            }else{
+                const eventData = result[0];
+                connection.query(updateQuery,[!eventData.is_delete,request.id], async (err, result) => {
+                    if (err) {
+                        res.json({
+                            status: 500,
+                            message: "Internal server error",
+                            data: err
+                        })
+                    }
                     res.json({
-                        status: 500,
-                        message: "Internal server error",
-                        data: err
+                        status: 200,
+                        message: "Event deleted",
+                        data: null
                     })
-                }
-                res.json({
-                    status: 200,
-                    message: "Event deleted",
-                    data: null
-                })
-                
-            })  
+                    
+                })  
+            }
+           
         })
     }else{
         res.json({

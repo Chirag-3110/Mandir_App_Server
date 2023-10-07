@@ -32,33 +32,35 @@ EventController.get("/events/list", (req, res) => __awaiter(void 0, void 0, void
                     data: err
                 });
             }
-            const countQuery = `SELECT COUNT(*) AS total FROM events`;
-            DBConfig_1.connection.query(countQuery, (countErr, countResult) => {
-                if (countErr) {
-                    res.status(500).json({
-                        status: 500,
-                        message: "Internal server error",
-                        data: countErr
-                    });
-                }
-                else {
-                    const totalUsers = countResult[0].total;
-                    const totalPages = Math.ceil(totalUsers / pageSize);
-                    res.json({
-                        status: 200,
-                        message: "Events fetched successfully",
-                        data: {
-                            events: result,
-                            pagination: {
-                                page: page,
-                                pageSize: pageSize,
-                                totalPages: totalPages,
-                                totalUsers: totalUsers
+            else {
+                const countQuery = `SELECT COUNT(*) AS total FROM events`;
+                DBConfig_1.connection.query(countQuery, (countErr, countResult) => {
+                    if (countErr) {
+                        res.status(500).json({
+                            status: 500,
+                            message: "Internal server error",
+                            data: countErr
+                        });
+                    }
+                    else {
+                        const totalUsers = countResult[0].total;
+                        const totalPages = Math.ceil(totalUsers / pageSize);
+                        res.json({
+                            status: 200,
+                            message: "Events fetched successfully",
+                            data: {
+                                events: result,
+                                pagination: {
+                                    page: page,
+                                    pageSize: pageSize,
+                                    totalPages: totalPages,
+                                    totalUsers: totalUsers
+                                }
                             }
-                        }
-                    });
-                }
-            });
+                        });
+                    }
+                });
+            }
         }));
     }
     else {
@@ -83,12 +85,14 @@ EventController.post("/events/search", (req, res) => __awaiter(void 0, void 0, v
                     data: err
                 });
             }
-            console.log(err, "err");
-            res.json({
-                status: 200,
-                message: "Events fetched successfully",
-                data: result,
-            });
+            else {
+                console.log(err, "err");
+                res.json({
+                    status: 200,
+                    message: "Events fetched successfully",
+                    data: result,
+                });
+            }
         }));
     }
     else {
@@ -147,11 +151,13 @@ EventController.post("/events/add", image_upload_1.upload.single("file"), (req, 
                         data: err
                     });
                 }
-                res.json({
-                    status: 200,
-                    message: "events get success fully",
-                    data: result[0]
-                });
+                else {
+                    res.json({
+                        status: 200,
+                        message: "events get success fully",
+                        data: result[0]
+                    });
+                }
             }));
         }
         else {
@@ -194,11 +200,13 @@ EventController.post("/events/edit", image_upload_1.upload.single("file"), (req,
                         data: err
                     });
                 }
-                res.json({
-                    status: 200,
-                    message: "events Updated success fully",
-                    data: result
-                });
+                else {
+                    res.json({
+                        status: 200,
+                        message: "events Updated success fully",
+                        data: result
+                    });
+                }
             }));
         }
         else {
@@ -240,11 +248,13 @@ EventController.post("/events/change-status", (req, res) => {
                         data: err
                     });
                 }
-                res.json({
-                    status: 200,
-                    message: "Status Updated",
-                    data: null
-                });
+                else {
+                    res.json({
+                        status: 200,
+                        message: "Status Updated",
+                        data: null
+                    });
+                }
             }));
         }));
     }
@@ -270,21 +280,23 @@ EventController.post("/events/delete-status", (req, res) => {
                     data: err
                 });
             }
-            const eventData = result[0];
-            DBConfig_1.connection.query(updateQuery, [!eventData.is_delete, request.id], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
-                if (err) {
+            else {
+                const eventData = result[0];
+                DBConfig_1.connection.query(updateQuery, [!eventData.is_delete, request.id], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
+                    if (err) {
+                        res.json({
+                            status: 500,
+                            message: "Internal server error",
+                            data: err
+                        });
+                    }
                     res.json({
-                        status: 500,
-                        message: "Internal server error",
-                        data: err
+                        status: 200,
+                        message: "Event deleted",
+                        data: null
                     });
-                }
-                res.json({
-                    status: 200,
-                    message: "Event deleted",
-                    data: null
-                });
-            }));
+                }));
+            }
         }));
     }
     else {

@@ -34,8 +34,10 @@ AddFamily.post("/add-member", (req, res) => __awaiter(void 0, void 0, void 0, fu
                             if (err) {
                                 reject(err);
                             }
-                            console.log(res, "res is if");
-                            resolve(res);
+                            else {
+                                console.log(res, "res is if");
+                                resolve(res);
+                            }
                         });
                     }
                     else {
@@ -44,21 +46,23 @@ AddFamily.post("/add-member", (req, res) => __awaiter(void 0, void 0, void 0, fu
                                 console.log("err is ", err);
                                 reject(err);
                             }
-                            console.log("res is", res);
-                            DBConfig_1.connection.query('SELECT * FROM users WHERE email = ?', [email], (err, res) => {
-                                if (err) {
-                                    reject(err);
-                                }
-                                if (res.length > 0) {
-                                    userIds.push(res[0].id);
-                                    DBConfig_1.connection.query("UPDATE users SET members = ? WHERE id = ?", [JSON.stringify(userIds), id], (err, res) => {
-                                        if (err) {
-                                            reject(err);
-                                        }
-                                        resolve(res);
-                                    });
-                                }
-                            });
+                            else {
+                                console.log("res is", res);
+                                DBConfig_1.connection.query('SELECT * FROM users WHERE email = ?', [email], (err, res) => {
+                                    if (err) {
+                                        reject(err);
+                                    }
+                                    if (res.length > 0) {
+                                        userIds.push(res[0].id);
+                                        DBConfig_1.connection.query("UPDATE users SET members = ? WHERE id = ?", [JSON.stringify(userIds), id], (err, res) => {
+                                            if (err) {
+                                                reject(err);
+                                            }
+                                            resolve(res);
+                                        });
+                                    }
+                                });
+                            }
                         });
                     }
                 });

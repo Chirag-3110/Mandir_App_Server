@@ -71,15 +71,17 @@ NewsController.post("/news/search", async (req, res) => {
                     message: "Internal server error",
                     data: err
                 })
+            }else{
+                res.json({
+                    status: 200,
+                    message: "News fetched successfully",
+                    data: result,
+    
+    
+                });
             }
 
-            res.json({
-                status: 200,
-                message: "News fetched successfully",
-                data: result,
-
-
-            });
+            
         })
     } else {
         res.json({
@@ -135,12 +137,14 @@ NewsController.post("/news/add", upload.single("file"), async (req, res) => {
                     message: "Internal server error",
                     data: err
                 })
+            }else{
+                res.json({
+                    status: 200,
+                    message: "news add successfully",
+                    data: {}
+                })
             }
-            res.json({
-                status: 200,
-                message: "news add successfully",
-                data: {}
-            })
+            
         })
     } else {
         res.json({
@@ -173,12 +177,14 @@ NewsController.post("/news/change-status", (req, res) => {
                         message: "Internal server error",
                         data: err
                     })
+                }else{
+                    res.json({
+                        status: 200,
+                        message: "Status Updated",
+                        data: null
+                    })
                 }
-                res.json({
-                    status: 200,
-                    message: "Status Updated",
-                    data: null
-                })
+               
 
             })
         })
@@ -204,8 +210,8 @@ NewsController.post("/news/delete-status", (req, res) => {
                     message: "Internal server error",
                     data: err
                 })
-            }
-            const eventData = result[0];
+            }else{
+                const eventData = result[0];
             connection.query(updateQuery, [!eventData.is_delete, request.id], async (err, result) => {
                 if (err) {
                     res.json({
@@ -213,14 +219,18 @@ NewsController.post("/news/delete-status", (req, res) => {
                         message: "Internal server error",
                         data: err
                     })
+                }else{
+                    res.json({
+                        status: 200,
+                        message: "Event deleted",
+                        data: null
+                    })
                 }
-                res.json({
-                    status: 200,
-                    message: "Event deleted",
-                    data: null
-                })
+                
 
             })
+            }
+            
         })
     } else {
         res.json({
@@ -254,12 +264,14 @@ NewsController.post("/news/edit", upload.single("file"), async (req, res) => {
                         message: "Internal server error",
                         data: err
                     })
+                }else{
+                    res.json({
+                        status: 200,
+                        message: "news Updated success fully",
+                        data: result[0]
+                    })
                 }
-                res.json({
-                    status: 200,
-                    message: "news Updated success fully",
-                    data: result[0]
-                })
+                
             })
         } else {
             console.log(req.file, "req.file");

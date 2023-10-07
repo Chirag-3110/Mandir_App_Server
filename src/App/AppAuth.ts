@@ -42,12 +42,14 @@ AppAuth.post('/app/send-otp', async (req, res) => {
                                 message: "Internal Server Error",
                                 data: err
                             })
+                        }else{
+                            res.json({
+                                status: 200,
+                                message: "Otp Sent Successfully",
+                                otp: otp,
+                            })
                         }
-                        res.json({
-                            status: 200,
-                            message: "Otp Sent Successfully",
-                            otp: otp,
-                        })
+                        
                     })
                 }else{
                     res.json({

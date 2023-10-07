@@ -25,8 +25,8 @@ AppEvents.get("/app/eventsList",(req,res)=>{
                     message: "Internal server error",
                     data: err
                 })
-            }
-            const countQuery = `SELECT COUNT(*) AS total FROM events WHERE is_active = ? AND is_delete = ?`;
+            }else{
+                const countQuery = `SELECT COUNT(*) AS total FROM events WHERE is_active = ? AND is_delete = ?`;
             connection.query(countQuery,[1,0], (countErr, countResult) => {
                 if (countErr) {
                     res.status(500).json({
@@ -53,6 +53,8 @@ AppEvents.get("/app/eventsList",(req,res)=>{
                     });
                 }
             });
+            }
+            
         })
 
     }else{

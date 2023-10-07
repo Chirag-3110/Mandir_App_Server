@@ -79,11 +79,13 @@ NewsController.post("/news/search", (req, res) => __awaiter(void 0, void 0, void
                     data: err
                 });
             }
-            res.json({
-                status: 200,
-                message: "News fetched successfully",
-                data: result,
-            });
+            else {
+                res.json({
+                    status: 200,
+                    message: "News fetched successfully",
+                    data: result,
+                });
+            }
         }));
     }
     else {
@@ -138,11 +140,13 @@ NewsController.post("/news/add", image_upload_1.upload.single("file"), (req, res
                     data: err
                 });
             }
-            res.json({
-                status: 200,
-                message: "news add successfully",
-                data: {}
-            });
+            else {
+                res.json({
+                    status: 200,
+                    message: "news add successfully",
+                    data: {}
+                });
+            }
         }));
     }
     else {
@@ -176,11 +180,13 @@ NewsController.post("/news/change-status", (req, res) => {
                         data: err
                     });
                 }
-                res.json({
-                    status: 200,
-                    message: "Status Updated",
-                    data: null
-                });
+                else {
+                    res.json({
+                        status: 200,
+                        message: "Status Updated",
+                        data: null
+                    });
+                }
             }));
         }));
     }
@@ -206,21 +212,25 @@ NewsController.post("/news/delete-status", (req, res) => {
                     data: err
                 });
             }
-            const eventData = result[0];
-            DBConfig_1.connection.query(updateQuery, [!eventData.is_delete, request.id], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
-                if (err) {
-                    res.json({
-                        status: 500,
-                        message: "Internal server error",
-                        data: err
-                    });
-                }
-                res.json({
-                    status: 200,
-                    message: "Event deleted",
-                    data: null
-                });
-            }));
+            else {
+                const eventData = result[0];
+                DBConfig_1.connection.query(updateQuery, [!eventData.is_delete, request.id], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
+                    if (err) {
+                        res.json({
+                            status: 500,
+                            message: "Internal server error",
+                            data: err
+                        });
+                    }
+                    else {
+                        res.json({
+                            status: 200,
+                            message: "Event deleted",
+                            data: null
+                        });
+                    }
+                }));
+            }
         }));
     }
     else {
@@ -252,11 +262,13 @@ NewsController.post("/news/edit", image_upload_1.upload.single("file"), (req, re
                         data: err
                     });
                 }
-                res.json({
-                    status: 200,
-                    message: "news Updated success fully",
-                    data: result[0]
-                });
+                else {
+                    res.json({
+                        status: 200,
+                        message: "news Updated success fully",
+                        data: result[0]
+                    });
+                }
             }));
         }
         else {

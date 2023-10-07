@@ -31,33 +31,35 @@ AppEvents.get("/app/eventsList", (req, res) => {
                     data: err
                 });
             }
-            const countQuery = `SELECT COUNT(*) AS total FROM events WHERE is_active = ? AND is_delete = ?`;
-            DBConfig_1.connection.query(countQuery, [1, 0], (countErr, countResult) => {
-                if (countErr) {
-                    res.status(500).json({
-                        status: 500,
-                        message: "Internal server error",
-                        data: countErr
-                    });
-                }
-                else {
-                    const totalUsers = countResult[0].total;
-                    const totalPages = Math.ceil(totalUsers / pageSize);
-                    res.json({
-                        status: 200,
-                        message: "AppEvents fetched successfully",
-                        data: {
-                            events: result,
-                            pagination: {
-                                page: page,
-                                pageSize: pageSize,
-                                totalPages: totalPages,
-                                totalUsers: totalUsers
+            else {
+                const countQuery = `SELECT COUNT(*) AS total FROM events WHERE is_active = ? AND is_delete = ?`;
+                DBConfig_1.connection.query(countQuery, [1, 0], (countErr, countResult) => {
+                    if (countErr) {
+                        res.status(500).json({
+                            status: 500,
+                            message: "Internal server error",
+                            data: countErr
+                        });
+                    }
+                    else {
+                        const totalUsers = countResult[0].total;
+                        const totalPages = Math.ceil(totalUsers / pageSize);
+                        res.json({
+                            status: 200,
+                            message: "AppEvents fetched successfully",
+                            data: {
+                                events: result,
+                                pagination: {
+                                    page: page,
+                                    pageSize: pageSize,
+                                    totalPages: totalPages,
+                                    totalUsers: totalUsers
+                                }
                             }
-                        }
-                    });
-                }
-            });
+                        });
+                    }
+                });
+            }
         }));
     }
     else {

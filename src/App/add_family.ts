@@ -34,9 +34,11 @@ AddFamily.post("/add-member",async (req,res)=>{
                            
                             reject(err)
                         }
+                       else{
                         console.log(res,"res is if" );
                         
                         resolve(res)
+                       }
                        })
                     }else{
                         connection.query('INSERT INTO users SET ?',member,(err,res)=>{
@@ -45,7 +47,8 @@ AddFamily.post("/add-member",async (req,res)=>{
                                 
                                 reject(err)
                             }
-                            console.log("res is",res);
+                            else{
+                                console.log("res is",res);
                             connection.query('SELECT * FROM users WHERE email = ?',[email],(err,res)=>{
                                 if(err){
                                     reject(err)
@@ -60,6 +63,7 @@ AddFamily.post("/add-member",async (req,res)=>{
                                     });
                                 }
                             });
+                            }
                         });
                         
         

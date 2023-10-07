@@ -16,11 +16,13 @@ AppProfile.get("/app/get-profile",(req,res)=>{
                     data: err
                 })
             }
+           else{
             res.json({
                 status: 200,
                 message: "User fetched successfully",
                 data: result
             });
+           }
         })
     }else{
         res.json({

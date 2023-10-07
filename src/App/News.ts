@@ -20,6 +20,7 @@ AppNews.get("/app/newsList",(req,res)=>{
                     data: err
                 })
             }
+           else{
             const countQuery = `SELECT COUNT(*) AS total FROM news WHERE is_active = ? AND is_delete = ?`;
             connection.query(countQuery,[1,0], (countErr, countResult) => {
                 if (countErr) {
@@ -47,6 +48,7 @@ AppNews.get("/app/newsList",(req,res)=>{
                     });
                 }
             });
+           }
         })
 
     }else{
