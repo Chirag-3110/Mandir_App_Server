@@ -8,7 +8,7 @@ Searh.post("/user/search", (req, res) => {
     const isVerified = (0, HelperFunction_1.verifyToken)(req);
     if (isVerified === true) {
         const { query } = req.body;
-        const sql = `SELECT * FROM users WHERE full_name LIKE ?`;
+        const sql = `SELECT * FROM users WHERE full_name LIKE ? OR phone LIKE ? OR gotra LIKE ? OR occupation LIKE ?`;
         DBConfig_1.connection.query(sql, [`%${query}%`], (err, result) => {
             if (err) {
                 res.send({
