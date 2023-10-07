@@ -69,7 +69,7 @@ EventController.get("/events/list", (req, res) => __awaiter(void 0, void 0, void
         });
     }
 }));
-EventController.get("/events/search", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+EventController.post("/events/search", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const isVerified = (0, HelperFunction_1.verifyToken)(req);
     if (isVerified === true) {
         const { query } = req.body;

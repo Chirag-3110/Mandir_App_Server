@@ -60,7 +60,7 @@ EventController.get("/events/list", async (req, res) => {
     }
 })
 
-EventController.get("/events/search", async (req, res) => {
+EventController.post("/events/search", async (req, res) => {
     const isVerified = verifyToken(req)
     if (isVerified === true) {
         const {query} = req.body

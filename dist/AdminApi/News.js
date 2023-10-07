@@ -66,7 +66,7 @@ NewsController.get("/news/list", (req, res) => __awaiter(void 0, void 0, void 0,
         });
     }
 }));
-NewsController.get("/news/search", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+NewsController.post("/news/search", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const isVerified = (0, HelperFunction_1.verifyToken)(req);
     if (isVerified === true) {
         const { query } = req.body;

@@ -59,7 +59,7 @@ NewsController.get("/news/list", async (req, res) => {
     }
 })
 
-NewsController.get("/news/search", async (req, res) => {
+NewsController.post("/news/search", async (req, res) => {
     const isVerified = verifyToken(req)
     if (isVerified === true) {
         const { query } = req.body
