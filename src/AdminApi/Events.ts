@@ -182,13 +182,13 @@ EventController.post("/events/edit", upload.single("file"), async (req, res) => 
     const isVerified = verifyToken(req)
     if (isVerified === true) {
         console.log(req.headers);
-         
+        let request = req.body;
     if (req.file) {
-            console.log(req.file);
-            let filePath = req.file.filename;
-            let request = req.body;
-            request.image = filePath;
-            const { id , name , start_date , end_date , description , type , address , image } = request;
+        let filePath = req.file.filename;
+          
+        request.image = filePath;
+    }       
+     const { id , name , start_date , end_date , description , type , address , image } = request;
             
            
             
@@ -209,14 +209,7 @@ EventController.post("/events/edit", upload.single("file"), async (req, res) => 
                 }
                 
             })
-    }else{
-        
-        res.json({
-            status: 404,
-            message: "No Image Uploaded",
-            data: null
-        })
-    }
+    
     } else {
         res.json({
             status: 401,

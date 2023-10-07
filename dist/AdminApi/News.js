@@ -245,42 +245,32 @@ NewsController.post("/news/edit", image_upload_1.upload.single("file"), (req, re
     const isVerified = (0, HelperFunction_1.verifyToken)(req);
     if (isVerified === true) {
         console.log(req.headers);
+        let request = req.body;
         if (req.file) {
             console.log(req.file);
             let filePath = req.file.filename;
-            let request = req.body;
             request.image = filePath;
-            request.created_at = new Date();
-            console.log(request, "request");
-            const { id, title, content, image } = request;
-            let addEvent = "UPDATE TABLE news SET title = ?, content = ?, image = ? WHERE id = ?";
-            DBConfig_1.connection.query(addEvent, [title, content, image, id], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
-                if (err) {
-                    res.json({
-                        status: 500,
-                        message: "Internal server error",
-                        data: err
-                    });
-                }
-                else {
-                    res.json({
-                        status: 200,
-                        message: "news Updated success fully",
-                        data: result[0]
-                    });
-                }
-            }));
         }
-        else {
-            console.log(req.file, "req.file");
-            console.log(req.files, "req.files");
-            console.log(req.body, "req.body");
-            res.json({
-                status: 404,
-                message: "No Image Uploaded",
-                data: null
-            });
-        }
+        request.created_at = new Date();
+        console.log(request, "request");
+        const { id, title, content, image } = request;
+        let addEvent = "UPDATE TABLE news SET title = ?, content = ?, image = ? WHERE id = ?";
+        DBConfig_1.connection.query(addEvent, [title, content, image, id], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
+            if (err) {
+                res.json({
+                    status: 500,
+                    message: "Internal server error",
+                    data: err
+                });
+            }
+            else {
+                res.json({
+                    status: 200,
+                    message: "news Updated success fully",
+                    data: result[0]
+                });
+            }
+        }));
     }
     else {
         res.json({

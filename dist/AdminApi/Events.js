@@ -183,37 +183,29 @@ EventController.post("/events/edit", image_upload_1.upload.single("file"), (req,
     const isVerified = (0, HelperFunction_1.verifyToken)(req);
     if (isVerified === true) {
         console.log(req.headers);
+        let request = req.body;
         if (req.file) {
-            console.log(req.file);
             let filePath = req.file.filename;
-            let request = req.body;
             request.image = filePath;
-            const { id, name, start_date, end_date, description, type, address, image } = request;
-            let addEvent = "UPDATE events SET name = ?, start_date = ?, end_date = ?, description = ?,type = ?,address = ?,image = ? WHERE id = ?";
-            DBConfig_1.connection.query(addEvent, [name, start_date, end_date, description, type, address, image, id], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
-                if (err) {
-                    res.json({
-                        status: 500,
-                        message: "Internal server error",
-                        data: err
-                    });
-                }
-                else {
-                    res.json({
-                        status: 200,
-                        message: "events Updated success fully",
-                        data: result
-                    });
-                }
-            }));
         }
-        else {
-            res.json({
-                status: 404,
-                message: "No Image Uploaded",
-                data: null
-            });
-        }
+        const { id, name, start_date, end_date, description, type, address, image } = request;
+        let addEvent = "UPDATE events SET name = ?, start_date = ?, end_date = ?, description = ?,type = ?,address = ?,image = ? WHERE id = ?";
+        DBConfig_1.connection.query(addEvent, [name, start_date, end_date, description, type, address, image, id], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
+            if (err) {
+                res.json({
+                    status: 500,
+                    message: "Internal server error",
+                    data: err
+                });
+            }
+            else {
+                res.json({
+                    status: 200,
+                    message: "events Updated success fully",
+                    data: result
+                });
+            }
+        }));
     }
     else {
         res.json({
