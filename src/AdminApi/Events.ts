@@ -144,16 +144,16 @@ EventController.post("/events/edit", upload.single("file"), async (req, res) => 
     const isVerified = verifyToken(req)
     if (isVerified === true) {
         console.log(req.headers);
-        
+         
     if (req.file) {
             console.log(req.file);
             let filePath = req.file.filename;
             let request = req.body;
+            const { id , name , start_date , end_date , description , type , address , image } = request;
             request.image = filePath;
             request.created_at=new Date()
             console.log(request,"request");
            
-            const { id , name , start_date , end_date , description , type , address , image } = request;
             
             let addEvent = "UPDATE TABLE events SET name = ?, start_date = ?, end_date = ?, description = ?,type = ?,address = ?,image = ? WHERE id = ?";
             connection.query(addEvent,[name , start_date , end_date , description , type , address , image , id], async (err, result) => {
