@@ -30,7 +30,21 @@ const Users_1 = __importDefault(require("./App/Users"));
 const News_2 = __importDefault(require("./App/News"));
 const add_family_1 = __importDefault(require("./App/add_family"));
 const search_user_1 = __importDefault(require("./App/search_user"));
-app.use(cors());
+var allowedOrigins = ['http://localhost:3000',
+    'http://139.144.1.59:9999', "http://139.144.1.59"];
+app.use(cors({
+    origin: function (origin, callback) {
+        // (like mobile apps or curl requests)
+        if (!origin)
+            return callback(null, true);
+        if (allowedOrigins.indexOf(origin) === -1) {
+            var msg = 'The CORS policy for this site does not ' +
+                'allow access from the specified Origin.';
+            return callback(new Error(msg), false);
+        }
+        return callback(null, true);
+    }
+}));
 // app.use(express.json())
 app.use(express_1.default.urlencoded({ extended: true }));
 app.listen(port, () => __awaiter(void 0, void 0, void 0, function* () {
