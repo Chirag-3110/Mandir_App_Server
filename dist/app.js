@@ -34,8 +34,8 @@ app.use(express_1.default.json());
 const corsOptions = {
     origin: ['http://139.144.1.59:80', 'http://139.144.1.59:9999', 'http://localhost:3000'],
 };
-app.use(cors(corsOptions));
 app.use(express_1.default.urlencoded({ extended: true }));
+app.use(cors(corsOptions));
 app.listen(port, () => __awaiter(void 0, void 0, void 0, function* () {
     yield (0, DBConfig_1.default)();
 }));
