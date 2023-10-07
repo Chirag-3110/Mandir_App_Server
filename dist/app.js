@@ -32,6 +32,7 @@ const add_family_1 = __importDefault(require("./App/add_family"));
 const search_user_1 = __importDefault(require("./App/search_user"));
 var allowedOrigins = ['http://localhost:3000',
     'http://139.144.1.59:9999', "http://139.144.1.59"];
+app.use(express_1.default.json());
 app.use(cors({
     origin: function (origin, callback) {
         // (like mobile apps or curl requests)
