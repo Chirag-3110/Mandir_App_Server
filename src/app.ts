@@ -20,7 +20,7 @@ import AddFamily from './App/add_family';
 import Searh from './App/search_user';
   app.use(express.json())
 
-    app.use(cors({ origin: 'http://139.144.1.59:9999' }))
+    app.use(cors({ origin: ['http://139.144.1.59:9999',"http://localhost:3000"] }))
 
 
   app.use(express.urlencoded({ extended: true }))
