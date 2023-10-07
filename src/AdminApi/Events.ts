@@ -192,7 +192,7 @@ EventController.post("/events/edit", upload.single("file"), async (req, res) => 
             
            
             
-            let addEvent = "UPDATE TABLE events SET name = ?, start_date = ?, end_date = ?, description = ?,type = ?,address = ?,image = ? WHERE id = ?";
+            let addEvent = "UPDATE events SET name = ?, start_date = ?, end_date = ?, description = ?,type = ?,address = ?,image = ? WHERE id = ?";
             connection.query(addEvent,[name , start_date , end_date , description , type , address , image , id], async (err, result) => {
                 if (err) {
                     res.json({
