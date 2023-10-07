@@ -41,7 +41,7 @@ AddFamily.post("/add-member",async (req,res)=>{
                                 }
                                 if(res){
                                     userIds.push(res.id)
-                                    connection.query("UPDATE users SET member = ? WHERE id = ?",[JSON.stringify(userIds),id],(err,res)=>{
+                                    connection.query("UPDATE users SET members = ? WHERE id = ?",[JSON.stringify(userIds),id],(err,res)=>{
                                         if(err){
                                             reject(err)
                                         }

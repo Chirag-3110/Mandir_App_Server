@@ -47,7 +47,7 @@ AddFamily.post("/add-member", (req, res) => __awaiter(void 0, void 0, void 0, fu
                                 }
                                 if (res) {
                                     userIds.push(res.id);
-                                    DBConfig_1.connection.query("UPDATE users SET member = ? WHERE id = ?", [JSON.stringify(userIds), id], (err, res) => {
+                                    DBConfig_1.connection.query("UPDATE users SET members = ? WHERE id = ?", [JSON.stringify(userIds), id], (err, res) => {
                                         if (err) {
                                             reject(err);
                                         }
