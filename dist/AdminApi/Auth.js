@@ -26,7 +26,7 @@ AdminAuthRoute.post("/admin/admin-login", (req, res) => __awaiter(void 0, void 0
         const findUser = 'SELECT * FROM admin WHERE email = ?';
         DBConfig_1.connection.query(findUser, [request.email], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
             if (err) {
-                res.send({
+                res.json({
                     status: 503,
                     message: "internal server error",
                     data: err
@@ -43,14 +43,14 @@ AdminAuthRoute.post("/admin/admin-login", (req, res) => __awaiter(void 0, void 0
                     };
                     const token = jwt.sign(data, jwtSecretKey);
                     console.log(token);
-                    res.send({
+                    res.json({
                         status: 200,
                         message: "User Logged in",
                         data: token
                     });
                 }
                 else {
-                    res.send({
+                    res.json({
                         status: 401,
                         message: "Incorrect password",
                         data: null
@@ -58,7 +58,7 @@ AdminAuthRoute.post("/admin/admin-login", (req, res) => __awaiter(void 0, void 0
                 }
             }
             else {
-                res.send({
+                res.json({
                     status: 404,
                     message: "user not found",
                     data: null
@@ -67,7 +67,7 @@ AdminAuthRoute.post("/admin/admin-login", (req, res) => __awaiter(void 0, void 0
         }));
     }
     else {
-        res.send({
+        res.json({
             status: 404,
             message: "Request is empty",
             data: null

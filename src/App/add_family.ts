@@ -68,18 +68,18 @@ AddFamily.post("/add-member",async (req,res)=>{
                })
             })
         ).then((resolve)=>{
-            res.send({
+            res.json({
                 status: 200,
                 message: 'Members Added', data: resolve
             });
         }).catch((err)=>{
-            res.send({
+            res.json({
                 status: 500,
                 message: 'Something went wrong', data: err
             });
         })
     } else {
-        res.send({
+        res.json({
             status: 401,
             message: "Unauthenticated",
             data: null

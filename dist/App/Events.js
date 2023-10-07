@@ -25,7 +25,7 @@ AppEvents.get("/app/eventsList", (req, res) => {
         let getAppEvents = "Select * FROM events WHERE is_active = ? AND is_delete = ? LIMIT ?, ?";
         DBConfig_1.connection.query(getAppEvents, [1, 0, offset, pageSize], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
             if (err) {
-                res.send({
+                res.json({
                     status: 500,
                     message: "Internal server error",
                     data: err
@@ -43,7 +43,7 @@ AppEvents.get("/app/eventsList", (req, res) => {
                 else {
                     const totalUsers = countResult[0].total;
                     const totalPages = Math.ceil(totalUsers / pageSize);
-                    res.send({
+                    res.json({
                         status: 200,
                         message: "AppEvents fetched successfully",
                         data: {
@@ -61,7 +61,7 @@ AppEvents.get("/app/eventsList", (req, res) => {
         }));
     }
     else {
-        res.send({
+        res.json({
             status: 401,
             message: "Unauthenticated",
             data: null

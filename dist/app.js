@@ -31,16 +31,7 @@ const News_2 = __importDefault(require("./App/News"));
 const add_family_1 = __importDefault(require("./App/add_family"));
 const search_user_1 = __importDefault(require("./App/search_user"));
 app.use(express_1.default.json());
-const corsOptions = {
-    origin: ['http://139.144.1.59:80', 'http://139.144.1.59:9999', 'http://localhost:3000'],
-};
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', 'http://139.144.1.59');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-    next();
-});
-app.use(cors(corsOptions));
+app.use(cors({ origin: 'http://139.144.1.59:9999' }));
 app.use(express_1.default.urlencoded({ extended: true }));
 app.listen(port, () => __awaiter(void 0, void 0, void 0, function* () {
     yield (0, DBConfig_1.default)();

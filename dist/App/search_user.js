@@ -11,13 +11,13 @@ Searh.post("/user/search", (req, res) => {
         const sql = `SELECT * FROM users WHERE full_name LIKE ? OR phone LIKE ? OR gotra LIKE ? OR occupation LIKE ?`;
         DBConfig_1.connection.query(sql, [`%${query}%`], (err, result) => {
             if (err) {
-                res.send({
+                res.json({
                     status: 500,
                     message: "Internal server error",
                     data: err
                 });
             }
-            res.send({
+            res.json({
                 status: 200,
                 message: "Users List",
                 data: result
@@ -25,7 +25,7 @@ Searh.post("/user/search", (req, res) => {
         });
     }
     else {
-        res.send({
+        res.json({
             status: 401,
             message: "Unauthenticated",
             data: null

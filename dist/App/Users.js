@@ -9,13 +9,13 @@ AppProfile.get("/app/get-profile", (req, res) => {
     if (isVerified === true) {
         DBConfig_1.connection.query('Select * FROM users WHERE id = ?', [req.query.id], (err, result) => {
             if (err) {
-                res.send({
+                res.json({
                     status: 500,
                     message: "Internal server error",
                     data: err
                 });
             }
-            res.send({
+            res.json({
                 status: 200,
                 message: "User fetched successfully",
                 data: result
@@ -23,7 +23,7 @@ AppProfile.get("/app/get-profile", (req, res) => {
         });
     }
     else {
-        res.send({
+        res.json({
             status: 401,
             message: "Unauthenticated",
             data: null

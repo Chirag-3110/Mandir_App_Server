@@ -12,21 +12,21 @@ Searh.post("/user/search",(req,res)=>{
 
         connection.query(sql,[`%${query}%`],(err,result)=>{
             if(err){
-                res.send({
+                res.json({
                     status: 500,
                     message: "Internal server error",
                     data: err
                 })
 
             }
-            res.send({
+            res.json({
                 status: 200,
                 message: "Users List",
                 data: result
             })
         })
     }else{
-        res.send({
+        res.json({
             status: 401,
             message: "Unauthenticated",
             data: null

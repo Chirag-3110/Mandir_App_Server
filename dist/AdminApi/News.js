@@ -23,7 +23,7 @@ NewsController.get("/news/list", (req, res) => __awaiter(void 0, void 0, void 0,
         let getEvents = "Select * FROM news LIMIT ?, ?";
         DBConfig_1.connection.query(getEvents, [offset, pageSize], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
             if (err) {
-                res.send({
+                res.json({
                     status: 500,
                     message: "Internal server error",
                     data: err
@@ -41,7 +41,7 @@ NewsController.get("/news/list", (req, res) => __awaiter(void 0, void 0, void 0,
                 else {
                     const totalUsers = countResult[0].total;
                     const totalPages = Math.ceil(totalUsers / pageSize);
-                    res.send({
+                    res.json({
                         status: 200,
                         message: "News fetched successfully",
                         data: {
@@ -59,7 +59,7 @@ NewsController.get("/news/list", (req, res) => __awaiter(void 0, void 0, void 0,
         }));
     }
     else {
-        res.send({
+        res.json({
             status: 401,
             message: "Unauthenticated",
             data: null
@@ -73,13 +73,13 @@ NewsController.post("/news/search", (req, res) => __awaiter(void 0, void 0, void
         let getEvents = "Select * FROM news WHERE title LIKE ?";
         DBConfig_1.connection.query(getEvents, [`%${query}%`], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
             if (err) {
-                res.send({
+                res.json({
                     status: 500,
                     message: "Internal server error",
                     data: err
                 });
             }
-            res.send({
+            res.json({
                 status: 200,
                 message: "News fetched successfully",
                 data: result,
@@ -87,7 +87,7 @@ NewsController.post("/news/search", (req, res) => __awaiter(void 0, void 0, void
         }));
     }
     else {
-        res.send({
+        res.json({
             status: 401,
             message: "Unauthenticated",
             data: null
@@ -101,13 +101,13 @@ NewsController.post("/news/details", (req, res) => __awaiter(void 0, void 0, voi
         let getEvents = "Select * FROM news WHERE id = ?";
         DBConfig_1.connection.query(getEvents, [request], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
             if (err) {
-                res.send({
+                res.json({
                     status: 500,
                     message: "Internal server error",
                     data: err
                 });
             }
-            res.send({
+            res.json({
                 status: 200,
                 message: "news get successfully",
                 data: result
@@ -115,7 +115,7 @@ NewsController.post("/news/details", (req, res) => __awaiter(void 0, void 0, voi
         }));
     }
     else {
-        res.send({
+        res.json({
             status: 401,
             message: "Unauthenticated",
             data: null
@@ -132,13 +132,13 @@ NewsController.post("/news/add", image_upload_1.upload.single("file"), (req, res
         let addEvent = "INSERT INTO news SET ?";
         DBConfig_1.connection.query(addEvent, request, (err, result) => __awaiter(void 0, void 0, void 0, function* () {
             if (err) {
-                res.send({
+                res.json({
                     status: 500,
                     message: "Internal server error",
                     data: err
                 });
             }
-            res.send({
+            res.json({
                 status: 200,
                 message: "news add successfully",
                 data: {}
@@ -146,7 +146,7 @@ NewsController.post("/news/add", image_upload_1.upload.single("file"), (req, res
         }));
     }
     else {
-        res.send({
+        res.json({
             status: 401,
             message: "Unauthenticated",
             data: null
@@ -161,7 +161,7 @@ NewsController.post("/news/change-status", (req, res) => {
         const getEvent = 'Select * FROM news WHERE id = ?';
         DBConfig_1.connection.query(getEvent, [request.id], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
             if (err) {
-                res.send({
+                res.json({
                     status: 500,
                     message: "Internal server error",
                     data: err
@@ -170,13 +170,13 @@ NewsController.post("/news/change-status", (req, res) => {
             const eventData = result[0];
             DBConfig_1.connection.query(updateQuery, [!eventData.is_active, request.id], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
                 if (err) {
-                    res.send({
+                    res.json({
                         status: 500,
                         message: "Internal server error",
                         data: err
                     });
                 }
-                res.send({
+                res.json({
                     status: 200,
                     message: "Status Updated",
                     data: null
@@ -185,7 +185,7 @@ NewsController.post("/news/change-status", (req, res) => {
         }));
     }
     else {
-        res.send({
+        res.json({
             status: 401,
             message: "Unauthenticated",
             data: null
@@ -200,7 +200,7 @@ NewsController.post("/news/delete-status", (req, res) => {
         const getEvent = 'Select * FROM news WHERE id = ?';
         DBConfig_1.connection.query(getEvent, [request.id], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
             if (err) {
-                res.send({
+                res.json({
                     status: 500,
                     message: "Internal server error",
                     data: err
@@ -209,13 +209,13 @@ NewsController.post("/news/delete-status", (req, res) => {
             const eventData = result[0];
             DBConfig_1.connection.query(updateQuery, [!eventData.is_delete, request.id], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
                 if (err) {
-                    res.send({
+                    res.json({
                         status: 500,
                         message: "Internal server error",
                         data: err
                     });
                 }
-                res.send({
+                res.json({
                     status: 200,
                     message: "Event deleted",
                     data: null
@@ -224,7 +224,7 @@ NewsController.post("/news/delete-status", (req, res) => {
         }));
     }
     else {
-        res.send({
+        res.json({
             status: 401,
             message: "Unauthenticated",
             data: null
@@ -246,13 +246,13 @@ NewsController.post("/news/edit", image_upload_1.upload.single("file"), (req, re
             let addEvent = "UPDATE TABLE news SET title = ?, content = ?, image = ? WHERE id = ?";
             DBConfig_1.connection.query(addEvent, [title, content, image, id], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
                 if (err) {
-                    res.send({
+                    res.json({
                         status: 500,
                         message: "Internal server error",
                         data: err
                     });
                 }
-                res.send({
+                res.json({
                     status: 200,
                     message: "news Updated success fully",
                     data: result[0]
@@ -263,7 +263,7 @@ NewsController.post("/news/edit", image_upload_1.upload.single("file"), (req, re
             console.log(req.file, "req.file");
             console.log(req.files, "req.files");
             console.log(req.body, "req.body");
-            res.send({
+            res.json({
                 status: 404,
                 message: "No Image Uploaded",
                 data: null
@@ -271,7 +271,7 @@ NewsController.post("/news/edit", image_upload_1.upload.single("file"), (req, re
         }
     }
     else {
-        res.send({
+        res.json({
             status: 401,
             message: "Unauthenticated",
             data: null

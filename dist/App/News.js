@@ -22,7 +22,7 @@ AppNews.get("/app/newsList", (req, res) => {
         let getAppEvents = "Select * FROM news WHERE is_active = ? AND is_delete = ? LIMIT ?, ?";
         DBConfig_1.connection.query(getAppEvents, [1, 0, offset, pageSize], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
             if (err) {
-                res.send({
+                res.json({
                     status: 500,
                     message: "Internal server error",
                     data: err
@@ -40,7 +40,7 @@ AppNews.get("/app/newsList", (req, res) => {
                 else {
                     const totalUsers = countResult[0].total;
                     const totalPages = Math.ceil(totalUsers / pageSize);
-                    res.send({
+                    res.json({
                         status: 200,
                         message: "News fetched successfully",
                         data: {
@@ -58,7 +58,7 @@ AppNews.get("/app/newsList", (req, res) => {
         }));
     }
     else {
-        res.send({
+        res.json({
             status: 401,
             message: "Unauthenticated",
             data: null

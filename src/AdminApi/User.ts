@@ -34,7 +34,7 @@ UserController.get("/get-users", (req, res) => {
 
         connection.query(query,[offset, pageSize], (err, result) => {
             if (err) {
-                res.send({
+                res.json({
                     status: 500,
                     message: "Internal server error",
                     data: err
@@ -66,7 +66,7 @@ UserController.get("/get-users", (req, res) => {
                         }
                     },"response");
                     
-                    res.send({
+                    res.json({
                         status: 200,
                         message: "Users fetched successfully",
                         data: {
@@ -82,14 +82,14 @@ UserController.get("/get-users", (req, res) => {
                 }
             });
                 
-            // res.send({
+            // res.json({
             //     status: 200,
             //     message: "Users get successully",
             //     data: result
             // })
         })
     } else {
-        res.send({
+        res.json({
             status: 401,
             message: "Unauthenticated",
             data: null
@@ -103,13 +103,13 @@ UserController.get("/get-users", (req, res) => {
 
 UserController.post('/get-file', upload, (req, res) => {
     if (!req.file) {
-        return res.send({
+        return res.json({
             status: 400,
             message: 'No file uploaded.'
         });
     }
     if (req.file.mimetype !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
-        return res.send({
+        return res.json({
             status: 400,
             message: 'Uploaded file is not an Excel file.'
         });
@@ -159,16 +159,16 @@ UserController.post('/get-file', upload, (req, res) => {
             })
         )
             .then((results) => {
-                res.send({
+                res.json({
                     status: 200,
                     message: 'File uploaded and data processed.', data: null
                 });
             })
             .catch((error) => {
-                res.send({ status: 500, message: 'An error occurred while processing the data.', data: error });
+                res.json({ status: 500, message: 'An error occurred while processing the data.', data: error });
             });
     } else {
-        res.send({
+        res.json({
             status: 401,
             message: "Unauthenticated",
             data: null
@@ -188,7 +188,7 @@ UserController.post("/add-user", (req, res) => {
 
             connection.query(getUser, [request.phone, request.email], async (err, result) => {
                 if (err) {
-                    res.send({
+                    res.json({
                         status: 503,
                         message: "internal server error",
                         data: err
@@ -196,7 +196,7 @@ UserController.post("/add-user", (req, res) => {
                 }
                 let existUser = result[0];
                 if (existUser) {
-                    res.send({
+                    res.json({
                         status: 404,
                         message: "phone or email already exist",
                         data: err
@@ -213,7 +213,7 @@ UserController.post("/add-user", (req, res) => {
 
                     connection.query(setUser, request, async (err, result) => {
                         console.log(err, "error is");
-                        if (err) res.send({
+                        if (err) res.json({
                             status: 500,
                             message: "Internal server error",
                             data: err
@@ -224,7 +224,7 @@ UserController.post("/add-user", (req, res) => {
                             if (err) {
                                 console.log(err);
 
-                                res.send({
+                                res.json({
                                     status: 500,
                                     message: "Internal server error",
                                     data: err
@@ -232,7 +232,7 @@ UserController.post("/add-user", (req, res) => {
                             }
                             sendMail(result[0], "Welcome Mail");
 
-                            res.send({
+                            res.json({
                                 status: 201,
                                 message: "user created",
                                 data: result[0].id
@@ -245,7 +245,7 @@ UserController.post("/add-user", (req, res) => {
 
             })
         } else {
-            res.send({
+            res.json({
                 status: 404,
                 message: "request is empty",
                 data: null
@@ -253,7 +253,7 @@ UserController.post("/add-user", (req, res) => {
         }
 
     } else {
-        res.send({
+        res.json({
             status: 401,
             message: "Unauthenticated",
             data: null
@@ -268,13 +268,13 @@ UserController.post("/edit-user", (req, res) => {
         const updateQuery = 'UPDATE users SET full_name = ?,phone = ?,email = ?,gender = ?,occupation = ?,age = ?,gotra = ?,address = ? WHERE id = ?'
         connection.query(updateQuery, [full_name, phone, email, gender, occupation, age, gotra, address, id], async (err, result) => {
             if (err) {
-                res.send({
+                res.json({
                     status: 500,
                     message: "Internal server error",
                     data: err
                 })
             }
-            res.send({
+            res.json({
                 status: 200,
                 message: "User Updated",
                 data: null
@@ -283,7 +283,7 @@ UserController.post("/edit-user", (req, res) => {
         })
 
     } else {
-        res.send({
+        res.json({
             status: 401,
             message: "Unauthenticated",
             data: null
@@ -299,7 +299,7 @@ UserController.post("/user-status", (req, res) => {
         const getEvent = 'Select * FROM users WHERE id = ?'
         connection.query(getEvent, [request.id], async (err, result) => {
             if (err) {
-                res.send({
+                res.json({
                     status: 500,
                     message: "Internal server error",
                     data: err
@@ -308,13 +308,13 @@ UserController.post("/user-status", (req, res) => {
             const eventData = result[0];
             connection.query(updateQuery, [!eventData.is_active, request.id], async (err, result) => {
                 if (err) {
-                    res.send({
+                    res.json({
                         status: 500,
                         message: "Internal server error",
                         data: err
                     })
                 }
-                res.send({
+                res.json({
                     status: 200,
                     message: "Status Updated",
                     data: null
@@ -323,7 +323,7 @@ UserController.post("/user-status", (req, res) => {
             })
         })
     } else {
-        res.send({
+        res.json({
             status: 401,
             message: "Unauthenticated",
             data: null
@@ -339,7 +339,7 @@ UserController.post("/delete-user", (req, res) => {
         const getEvent = 'Select * FROM users WHERE id = ?'
         connection.query(getEvent, [request.id], async (err, result) => {
             if (err) {
-                res.send({
+                res.json({
                     status: 500,
                     message: "Internal server error",
                     data: err
@@ -348,13 +348,13 @@ UserController.post("/delete-user", (req, res) => {
             const eventData = result[0];
             connection.query(updateQuery, [!eventData.is_delete, request.id], async (err, result) => {
                 if (err) {
-                    res.send({
+                    res.json({
                         status: 500,
                         message: "Internal server error",
                         data: err
                     })
                 }
-                res.send({
+                res.json({
                     status: 200,
                     message: "User deleted",
                     data: null
@@ -363,7 +363,7 @@ UserController.post("/delete-user", (req, res) => {
             })
         })
     } else {
-        res.send({
+        res.json({
             status: 401,
             message: "Unauthenticated",
             data: null

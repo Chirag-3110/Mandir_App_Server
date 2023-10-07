@@ -16,7 +16,7 @@ if(request){
 
     connection.query(findUser, [request.email], async (err, result) => {
         if (err) {
-            res.send({
+            res.json({
                 status: 503,
                 message: "internal server error",
                 data: err
@@ -40,20 +40,20 @@ if(request){
                 console.log(token);
                 
                 
-                res.send({
+                res.json({
                     status: 200,
                     message: "User Logged in",
                     data: token
                 })
             } else {
-                res.send({
+                res.json({
                     status: 401,
                     message: "Incorrect password",
                     data: null
                 })
             }
         } else {
-            res.send({
+            res.json({
                 status: 404,
                 message: "user not found",
                 data: null
@@ -62,7 +62,7 @@ if(request){
 
     })
 }else{
-    res.send({
+    res.json({
         status: 404,
         message: "Request is empty",
         data: null
