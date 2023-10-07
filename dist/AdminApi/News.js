@@ -66,6 +66,34 @@ NewsController.get("/news/list", (req, res) => __awaiter(void 0, void 0, void 0,
         });
     }
 }));
+NewsController.get("/news/search", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const isVerified = (0, HelperFunction_1.verifyToken)(req);
+    if (isVerified === true) {
+        const { query } = req.body;
+        let getEvents = "Select * FROM news WHERE title LIKE ?";
+        DBConfig_1.connection.query(getEvents, [`%${query}%`], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
+            if (err) {
+                res.send({
+                    status: 500,
+                    message: "Internal server error",
+                    data: err
+                });
+            }
+            res.send({
+                status: 200,
+                message: "News fetched successfully",
+                data: result,
+            });
+        }));
+    }
+    else {
+        res.send({
+            status: 401,
+            message: "Unauthenticated",
+            data: null
+        });
+    }
+}));
 NewsController.post("/news/details", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const isVerified = (0, HelperFunction_1.verifyToken)(req);
     if (isVerified === true) {

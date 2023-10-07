@@ -12,7 +12,7 @@ NewsController.get("/news/list", async (req, res) => {
         const offset = (page - 1) * pageSize;
 
         let getEvents = "Select * FROM news LIMIT ?, ?";
-        connection.query(getEvents,[offset, pageSize], async (err, result) => {
+        connection.query(getEvents, [offset, pageSize], async (err, result) => {
             if (err) {
                 res.send({
                     status: 500,
@@ -20,9 +20,9 @@ NewsController.get("/news/list", async (req, res) => {
                     data: err
                 })
             }
-            
+
             const countQuery = `SELECT COUNT(*) AS total FROM news`;
-            
+
             connection.query(countQuery, (countErr, countResult) => {
                 if (countErr) {
                     res.status(500).json({
@@ -33,7 +33,7 @@ NewsController.get("/news/list", async (req, res) => {
                 } else {
                     const totalUsers = countResult[0].total;
                     const totalPages = Math.ceil(totalUsers / pageSize);
-                   
+
                     res.send({
                         status: 200,
                         message: "News fetched successfully",
@@ -59,13 +59,44 @@ NewsController.get("/news/list", async (req, res) => {
     }
 })
 
+NewsController.get("/news/search", async (req, res) => {
+    const isVerified = verifyToken(req)
+    if (isVerified === true) {
+        const { query } = req.body
+        let getEvents = "Select * FROM news WHERE title LIKE ?";
+        connection.query(getEvents, [`%${query}%`], async (err, result) => {
+            if (err) {
+                res.send({
+                    status: 500,
+                    message: "Internal server error",
+                    data: err
+                })
+            }
+
+            res.send({
+                status: 200,
+                message: "News fetched successfully",
+                data: result,
+
+
+            });
+        })
+    } else {
+        res.send({
+            status: 401,
+            message: "Unauthenticated",
+            data: null
+        })
+    }
+})
+
 NewsController.post("/news/details", async (req, res) => {
     const isVerified = verifyToken(req)
     if (isVerified === true) {
-        const request= req.query.id;
-        
+        const request = req.query.id;
+
         let getEvents = "Select * FROM news WHERE id = ?";
-        connection.query(getEvents,[request], async (err, result) => {
+        connection.query(getEvents, [request], async (err, result) => {
             if (err) {
                 res.send({
                     status: 500,
@@ -89,15 +120,15 @@ NewsController.post("/news/details", async (req, res) => {
 })
 
 
-NewsController.post("/news/add",upload.single("file"), async (req, res) => {
+NewsController.post("/news/add", upload.single("file"), async (req, res) => {
     const isVerified = verifyToken(req)
     if (isVerified === true) {
         let request = req.body;
-        let filePath = req.file.filename    ;
+        let filePath = req.file.filename;
         request.image = filePath;
-        request.created_at=new Date().toUTCString()
+        request.created_at = new Date().toUTCString()
         let addEvent = "INSERT INTO news SET ?";
-        connection.query(addEvent,request, async (err, result) => {
+        connection.query(addEvent, request, async (err, result) => {
             if (err) {
                 res.send({
                     status: 500,
@@ -120,13 +151,13 @@ NewsController.post("/news/add",upload.single("file"), async (req, res) => {
     }
 })
 
-NewsController.post("/news/change-status",(req,res)=>{
+NewsController.post("/news/change-status", (req, res) => {
     const isVerified = verifyToken(req)
-    if(isVerified==true){
+    if (isVerified == true) {
         let request = req.body;
         const updateQuery = 'UPDATE news SET is_active = ? WHERE id = ?'
         const getEvent = 'Select * FROM news WHERE id = ?'
-        connection.query(getEvent,[request.id], async (err, result) => {
+        connection.query(getEvent, [request.id], async (err, result) => {
             if (err) {
                 res.send({
                     status: 500,
@@ -135,7 +166,7 @@ NewsController.post("/news/change-status",(req,res)=>{
                 })
             }
             const eventData = result[0];
-            connection.query(updateQuery,[!eventData.is_active,request.id], async (err, result) => {
+            connection.query(updateQuery, [!eventData.is_active, request.id], async (err, result) => {
                 if (err) {
                     res.send({
                         status: 500,
@@ -148,10 +179,10 @@ NewsController.post("/news/change-status",(req,res)=>{
                     message: "Status Updated",
                     data: null
                 })
-                
-            })  
+
+            })
         })
-    }else{
+    } else {
         res.send({
             status: 401,
             message: "Unauthenticated",
@@ -160,13 +191,13 @@ NewsController.post("/news/change-status",(req,res)=>{
     }
 })
 
-NewsController.post("/news/delete-status",(req,res)=>{
+NewsController.post("/news/delete-status", (req, res) => {
     const isVerified = verifyToken(req)
-    if(isVerified==true){
+    if (isVerified == true) {
         let request = req.body;
         const updateQuery = 'UPDATE news SET is_delete = ? WHERE id = ?'
         const getEvent = 'Select * FROM news WHERE id = ?'
-        connection.query(getEvent,[request.id], async (err, result) => {
+        connection.query(getEvent, [request.id], async (err, result) => {
             if (err) {
                 res.send({
                     status: 500,
@@ -175,7 +206,7 @@ NewsController.post("/news/delete-status",(req,res)=>{
                 })
             }
             const eventData = result[0];
-            connection.query(updateQuery,[!eventData.is_delete,request.id], async (err, result) => {
+            connection.query(updateQuery, [!eventData.is_delete, request.id], async (err, result) => {
                 if (err) {
                     res.send({
                         status: 500,
@@ -188,10 +219,10 @@ NewsController.post("/news/delete-status",(req,res)=>{
                     message: "Event deleted",
                     data: null
                 })
-                
-            })  
+
+            })
         })
-    }else{
+    } else {
         res.send({
             status: 401,
             message: "Unauthenticated",
@@ -204,19 +235,19 @@ NewsController.post("/news/edit", upload.single("file"), async (req, res) => {
     const isVerified = verifyToken(req)
     if (isVerified === true) {
         console.log(req.headers);
-        
-    if (req.file) {
+
+        if (req.file) {
             console.log(req.file);
             let filePath = req.file.filename;
             let request = req.body;
             request.image = filePath;
-            request.created_at=new Date()
-            console.log(request,"request");
-           
-            const { id , title , content , image } = request;
-            
+            request.created_at = new Date()
+            console.log(request, "request");
+
+            const { id, title, content, image } = request;
+
             let addEvent = "UPDATE TABLE news SET title = ?, content = ?, image = ? WHERE id = ?";
-            connection.query(addEvent,[title , content , image , id], async (err, result) => {
+            connection.query(addEvent, [title, content, image, id], async (err, result) => {
                 if (err) {
                     res.send({
                         status: 500,
@@ -230,17 +261,17 @@ NewsController.post("/news/edit", upload.single("file"), async (req, res) => {
                     data: result[0]
                 })
             })
-    }else{
-        console.log(req.file,"req.file");
-        console.log(req.files,"req.files");
-        console.log(req.body,"req.body");
-        
-        res.send({
-            status: 404,
-            message: "No Image Uploaded",
-            data: null
-        })
-    }
+        } else {
+            console.log(req.file, "req.file");
+            console.log(req.files, "req.files");
+            console.log(req.body, "req.body");
+
+            res.send({
+                status: 404,
+                message: "No Image Uploaded",
+                data: null
+            })
+        }
     } else {
         res.send({
             status: 401,

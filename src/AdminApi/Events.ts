@@ -60,6 +60,36 @@ EventController.get("/events/list", async (req, res) => {
     }
 })
 
+EventController.get("/events/search", async (req, res) => {
+    const isVerified = verifyToken(req)
+    if (isVerified === true) {
+        const {query} = req.body
+
+        let getEvents = "Select * FROM events WHERE name LIKE ?";
+        connection.query(getEvents,[`%${query}%`], async (err, result) => {
+            if (err) {
+                res.send({
+                    status: 500,
+                    message: "Internal server error",
+                    data: err
+                })
+            }
+           
+            res.send({
+                status: 200,
+                message: "Events fetched successfully",
+                data: result, 
+            });
+        })
+    } else {
+        res.send({
+            status: 401,
+            message: "Unauthenticated",
+            data: null
+        })
+    }
+})
+
 EventController.post("/events/details", async (req, res) => {
     const isVerified = verifyToken(req)
     if (isVerified === true) {
