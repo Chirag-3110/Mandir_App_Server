@@ -38,11 +38,11 @@ AppAuth.post('/app/send-otp', (req, res) => __awaiter(void 0, void 0, void 0, fu
                     DBConfig_1.connection.query(updateUser, [phone], (err, result) => {
                         if (err) {
                             console.log("err", err);
-                            // res.json({
-                            //     status: 500,
-                            //     message: "Internal Server Error",
-                            //     data: err
-                            // })
+                            res.json({
+                                status: 500,
+                                message: "Internal Server Error",
+                                data: err
+                            });
                         }
                         res.json({
                             status: 200,
