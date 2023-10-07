@@ -21,7 +21,7 @@ AppAuth.post('/app/send-otp', async (req, res) => {
 
     connection.query(countQuery, [phone], (err, result) => {
         if (err) {
-            res.send({
+            res.json({
                 status: 500,
                 message: "Internal Server Error",
                 data: err
@@ -35,34 +35,36 @@ AppAuth.post('/app/send-otp', async (req, res) => {
                     const updateUser = `UPDATE users SET otp = ${otp} WHERE phone = ?`
                     connection.query(updateUser, [phone], (err, result) => {
                         if (err) {
-                            res.send({
-                                status: 500,
-                                message: "Internal Server Error",
-                                data: null
-                            })
+                            console.log("err",err);
+                            
+                            // res.json({
+                            //     status: 500,
+                            //     message: "Internal Server Error",
+                            //     data: err
+                            // })
                         }
-                        res.send({
+                        res.json({
                             status: 200,
                             message: "Otp Sent Successfully",
                             otp: otp,
                         })
                     })
                 }else{
-                    res.send({
+                    res.json({
                         status: 404,
                         message: "Account Deleted",
                         data: null
                     })
                 }
             }else{
-                res.send({
+                res.json({
                     status: 404,
                     message: "Account is deactivated,contact admin",
                     data: null
                 })
             }
         } else {
-            res.send({
+            res.json({
                 status: 404,
                 message: "No User Found",
                 data: null
@@ -81,7 +83,7 @@ AppAuth.post("/app/verify_otp", async (req, res) => {
     const countQuery = `SELECT * FROM users WHERE phone = ?`
     connection.query(countQuery, [phone], (err, result) => {
         if (err) {
-            res.send({
+            res.json({
                 status: 500,
                 message: "Internal Server Error",
                 data: err
@@ -97,14 +99,14 @@ AppAuth.post("/app/verify_otp", async (req, res) => {
 
             const token = jwt.sign(data, jwtSecretKey);
             
-            res.send({
+            res.json({
                 status: 200,
                 message: "OTP verified successfully",
                 data: existUser,
                 token:token
             })
         } else {
-            res.send({
+            res.json({
                 status: 404,
                 message: "Invalid OTP",
                 data: null
@@ -132,7 +134,7 @@ AppAuth.post("/app/complete-profile", upload.single("file"), (req, res) => {
         const updateQuery = 'UPDATE users SET full_name = ?,email = ?,gender = ?,occupation = ?,age = ?,image = ?,gotra = ?,address = ?,isProfileCompleted = ?,married = ? WHERE id = ?'
         connection.query(updateQuery, [full_name, email, gender, occupation, age, image, gotra, address,1,married, id], async (err, result) => {
             if (err) {
-                res.send({
+                res.json({
                     status: 500,
                     message: "Internal server error",
                     data: err
@@ -140,14 +142,14 @@ AppAuth.post("/app/complete-profile", upload.single("file"), (req, res) => {
             } else {
                 connection.query('SELECT * FROM users WHERE id = ?',[id],(err,result)=>{
                     if (err) {
-                        res.send({
+                        res.json({
                             status: 500,
                             message: "Internal server error",
                             data: err
                         })
                     }else{
                         let existUser = result[0];
-                        res.send({
+                        res.json({
                             status: 200,
                             message: "User Data",
                             data: existUser
@@ -159,7 +161,7 @@ AppAuth.post("/app/complete-profile", upload.single("file"), (req, res) => {
             }
         })
     } else {
-        res.send({
+        res.json({
             status: 401,
             message: "UnAuthenticated",
             data: null

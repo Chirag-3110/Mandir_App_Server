@@ -112,7 +112,7 @@ NewsController.post("/news/add", image_upload_1.upload.single("file"), (req, res
             }
             res.send({
                 status: 200,
-                message: "news add success fully",
+                message: "news add successfully",
                 data: {}
             });
         }));

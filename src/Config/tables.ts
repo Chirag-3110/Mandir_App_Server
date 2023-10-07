@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS users (
   married TEXT,
   image TEXT,
   members JSON,
+  otp TEXT,
   gender ENUM('Male', 'Female', 'Other'),
   postal_address TEXT,
   is_active BOOLEAN DEFAULT true,

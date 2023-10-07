@@ -108,7 +108,7 @@ NewsController.post("/news/add",upload.single("file"), async (req, res) => {
             }
             res.send({
                 status: 200,
-                message: "news add success fully",
+                message: "news add successfully",
                 data: {}
             })
         })

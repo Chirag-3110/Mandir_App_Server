@@ -23,7 +23,7 @@ AppAuth.post('/app/send-otp', (req, res) => __awaiter(void 0, void 0, void 0, fu
     const countQuery = `SELECT * FROM users WHERE phone = ?`;
     DBConfig_1.connection.query(countQuery, [phone], (err, result) => {
         if (err) {
-            res.send({
+            res.json({
                 status: 500,
                 message: "Internal Server Error",
                 data: err
@@ -37,13 +37,14 @@ AppAuth.post('/app/send-otp', (req, res) => __awaiter(void 0, void 0, void 0, fu
                     const updateUser = `UPDATE users SET otp = ${otp} WHERE phone = ?`;
                     DBConfig_1.connection.query(updateUser, [phone], (err, result) => {
                         if (err) {
-                            res.send({
-                                status: 500,
-                                message: "Internal Server Error",
-                                data: null
-                            });
+                            console.log("err", err);
+                            // res.json({
+                            //     status: 500,
+                            //     message: "Internal Server Error",
+                            //     data: err
+                            // })
                         }
-                        res.send({
+                        res.json({
                             status: 200,
                             message: "Otp Sent Successfully",
                             otp: otp,
@@ -51,7 +52,7 @@ AppAuth.post('/app/send-otp', (req, res) => __awaiter(void 0, void 0, void 0, fu
                     });
                 }
                 else {
-                    res.send({
+                    res.json({
                         status: 404,
                         message: "Account Deleted",
                         data: null
@@ -59,7 +60,7 @@ AppAuth.post('/app/send-otp', (req, res) => __awaiter(void 0, void 0, void 0, fu
                 }
             }
             else {
-                res.send({
+                res.json({
                     status: 404,
                     message: "Account is deactivated,contact admin",
                     data: null
@@ -67,7 +68,7 @@ AppAuth.post('/app/send-otp', (req, res) => __awaiter(void 0, void 0, void 0, fu
             }
         }
         else {
-            res.send({
+            res.json({
                 status: 404,
                 message: "No User Found",
                 data: null
@@ -80,7 +81,7 @@ AppAuth.post("/app/verify_otp", (req, res) => __awaiter(void 0, void 0, void 0, 
     const countQuery = `SELECT * FROM users WHERE phone = ?`;
     DBConfig_1.connection.query(countQuery, [phone], (err, result) => {
         if (err) {
-            res.send({
+            res.json({
                 status: 500,
                 message: "Internal Server Error",
                 data: err
@@ -94,7 +95,7 @@ AppAuth.post("/app/verify_otp", (req, res) => __awaiter(void 0, void 0, void 0, 
                 email: existUser.phone
             };
             const token = jwt.sign(data, jwtSecretKey);
-            res.send({
+            res.json({
                 status: 200,
                 message: "OTP verified successfully",
                 data: existUser,
@@ -102,7 +103,7 @@ AppAuth.post("/app/verify_otp", (req, res) => __awaiter(void 0, void 0, void 0, 
             });
         }
         else {
-            res.send({
+            res.json({
                 status: 404,
                 message: "Invalid OTP",
                 data: null
@@ -123,7 +124,7 @@ AppAuth.post("/app/complete-profile", image_upload_1.upload.single("file"), (req
         const updateQuery = 'UPDATE users SET full_name = ?,email = ?,gender = ?,occupation = ?,age = ?,image = ?,gotra = ?,address = ?,isProfileCompleted = ?,married = ? WHERE id = ?';
         DBConfig_1.connection.query(updateQuery, [full_name, email, gender, occupation, age, image, gotra, address, 1, married, id], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
             if (err) {
-                res.send({
+                res.json({
                     status: 500,
                     message: "Internal server error",
                     data: err
@@ -132,7 +133,7 @@ AppAuth.post("/app/complete-profile", image_upload_1.upload.single("file"), (req
             else {
                 DBConfig_1.connection.query('SELECT * FROM users WHERE id = ?', [id], (err, result) => {
                     if (err) {
-                        res.send({
+                        res.json({
                             status: 500,
                             message: "Internal server error",
                             data: err
@@ -140,7 +141,7 @@ AppAuth.post("/app/complete-profile", image_upload_1.upload.single("file"), (req
                     }
                     else {
                         let existUser = result[0];
-                        res.send({
+                        res.json({
                             status: 200,
                             message: "User Data",
                             data: existUser
@@ -151,7 +152,7 @@ AppAuth.post("/app/complete-profile", image_upload_1.upload.single("file"), (req
         }));
     }
     else {
-        res.send({
+        res.json({
             status: 401,
             message: "UnAuthenticated",
             data: null

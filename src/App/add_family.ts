@@ -14,33 +14,44 @@ AddFamily.post("/add-member",async (req,res)=>{
         let userIds = []
         Promise.all(
             members.map((member)=>{
-                const { full_name , email , phone , gender , occupation , age , address , married } = member
+               
+                
                return new Promise((resolve,reject)=>{
+
+                const { full_name , email , phone , gender , occupation , age , address , married } = member
                 connection.query("SELECT * FROM users WHERE email = ? OR phone = ?",[email,phone],(err,result)=>{
                     if(err){
                        reject(err)
                     }
             
                     const userExist = result
-                    if(userExist){
-                        userIds.push(userExist.id)
+                    console.log(userExist,"userExist");
+                    
+                    if(userExist.length > 0){
+                        userIds.push(userExist[0].id)
                        connection.query('UPDATE users SET members = ? WHERE id = ?',[JSON.stringify(userIds),id],(err,res)=>{
                         if(err){
+                           
                             reject(err)
                         }
+                        console.log(res,"res is if" );
+                        
                         resolve(res)
                        })
                     }else{
-                        connection.query('INSERT INTO users SET ?',[full_name , email , phone , gender , occupation , age , address , married],(err,res)=>{
+                        connection.query('INSERT INTO users SET ?',member,(err,res)=>{
                             if(err){
+                                console.log("err is ",err);
+                                
                                 reject(err)
                             }
+                            console.log("res is",res);
                             connection.query('SELECT * FROM users WHERE email = ?',[email],(err,res)=>{
                                 if(err){
                                     reject(err)
                                 }
-                                if(res){
-                                    userIds.push(res.id)
+                                if(res.length > 0){
+                                    userIds.push(res[0].id)
                                     connection.query("UPDATE users SET members = ? WHERE id = ?",[JSON.stringify(userIds),id],(err,res)=>{
                                         if(err){
                                             reject(err)
