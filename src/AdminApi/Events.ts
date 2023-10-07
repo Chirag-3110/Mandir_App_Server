@@ -167,7 +167,7 @@ EventController.post("/events/edit", upload.single("file"), async (req, res) => 
                 res.send({
                     status: 200,
                     message: "events Updated success fully",
-                    data: result[0]
+                    data: result
                 })
             })
     }else{

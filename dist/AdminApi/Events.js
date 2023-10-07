@@ -167,7 +167,7 @@ EventController.post("/events/edit", image_upload_1.upload.single("file"), (req,
                 res.send({
                     status: 200,
                     message: "events Updated success fully",
-                    data: result[0]
+                    data: result
                 });
             }));
         }
