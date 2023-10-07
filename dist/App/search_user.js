@@ -17,11 +17,13 @@ Searh.post("/user/search", (req, res) => {
                     data: err
                 });
             }
-            res.json({
-                status: 200,
-                message: "Users List",
-                data: result
-            });
+            else {
+                res.json({
+                    status: 200,
+                    message: "Users List",
+                    data: result
+                });
+            }
         });
     }
     else {

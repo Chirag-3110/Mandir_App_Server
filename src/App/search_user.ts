@@ -18,12 +18,14 @@ Searh.post("/user/search",(req,res)=>{
                     data: err
                 })
 
+            }else{
+                res.json({
+                    status: 200,
+                    message: "Users List",
+                    data: result
+                })
             }
-            res.json({
-                status: 200,
-                message: "Users List",
-                data: result
-            })
+            
         })
     }else{
         res.json({
