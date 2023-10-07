@@ -89,7 +89,6 @@ NewsController.post("/news/details", async (req, res) => {
 })
 
 
-
 NewsController.post("/news/add",upload.single("file"), async (req, res) => {
     const isVerified = verifyToken(req)
     if (isVerified === true) {
@@ -200,4 +199,55 @@ NewsController.post("/news/delete-status",(req,res)=>{
         })
     }
 })
+
+NewsController.post("/news/edit", upload.single("file"), async (req, res) => {
+    const isVerified = verifyToken(req)
+    if (isVerified === true) {
+        console.log(req.headers);
+        
+    if (req.file) {
+            console.log(req.file);
+            let filePath = req.file.filename;
+            let request = req.body;
+            request.image = filePath;
+            request.created_at=new Date()
+            console.log(request,"request");
+           
+            const { id , title , content , image } = request;
+            
+            let addEvent = "UPDATE TABLE news SET title = ?, content = ?, image = ? WHERE id = ?";
+            connection.query(addEvent,[title , content , image , id], async (err, result) => {
+                if (err) {
+                    res.send({
+                        status: 500,
+                        message: "Internal server error",
+                        data: err
+                    })
+                }
+                res.send({
+                    status: 200,
+                    message: "news Updated success fully",
+                    data: result[0]
+                })
+            })
+    }else{
+        console.log(req.file,"req.file");
+        console.log(req.files,"req.files");
+        console.log(req.body,"req.body");
+        
+        res.send({
+            status: 404,
+            message: "No Image Uploaded",
+            data: null
+        })
+    }
+    } else {
+        res.send({
+            status: 401,
+            message: "Unauthenticated",
+            data: null
+        })
+    }
+})
+
 export default NewsController
