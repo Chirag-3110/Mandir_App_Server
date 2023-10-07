@@ -64,7 +64,8 @@ EventController.get("/events/search", async (req, res) => {
     const isVerified = verifyToken(req)
     if (isVerified === true) {
         const {query} = req.body
-
+        console.log(query,"query");
+        
         let getEvents = "Select * FROM events WHERE name LIKE ?";
         connection.query(getEvents,[`%${query}%`], async (err, result) => {
             if (err) {
@@ -74,6 +75,7 @@ EventController.get("/events/search", async (req, res) => {
                     data: err
                 })
             }
+            console.log(err,"err");
            
             res.send({
                 status: 200,

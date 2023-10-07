@@ -73,6 +73,7 @@ EventController.get("/events/search", (req, res) => __awaiter(void 0, void 0, vo
     const isVerified = (0, HelperFunction_1.verifyToken)(req);
     if (isVerified === true) {
         const { query } = req.body;
+        console.log(query, "query");
         let getEvents = "Select * FROM events WHERE name LIKE ?";
         DBConfig_1.connection.query(getEvents, [`%${query}%`], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
             if (err) {
@@ -82,6 +83,7 @@ EventController.get("/events/search", (req, res) => __awaiter(void 0, void 0, vo
                     data: err
                 });
             }
+            console.log(err, "err");
             res.send({
                 status: 200,
                 message: "Events fetched successfully",
