@@ -30,8 +30,8 @@ const Users_1 = __importDefault(require("./App/Users"));
 const News_2 = __importDefault(require("./App/News"));
 const add_family_1 = __importDefault(require("./App/add_family"));
 const search_user_1 = __importDefault(require("./App/search_user"));
-app.use(express_1.default.json());
-app.use(cors({ origin: ['http://139.144.1.59:9999', "http://localhost:3000"] }));
+app.use(cors());
+// app.use(express.json())
 app.use(express_1.default.urlencoded({ extended: true }));
 app.listen(port, () => __awaiter(void 0, void 0, void 0, function* () {
     yield (0, DBConfig_1.default)();
