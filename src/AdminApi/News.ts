@@ -254,18 +254,22 @@ NewsController.post("/news/edit", upload.single("file"), async (req, res) => {
     if (isVerified === true) {
         console.log(req.headers);
         let request = req.body;
+        let addEvent;
+        let values;
+        const { id, title, content, image } = request;
+
         if (req.file) {
             console.log(req.file);
             let filePath = req.file.filename;
            
             request.image = filePath;
+            addEvent = "UPDATE news SET title = ?, content = ?, image = ? WHERE id = ?";
+            values = [title, content, image, id]
+        }else{
+            addEvent = "UPDATE news SET title = ?, content = ? WHERE id = ?";
+            values = [title, content, id]
         }
-            console.log(request, "request");
-
-            const { id, title, content, image } = request;
-
-            let addEvent = "UPDATE news SET title = ?, content = ?, image = ? WHERE id = ?";
-            connection.query(addEvent, [title, content, image, id], async (err, result) => {
+            connection.query(addEvent, [], async (err, result) => {
                 if (err) {
                     res.json({
                         status: 500,

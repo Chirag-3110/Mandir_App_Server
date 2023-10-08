@@ -183,17 +183,24 @@ EventController.post("/events/edit", upload.single("file"), async (req, res) => 
     if (isVerified === true) {
         console.log(req.headers);
         let request = req.body;
+        const { id , name , start_date , end_date , description , type , address , image } = request;
+            let addEvent;
+            let values;
     if (req.file) {
         let filePath = req.file.filename;
           
         request.image = filePath;
-    }       
-     const { id , name , start_date , end_date , description , type , address , image } = request;
-            
+        addEvent = "UPDATE events SET name = ?, start_date = ?, end_date = ?, description = ?,type = ?,address = ?,image = ? WHERE id = ?";
+        values = [name , start_date , end_date , description , type , address , image , id]
+    }  else{
+        addEvent = "UPDATE events SET name = ?, start_date = ?, end_date = ?, description = ?,type = ?,address = ? WHERE id = ?";
+        values = [name , start_date , end_date , description , type , address  , id]
+    }     
+    
            
             
-            let addEvent = "UPDATE events SET name = ?, start_date = ?, end_date = ?, description = ?,type = ?,address = ?,image = ? WHERE id = ?";
-            connection.query(addEvent,[name , start_date , end_date , description , type , address , image , id], async (err, result) => {
+             
+            connection.query(addEvent,values, async (err, result) => {
                 if (err) {
                     res.json({
                         status: 500,
