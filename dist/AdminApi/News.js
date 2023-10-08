@@ -269,7 +269,7 @@ NewsController.post("/news/edit", image_upload_1.upload.single("file"), (req, re
             addEvent = "UPDATE news SET title = ?, content = ? WHERE id = ?";
             values = [title, content, id];
         }
-        DBConfig_1.connection.query(addEvent, [], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
+        DBConfig_1.connection.query(addEvent, values, (err, result) => __awaiter(void 0, void 0, void 0, function* () {
             if (err) {
                 res.json({
                     status: 500,

@@ -269,7 +269,7 @@ NewsController.post("/news/edit", upload.single("file"), async (req, res) => {
             addEvent = "UPDATE news SET title = ?, content = ? WHERE id = ?";
             values = [title, content, id]
         }
-            connection.query(addEvent, [], async (err, result) => {
+            connection.query(addEvent, values, async (err, result) => {
                 if (err) {
                     res.json({
                         status: 500,
