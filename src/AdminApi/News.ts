@@ -125,6 +125,7 @@ NewsController.post("/news/details", async (req, res) => {
 NewsController.post("/news/add", upload.single("file"), async (req, res) => {
     const isVerified = verifyToken(req)
     if (isVerified === true) {
+       if(req.file){
         let request = req.body;
         let filePath = req.file.filename;
         request.image = filePath;
@@ -146,6 +147,13 @@ NewsController.post("/news/add", upload.single("file"), async (req, res) => {
             }
             
         })
+       }else{
+        res.json({
+            status: 404,
+            message: "No file uploaded",
+            data: null
+        })
+       }
     } else {
         res.json({
             status: 401,
@@ -252,7 +260,6 @@ NewsController.post("/news/edit", upload.single("file"), async (req, res) => {
            
             request.image = filePath;
         }
-            request.created_at = new Date()
             console.log(request, "request");
 
             const { id, title, content, image } = request;

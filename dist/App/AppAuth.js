@@ -29,6 +29,7 @@ AppAuth.post('/app/send-otp', (req, res) => __awaiter(void 0, void 0, void 0, fu
                 data: err
             });
         }
+        console.log(result, "result");
         let existUser = result[0];
         if (existUser) {
             if (existUser.is_active == 1) {

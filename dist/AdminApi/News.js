@@ -127,27 +127,36 @@ NewsController.post("/news/details", (req, res) => __awaiter(void 0, void 0, voi
 NewsController.post("/news/add", image_upload_1.upload.single("file"), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const isVerified = (0, HelperFunction_1.verifyToken)(req);
     if (isVerified === true) {
-        let request = req.body;
-        let filePath = req.file.filename;
-        request.image = filePath;
-        request.created_at = new Date().toUTCString();
-        let addEvent = "INSERT INTO news SET ?";
-        DBConfig_1.connection.query(addEvent, request, (err, result) => __awaiter(void 0, void 0, void 0, function* () {
-            if (err) {
-                res.json({
-                    status: 500,
-                    message: "Internal server error",
-                    data: err
-                });
-            }
-            else {
-                res.json({
-                    status: 200,
-                    message: "news add successfully",
-                    data: {}
-                });
-            }
-        }));
+        if (req.file) {
+            let request = req.body;
+            let filePath = req.file.filename;
+            request.image = filePath;
+            request.created_at = new Date().toUTCString();
+            let addEvent = "INSERT INTO news SET ?";
+            DBConfig_1.connection.query(addEvent, request, (err, result) => __awaiter(void 0, void 0, void 0, function* () {
+                if (err) {
+                    res.json({
+                        status: 500,
+                        message: "Internal server error",
+                        data: err
+                    });
+                }
+                else {
+                    res.json({
+                        status: 200,
+                        message: "news add successfully",
+                        data: {}
+                    });
+                }
+            }));
+        }
+        else {
+            res.json({
+                status: 404,
+                message: "No file uploaded",
+                data: null
+            });
+        }
     }
     else {
         res.json({
@@ -251,7 +260,6 @@ NewsController.post("/news/edit", image_upload_1.upload.single("file"), (req, re
             let filePath = req.file.filename;
             request.image = filePath;
         }
-        request.created_at = new Date();
         console.log(request, "request");
         const { id, title, content, image } = request;
         let addEvent = "UPDATE TABLE news SET title = ?, content = ?, image = ? WHERE id = ?";

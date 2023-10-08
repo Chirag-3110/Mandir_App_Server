@@ -27,6 +27,8 @@ AppAuth.post('/app/send-otp', async (req, res) => {
                 data: err
             })
         }
+        console.log(result,"result");
+        
         let existUser = result[0];
         if (existUser) {
             if (existUser.is_active == 1) {
