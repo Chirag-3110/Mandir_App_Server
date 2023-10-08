@@ -264,7 +264,7 @@ NewsController.post("/news/edit", upload.single("file"), async (req, res) => {
 
             const { id, title, content, image } = request;
 
-            let addEvent = "UPDATE TABLE news SET title = ?, content = ?, image = ? WHERE id = ?";
+            let addEvent = "UPDATE news SET title = ?, content = ?, image = ? WHERE id = ?";
             connection.query(addEvent, [title, content, image, id], async (err, result) => {
                 if (err) {
                     res.json({

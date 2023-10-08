@@ -262,7 +262,7 @@ NewsController.post("/news/edit", image_upload_1.upload.single("file"), (req, re
         }
         console.log(request, "request");
         const { id, title, content, image } = request;
-        let addEvent = "UPDATE TABLE news SET title = ?, content = ?, image = ? WHERE id = ?";
+        let addEvent = "UPDATE news SET title = ?, content = ?, image = ? WHERE id = ?";
         DBConfig_1.connection.query(addEvent, [title, content, image, id], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
             if (err) {
                 res.json({
