@@ -184,12 +184,12 @@ EventController.post("/events/edit", image_upload_1.upload.single("file"), (req,
     if (isVerified === true) {
         console.log(req.headers);
         let request = req.body;
-        const { id, name, start_date, end_date, description, type, address, image } = request;
+        let { id, name, start_date, end_date, description, type, address, image } = request;
         let addEvent;
         let values;
         if (req.file) {
             let filePath = req.file.filename;
-            request.image = filePath;
+            image = filePath;
             addEvent = "UPDATE events SET name = ?, start_date = ?, end_date = ?, description = ?,type = ?,address = ?,image = ? WHERE id = ?";
             values = [name, start_date, end_date, description, type, address, image, id];
         }
