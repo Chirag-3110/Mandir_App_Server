@@ -1,4 +1,4 @@
-import { admins, events, featured, news, userTable } from "./tables";
+import { admins, content, events, featured, news, userTable } from "./tables";
 
 var mysql = require('mysql2');
 
@@ -30,6 +30,7 @@ const configMongoDB = async () => {
           connection.query(news)
           connection.query(featured)
           connection.query(admins)
+          connection.query(content)
   
           const findUser = 'SELECT COUNT(*) as count FROM admin WHERE email = ?'
           connection.query(findUser, ["admin@yopmail.com"], async (err, existingUser) => {

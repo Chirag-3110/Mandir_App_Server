@@ -40,6 +40,7 @@ const configMongoDB = () => __awaiter(void 0, void 0, void 0, function* () {
                     exports.connection.query(tables_1.news);
                     exports.connection.query(tables_1.featured);
                     exports.connection.query(tables_1.admins);
+                    exports.connection.query(tables_1.content);
                     const findUser = 'SELECT COUNT(*) as count FROM admin WHERE email = ?';
                     exports.connection.query(findUser, ["admin@yopmail.com"], (err, existingUser) => __awaiter(this, void 0, void 0, function* () {
                         console.log(existingUser);

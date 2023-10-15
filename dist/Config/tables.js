@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.featured = exports.news = exports.events = exports.admins = exports.userTable = void 0;
+exports.content = exports.featured = exports.news = exports.events = exports.admins = exports.userTable = void 0;
 exports.userTable = `
 CREATE TABLE IF NOT EXISTS users (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -70,4 +70,12 @@ CREATE TABLE IF NOT EXISTS featured (
   created_at TEXT
 )
 `;
+exports.content = `CREATE TABLE IF NOT EXISTS content (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  section TEXT,
+  content TEXT,
+  created_at TEXT,
+  is_active BOOLEAN DEFAULT true,
+  is_delete BOOLEAN DEFAULT false
+)`;
 //# sourceMappingURL=tables.js.map

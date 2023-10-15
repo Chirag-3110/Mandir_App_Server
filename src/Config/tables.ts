@@ -70,3 +70,12 @@ CREATE TABLE IF NOT EXISTS featured (
   created_at TEXT
 )
 `;
+
+export const content = `CREATE TABLE IF NOT EXISTS content (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  section TEXT,
+  content TEXT,
+  created_at TEXT,
+  is_active BOOLEAN DEFAULT true,
+  is_delete BOOLEAN DEFAULT false
+)`;
