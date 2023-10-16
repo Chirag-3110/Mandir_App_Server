@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.content = exports.featured = exports.news = exports.events = exports.admins = exports.userTable = void 0;
+exports.aboutApp = exports.content = exports.featured = exports.news = exports.events = exports.admins = exports.userTable = void 0;
 exports.userTable = `
 CREATE TABLE IF NOT EXISTS users (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -74,6 +74,13 @@ exports.content = `CREATE TABLE IF NOT EXISTS content (
   id INT AUTO_INCREMENT PRIMARY KEY,
   section TEXT,
   content TEXT,
+  created_at TEXT,
+  is_active BOOLEAN DEFAULT true,
+  is_delete BOOLEAN DEFAULT false
+)`;
+exports.aboutApp = `CREATE TABLE IF NOT EXISTS app_content (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  text TEXT,
   created_at TEXT,
   is_active BOOLEAN DEFAULT true,
   is_delete BOOLEAN DEFAULT false

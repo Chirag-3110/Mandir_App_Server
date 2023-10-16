@@ -79,3 +79,11 @@ export const content = `CREATE TABLE IF NOT EXISTS content (
   is_active BOOLEAN DEFAULT true,
   is_delete BOOLEAN DEFAULT false
 )`;
+
+export const aboutApp = `CREATE TABLE IF NOT EXISTS app_content (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  text TEXT,
+  created_at TEXT,
+  is_active BOOLEAN DEFAULT true,
+  is_delete BOOLEAN DEFAULT false
+)`;
