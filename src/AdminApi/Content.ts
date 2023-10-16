@@ -9,7 +9,7 @@ ContentRouter.get("/get-content",(req,res)=>{
     let isVerify = verifyToken(req);
 
     if(isVerify===true){
-        connection.query("SELECT * FROM TABLE app_content",(err,result)=>{
+        connection.query("SELECT * FROM app_content",(err,result)=>{
             if(err){
                 res.json({
                     status: 500,

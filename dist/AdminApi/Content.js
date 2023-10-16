@@ -7,7 +7,7 @@ const ContentRouter = express.Router();
 ContentRouter.get("/get-content", (req, res) => {
     let isVerify = (0, HelperFunction_1.verifyToken)(req);
     if (isVerify === true) {
-        DBConfig_1.connection.query("SELECT * FROM TABLE app_content", (err, result) => {
+        DBConfig_1.connection.query("SELECT * FROM app_content", (err, result) => {
             if (err) {
                 res.json({
                     status: 500,
