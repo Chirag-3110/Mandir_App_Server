@@ -54,7 +54,7 @@ Ads.get("/admin/get-ads", image_upload_1.upload.single("file"), (req, res) => __
         });
     }
 }));
-Ads.get("/admin/add-ads", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+Ads.post("/admin/add-ads", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     DBConfig_1.connection.query("SELECT * FROM ads", (err, result) => __awaiter(void 0, void 0, void 0, function* () {
         if (err) {
             res.json({

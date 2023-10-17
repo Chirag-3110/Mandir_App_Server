@@ -47,7 +47,7 @@ Ads.get("/admin/get-ads" ,upload.single("file"),async (req,res)=>{
 
 })
 
-Ads.get("/admin/add-ads",async (req,res)=>{
+Ads.post("/admin/add-ads",async (req,res)=>{
 
     connection.query("SELECT * FROM ads",async (err,result)=>{
         if(err){
