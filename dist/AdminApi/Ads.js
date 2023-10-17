@@ -14,7 +14,7 @@ const HelperFunction_1 = require("../Middleware/HelperFunction");
 const image_upload_1 = require("../Middleware/image_upload");
 const express = require('express');
 const Ads = express.Router();
-Ads.get("/admin/get-ads", image_upload_1.upload.single("file"), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+Ads.post("/admin/add-ads", image_upload_1.upload.single("file"), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let isVerify = (0, HelperFunction_1.verifyToken)(req);
     if (isVerify === true) {
         if (req.file) {
@@ -54,23 +54,33 @@ Ads.get("/admin/get-ads", image_upload_1.upload.single("file"), (req, res) => __
         });
     }
 }));
-Ads.post("/admin/add-ads", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    DBConfig_1.connection.query("SELECT * FROM ads", (err, result) => __awaiter(void 0, void 0, void 0, function* () {
-        if (err) {
-            res.json({
-                status: 500,
-                message: "Internal Srver Error",
-                data: err
-            });
-        }
-        else {
-            res.json({
-                status: 200,
-                message: "Success",
-                data: result
-            });
-        }
-    }));
+Ads.get("/admin/get-ads", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    let isVerify = (0, HelperFunction_1.verifyToken)(req);
+    if (isVerify === true) {
+        DBConfig_1.connection.query("SELECT * FROM ads", (err, result) => __awaiter(void 0, void 0, void 0, function* () {
+            if (err) {
+                res.json({
+                    status: 500,
+                    message: "Internal Srver Error",
+                    data: err
+                });
+            }
+            else {
+                res.json({
+                    status: 200,
+                    message: "Success",
+                    data: result
+                });
+            }
+        }));
+    }
+    else {
+        res.json({
+            status: 401,
+            message: "Unauthenticated",
+            data: null
+        });
+    }
 }));
 exports.default = Ads;
 //# sourceMappingURL=Ads.js.map
