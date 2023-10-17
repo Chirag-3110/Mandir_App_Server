@@ -12,7 +12,7 @@ import AppNews from './App/News';
 import AddFamily from './App/add_family';
 import Searh from './App/search_user';
 import ContentRouter from './AdminApi/Content';
-import { aboutApp } from './Config/tables';
+import { aboutApp, ads } from './Config/tables';
 config.configDotenv()
 const app = express();
 const cors = require('cors');
