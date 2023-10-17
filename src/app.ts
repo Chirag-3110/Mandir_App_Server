@@ -13,6 +13,7 @@ import AddFamily from './App/add_family';
 import Searh from './App/search_user';
 import ContentRouter from './AdminApi/Content';
 import { aboutApp, ads } from './Config/tables';
+import Ads from './AdminApi/Ads';
 config.configDotenv()
 const app = express();
 const cors = require('cors');
@@ -52,6 +53,8 @@ const imagesDirectory = path.join(__dirname, '../Images'); // Replace 'Images' w
 app.use('/Images', express.static(imagesDirectory));
 
 app.use(NewsController)
+
+app.use(Ads)
 
 app.use(AppAuth)
 

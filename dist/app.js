@@ -26,6 +26,7 @@ const News_2 = __importDefault(require("./App/News"));
 const add_family_1 = __importDefault(require("./App/add_family"));
 const search_user_1 = __importDefault(require("./App/search_user"));
 const Content_1 = __importDefault(require("./AdminApi/Content"));
+const Ads_1 = __importDefault(require("./AdminApi/Ads"));
 dotenv_1.default.configDotenv();
 const app = (0, express_1.default)();
 const cors = require('cors');
@@ -57,6 +58,7 @@ app.use(Events_1.default);
 const imagesDirectory = path.join(__dirname, '../Images'); // Replace 'Images' with your image directory's name
 app.use('/Images', express_1.default.static(imagesDirectory));
 app.use(News_1.default);
+app.use(Ads_1.default);
 app.use(AppAuth_1.default);
 app.use(Events_2.default);
 app.use(Users_1.default);
