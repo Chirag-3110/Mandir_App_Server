@@ -166,7 +166,7 @@ Ads.post("/edit-ad", upload.single("file"), (req, res) => {
         if (req.file) {
             let filePath = req.file.filename;
             file = filePath;
-            updateQuery = 'UPDATE ads SET  file = ? , section = ? WHERE id = ?'
+            updateQuery = 'UPDATE ads SET file = ? , section = ? WHERE id = ?'
             body = [file,section,id]
 
         } else {
@@ -181,13 +181,15 @@ Ads.post("/edit-ad", upload.single("file"), (req, res) => {
                     message: "Internal server error",
                     data: err
                 })
+            }else{
+                res.json({
+                    status: 200,
+                    message: "ad Updated",
+                    data: null
+                })
+    
             }
-            res.json({
-                status: 200,
-                message: "ad Updated",
-                data: null
-            })
-
+            
         })
 
     } else {

@@ -169,7 +169,7 @@ Ads.post("/edit-ad", image_upload_1.upload.single("file"), (req, res) => {
         if (req.file) {
             let filePath = req.file.filename;
             file = filePath;
-            updateQuery = 'UPDATE ads SET  file = ? , section = ? WHERE id = ?';
+            updateQuery = 'UPDATE ads SET file = ? , section = ? WHERE id = ?';
             body = [file, section, id];
         }
         else {
@@ -184,11 +184,13 @@ Ads.post("/edit-ad", image_upload_1.upload.single("file"), (req, res) => {
                     data: err
                 });
             }
-            res.json({
-                status: 200,
-                message: "ad Updated",
-                data: null
-            });
+            else {
+                res.json({
+                    status: 200,
+                    message: "ad Updated",
+                    data: null
+                });
+            }
         }));
     }
     else {
