@@ -166,12 +166,12 @@ Ads.post("/edit-ad", upload.single("file"), (req, res) => {
         if (req.file) {
             let filePath = req.file.filename;
             file = filePath;
-            updateQuery = 'UPDATE ads SET file = ? , section = ? WHERE id = ?'
+            updateQuery = 'UPDATE ads SET file = ? , screen = ? WHERE id = ?'
             body = [file,section,id]
 
         } else {
             body = [section,id]
-            updateQuery = 'UPDATE ads SET section = ? WHERE id = ?'
+            updateQuery = 'UPDATE ads SET screen = ? WHERE id = ?'
 
         }
         connection.query(updateQuery, body, async (err, result) => {

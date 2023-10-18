@@ -169,12 +169,12 @@ Ads.post("/edit-ad", image_upload_1.upload.single("file"), (req, res) => {
         if (req.file) {
             let filePath = req.file.filename;
             file = filePath;
-            updateQuery = 'UPDATE ads SET file = ? , section = ? WHERE id = ?';
+            updateQuery = 'UPDATE ads SET file = ? , screen = ? WHERE id = ?';
             body = [file, section, id];
         }
         else {
             body = [section, id];
-            updateQuery = 'UPDATE ads SET section = ? WHERE id = ?';
+            updateQuery = 'UPDATE ads SET screen = ? WHERE id = ?';
         }
         DBConfig_1.connection.query(updateQuery, body, (err, result) => __awaiter(void 0, void 0, void 0, function* () {
             if (err) {
