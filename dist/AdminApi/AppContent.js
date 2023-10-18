@@ -41,5 +41,34 @@ AppContentRouter.get("/app/get-content", (req, res) => __awaiter(void 0, void 0,
         });
     }
 }));
+AppContentRouter.post("/app/add-content", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const isVerified = (0, HelperFunction_1.verifyToken)(req);
+    if (isVerified === true) {
+        const { id, section, content } = req.body;
+        DBConfig_1.connection.query("UPDATE content SET content = ? WHERE section = ? AND id = ?", [content, section, id], (err, result) => {
+            if (err) {
+                res.json({
+                    status: 500,
+                    message: "Internal server error",
+                    data: err
+                });
+            }
+            else {
+                res.json({
+                    status: 200,
+                    message: "Success",
+                    data: null
+                });
+            }
+        });
+    }
+    else {
+        res.json({
+            status: 401,
+            message: "Unauthenticated",
+            data: null
+        });
+    }
+}));
 exports.default = AppContentRouter;
 //# sourceMappingURL=AppContent.js.map
