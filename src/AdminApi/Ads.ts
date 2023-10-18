@@ -174,7 +174,7 @@ Ads.post("/edit-ad", upload.single("file"), (req, res) => {
             updateQuery = 'UPDATE ads SET section = ? WHERE id = ?'
 
         }
-        connection.query(updateQuery, updateQuery, async (err, result) => {
+        connection.query(updateQuery, body, async (err, result) => {
             if (err) {
                 res.json({
                     status: 500,

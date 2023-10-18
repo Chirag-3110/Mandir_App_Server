@@ -176,7 +176,7 @@ Ads.post("/edit-ad", image_upload_1.upload.single("file"), (req, res) => {
             body = [section, id];
             updateQuery = 'UPDATE ads SET section = ? WHERE id = ?';
         }
-        DBConfig_1.connection.query(updateQuery, updateQuery, (err, result) => __awaiter(void 0, void 0, void 0, function* () {
+        DBConfig_1.connection.query(updateQuery, body, (err, result) => __awaiter(void 0, void 0, void 0, function* () {
             if (err) {
                 res.json({
                     status: 500,
