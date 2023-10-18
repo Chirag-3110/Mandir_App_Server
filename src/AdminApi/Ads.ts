@@ -47,6 +47,86 @@ Ads.post("/admin/add-ads" ,upload.single("file"),async (req,res)=>{
 
 })
 
+Ads.post("/ad-status", (req, res) => {
+    const isVerified = verifyToken(req)
+    if (isVerified == true) {
+        let request = req.body;
+        const updateQuery = 'UPDATE ads SET is_active = ? WHERE id = ?'
+        const getEvent = 'Select * FROM ads WHERE id = ?'
+        connection.query(getEvent, [request.id], async (err, result) => {
+            if (err) {
+                res.json({
+                    status: 500,
+                    message: "Internal server error",
+                    data: err
+                })
+            }
+            const eventData = result[0];
+            connection.query(updateQuery, [!eventData.is_active, request.id], async (err, result) => {
+                if (err) {
+                    res.json({
+                        status: 500,
+                        message: "Internal server error",
+                        data: err
+                    })
+                }
+                res.json({
+                    status: 200,
+                    message: "Status Updated",
+                    data: null
+                })
+
+            })
+        })
+    } else {
+        res.json({
+            status: 401,
+            message: "Unauthenticated",
+            data: null
+        })
+    }
+})
+
+Ads.post("/delete-ad", (req, res) => {
+    const isVerified = verifyToken(req)
+    if (isVerified == true) {
+        let request = req.body;
+        const updateQuery = 'UPDATE ads SET is_delete = ? WHERE id = ?'
+        const getEvent = 'Select * FROM ads WHERE id = ?'
+        connection.query(getEvent, [request.id], async (err, result) => {
+            if (err) {
+                res.json({
+                    status: 500,
+                    message: "Internal server error",
+                    data: err
+                })
+            }
+            const eventData = result[0];
+            connection.query(updateQuery, [!eventData.is_delete, request.id], async (err, result) => {
+                if (err) {
+                    res.json({
+                        status: 500,
+                        message: "Internal server error",
+                        data: err
+                    })
+                }
+                res.json({
+                    status: 200,
+                    message: "User deleted",
+                    data: null
+                })
+
+            })
+        })
+    } else {
+        res.json({
+            status: 401,
+            message: "Unauthenticated",
+            data: null
+        })
+    }
+})
+
 Ads.get("/admin/get-ads",async (req,res)=>{
 
     let isVerify = verifyToken(req);

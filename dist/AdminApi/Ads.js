@@ -54,6 +54,84 @@ Ads.post("/admin/add-ads", image_upload_1.upload.single("file"), (req, res) => _
         });
     }
 }));
+Ads.post("/ad-status", (req, res) => {
+    const isVerified = (0, HelperFunction_1.verifyToken)(req);
+    if (isVerified == true) {
+        let request = req.body;
+        const updateQuery = 'UPDATE ads SET is_active = ? WHERE id = ?';
+        const getEvent = 'Select * FROM ads WHERE id = ?';
+        DBConfig_1.connection.query(getEvent, [request.id], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
+            if (err) {
+                res.json({
+                    status: 500,
+                    message: "Internal server error",
+                    data: err
+                });
+            }
+            const eventData = result[0];
+            DBConfig_1.connection.query(updateQuery, [!eventData.is_active, request.id], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
+                if (err) {
+                    res.json({
+                        status: 500,
+                        message: "Internal server error",
+                        data: err
+                    });
+                }
+                res.json({
+                    status: 200,
+                    message: "Status Updated",
+                    data: null
+                });
+            }));
+        }));
+    }
+    else {
+        res.json({
+            status: 401,
+            message: "Unauthenticated",
+            data: null
+        });
+    }
+});
+Ads.post("/delete-ad", (req, res) => {
+    const isVerified = (0, HelperFunction_1.verifyToken)(req);
+    if (isVerified == true) {
+        let request = req.body;
+        const updateQuery = 'UPDATE ads SET is_delete = ? WHERE id = ?';
+        const getEvent = 'Select * FROM ads WHERE id = ?';
+        DBConfig_1.connection.query(getEvent, [request.id], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
+            if (err) {
+                res.json({
+                    status: 500,
+                    message: "Internal server error",
+                    data: err
+                });
+            }
+            const eventData = result[0];
+            DBConfig_1.connection.query(updateQuery, [!eventData.is_delete, request.id], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
+                if (err) {
+                    res.json({
+                        status: 500,
+                        message: "Internal server error",
+                        data: err
+                    });
+                }
+                res.json({
+                    status: 200,
+                    message: "User deleted",
+                    data: null
+                });
+            }));
+        }));
+    }
+    else {
+        res.json({
+            status: 401,
+            message: "Unauthenticated",
+            data: null
+        });
+    }
+});
 Ads.get("/admin/get-ads", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let isVerify = (0, HelperFunction_1.verifyToken)(req);
     if (isVerify === true) {
