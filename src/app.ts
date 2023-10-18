@@ -14,6 +14,7 @@ import Searh from './App/search_user';
 import ContentRouter from './AdminApi/Content';
 import { aboutApp, ads } from './Config/tables';
 import Ads from './AdminApi/Ads';
+import AppContentRouter from './AdminApi/AppContent';
 config.configDotenv()
 const app = express();
 const cors = require('cors');
@@ -40,6 +41,8 @@ app.use(express.urlencoded({ extended: true }))
 
 app.listen(port, async () => {
   await configMongoDB()
+
+  // connection.query("INSERT INTO content SET ?",{section:"privacy",content:"hello this is privacy"})
 });
 
 app.use(AdminAuthRoute)
@@ -69,5 +72,7 @@ app.use(AddFamily)
 app.use(ContentRouter)
 
 app.use(Searh)
+
+app.use(AppContentRouter)
 
 

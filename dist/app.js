@@ -27,6 +27,7 @@ const add_family_1 = __importDefault(require("./App/add_family"));
 const search_user_1 = __importDefault(require("./App/search_user"));
 const Content_1 = __importDefault(require("./AdminApi/Content"));
 const Ads_1 = __importDefault(require("./AdminApi/Ads"));
+const AppContent_1 = __importDefault(require("./AdminApi/AppContent"));
 dotenv_1.default.configDotenv();
 const app = (0, express_1.default)();
 const cors = require('cors');
@@ -51,6 +52,7 @@ app.use(cors({
 app.use(express_1.default.urlencoded({ extended: true }));
 app.listen(port, () => __awaiter(void 0, void 0, void 0, function* () {
     yield (0, DBConfig_1.default)();
+    // connection.query("INSERT INTO content SET ?",{section:"privacy",content:"hello this is privacy"})
 }));
 app.use(Auth_1.default);
 app.use(User_1.default);
@@ -66,4 +68,5 @@ app.use(News_2.default);
 app.use(add_family_1.default);
 app.use(Content_1.default);
 app.use(search_user_1.default);
+app.use(AppContent_1.default);
 //# sourceMappingURL=app.js.map
