@@ -160,5 +160,44 @@ Ads.get("/admin/get-ads", (req, res) => __awaiter(void 0, void 0, void 0, functi
         });
     }
 }));
+Ads.post("/edit-ad", image_upload_1.upload.single("file"), (req, res) => {
+    const isVerified = (0, HelperFunction_1.verifyToken)(req);
+    if (isVerified === true) {
+        let { id, section, file } = req.body;
+        let updateQuery = '';
+        let body;
+        if (req.file) {
+            let filePath = req.file.filename;
+            file = filePath;
+            updateQuery = 'UPDATE ads SET  file = ? , section = ? WHERE id = ?';
+            body = [file, section, id];
+        }
+        else {
+            body = [section, id];
+            updateQuery = 'UPDATE ads SET section = ? WHERE id = ?';
+        }
+        DBConfig_1.connection.query(updateQuery, updateQuery, (err, result) => __awaiter(void 0, void 0, void 0, function* () {
+            if (err) {
+                res.json({
+                    status: 500,
+                    message: "Internal server error",
+                    data: err
+                });
+            }
+            res.json({
+                status: 200,
+                message: "ad Updated",
+                data: null
+            });
+        }));
+    }
+    else {
+        res.json({
+            status: 401,
+            message: "Unauthenticated",
+            data: null
+        });
+    }
+});
 exports.default = Ads;
 //# sourceMappingURL=Ads.js.map

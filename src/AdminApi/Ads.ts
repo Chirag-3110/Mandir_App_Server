@@ -6,44 +6,44 @@ const express = require('express')
 
 const Ads = express.Router()
 
-Ads.post("/admin/add-ads" ,upload.single("file"),async (req,res)=>{
+Ads.post("/admin/add-ads", upload.single("file"), async (req, res) => {
     let isVerify = verifyToken(req);
-   if (isVerify === true) {
-    if(req.file){
-        let {screen , file} = req.body;
-        let filePath = req.file.filename;
-           
-        file = filePath;
+    if (isVerify === true) {
+        if (req.file) {
+            let { screen, file } = req.body;
+            let filePath = req.file.filename;
 
-     connection.query("INSERT INTO ads SET ?", {screen:screen,file:file},async (err,result)=>{
-         if(err){
-             res.json({
-                 status: 500,
-                 message: "Internal Srver Error",
-                 data: err
-             })
-         }else{
-             res.json({
-                 status: 200,
-                 message: "Success",
-                 data: result
-             })
-         }
-     })
-    }else{
+            file = filePath;
+
+            connection.query("INSERT INTO ads SET ?", { screen: screen, file: file }, async (err, result) => {
+                if (err) {
+                    res.json({
+                        status: 500,
+                        message: "Internal Srver Error",
+                        data: err
+                    })
+                } else {
+                    res.json({
+                        status: 200,
+                        message: "Success",
+                        data: result
+                    })
+                }
+            })
+        } else {
+            res.json({
+                status: 400,
+                message: "No File",
+                data: null
+            })
+        }
+    } else {
         res.json({
-            status: 400,
-            message: "No File",
+            status: 401,
+            message: "Unauthenticated",
             data: null
         })
     }
-   } else {
-    res.json({
-        status: 401,
-        message: "Unauthenticated",
-        data: null
-    })
-   }
 
 })
 
@@ -127,34 +127,76 @@ Ads.post("/delete-ad", (req, res) => {
     }
 })
 
-Ads.get("/admin/get-ads",async (req,res)=>{
+Ads.get("/admin/get-ads", async (req, res) => {
 
     let isVerify = verifyToken(req);
 
-   if (isVerify === true) {
-     connection.query("SELECT * FROM ads",async (err,result)=>{
-         if(err){
-             res.json({
-                 status: 500,
-                 message: "Internal Srver Error",
-                 data: err
-             })
-         }else{
-             res.json({
-                 status: 200,
-                 message: "Success",
-                 data: result
-             })
-         }
-     })
-   } else {
-    res.json({
-        status: 401,
-        message: "Unauthenticated",
-        data: null
-    })
-   }
+    if (isVerify === true) {
+        connection.query("SELECT * FROM ads", async (err, result) => {
+            if (err) {
+                res.json({
+                    status: 500,
+                    message: "Internal Srver Error",
+                    data: err
+                })
+            } else {
+                res.json({
+                    status: 200,
+                    message: "Success",
+                    data: result
+                })
+            }
+        })
+    } else {
+        res.json({
+            status: 401,
+            message: "Unauthenticated",
+            data: null
+        })
+    }
 
+})
+
+Ads.post("/edit-ad", upload.single("file"), (req, res) => {
+    const isVerified = verifyToken(req)
+    if (isVerified === true) {
+        let { id, section ,file } = req.body;
+        let updateQuery = ''
+        let body ;
+        if (req.file) {
+            let filePath = req.file.filename;
+            file = filePath;
+            updateQuery = 'UPDATE ads SET  file = ? , section = ? WHERE id = ?'
+            body = [file,section,id]
+
+        } else {
+            body = [section,id]
+            updateQuery = 'UPDATE ads SET section = ? WHERE id = ?'
+
+        }
+        connection.query(updateQuery, updateQuery, async (err, result) => {
+            if (err) {
+                res.json({
+                    status: 500,
+                    message: "Internal server error",
+                    data: err
+                })
+            }
+            res.json({
+                status: 200,
+                message: "ad Updated",
+                data: null
+            })
+
+        })
+
+    } else {
+        res.json({
+            status: 401,
+            message: "Unauthenticated",
+            data: null
+        })
+    }
 })
 
 export default Ads;
