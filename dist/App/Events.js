@@ -22,7 +22,7 @@ AppEvents.get("/app/eventsList", (req, res) => {
         const page = parseInt(req.query.page, 10) || 1;
         const pageSize = parseInt(req.query.pageSize, 10) || 10;
         const offset = (page - 1) * pageSize;
-        let getAppEvents = "Select * FROM events WHERE is_active = ? AND is_delete = ? LIMIT ?, ?";
+        let getAppEvents = "Select * FROM events WHERE is_active = ? AND is_delete = ? ORDER BY created_at DESC LIMIT ?, ?";
         DBConfig_1.connection.query(getAppEvents, [1, 0, offset, pageSize], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
             if (err) {
                 res.json({
