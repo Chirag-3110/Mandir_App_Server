@@ -11,7 +11,7 @@ AppNews.get("/app/newsList",(req,res)=>{
         const page = parseInt(req.query.page as string, 10) || 1;
         const pageSize = parseInt(req.query.pageSize as string, 10) || 10;
         const offset = (page - 1) * pageSize;
-        let getAppEvents = "Select * FROM news WHERE is_active = ? AND is_delete = ? LIMIT ?, ?";
+        let getAppEvents = "Select * FROM news WHERE is_active = ? AND is_delete = ? ORDER BY created_at DESC LIMIT ?, ?";
         connection.query(getAppEvents,[1,0,offset, pageSize], async (err, result) =>{
             if (err) {
                 res.json({
