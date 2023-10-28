@@ -41,8 +41,18 @@ app.use(express.urlencoded({ extended: true }))
 
 app.listen(port, async () => {
   await configMongoDB()
+});
 
-  // connection.query("INSERT INTO content SET ?",{section:"privacy",content:"hello this is privacy"})
+app.get('/download-form', (req, res) => {
+  const filePath = path.join(__dirname, './Form/', 'form.pdf');
+  
+  // Use the res.sendFile method to send the file
+  res.sendFile(filePath, (err) => {
+    if (err) {
+      // Handle any errors here
+      res.status(500).send('Error sending file');
+    }
+  });
 });
 
 app.use(AdminAuthRoute)

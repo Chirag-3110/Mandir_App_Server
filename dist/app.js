@@ -52,8 +52,17 @@ app.use(cors({
 app.use(express_1.default.urlencoded({ extended: true }));
 app.listen(port, () => __awaiter(void 0, void 0, void 0, function* () {
     yield (0, DBConfig_1.default)();
-    // connection.query("INSERT INTO content SET ?",{section:"privacy",content:"hello this is privacy"})
 }));
+app.get('/download-form', (req, res) => {
+    const filePath = path.join(__dirname, './Form/', 'form.pdf');
+    // Use the res.sendFile method to send the file
+    res.sendFile(filePath, (err) => {
+        if (err) {
+            // Handle any errors here
+            res.status(500).send('Error sending file');
+        }
+    });
+});
 app.use(Auth_1.default);
 app.use(User_1.default);
 app.use(Events_1.default);
