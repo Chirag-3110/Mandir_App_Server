@@ -91,6 +91,8 @@ export const aboutApp = `CREATE TABLE IF NOT EXISTS app_content (
 export const ads = `CREATE TABLE IF NOT EXISTS ads (
   id INT AUTO_INCREMENT PRIMARY KEY,
   screen TEXT,
+  title TEXT,
+  mobile TEXT,
   file TEXT,
   created_at TEXT,
   is_active BOOLEAN DEFAULT true,

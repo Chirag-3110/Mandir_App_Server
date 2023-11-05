@@ -7,9 +7,9 @@ const Searh = express.Router();
 Searh.post("/user/search", (req, res) => {
     const isVerified = (0, HelperFunction_1.verifyToken)(req);
     if (isVerified === true) {
-        const { query } = req.body;
+        const { query, status } = req.body;
         const sql = `SELECT * FROM users WHERE full_name LIKE ? OR phone LIKE ? OR gotra LIKE ? OR occupation LIKE ? OR married LIKE ? OR address LIKE ?`;
-        DBConfig_1.connection.query(sql, [`%${query}%`, `%${query}%`, `%${query}%`, `%${query}%`, `%${query}%`, `%${query}%`], (err, result) => {
+        DBConfig_1.connection.query(sql, [`%${query}%`, `%${query}%`, `%${query}%`, `%${query}%`, `%${status}%`, `%${query}%`], (err, result) => {
             if (err) {
                 res.json({
                     status: 500,
