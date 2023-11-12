@@ -18,10 +18,10 @@ Ads.post("/admin/add-ads", image_upload_1.upload.single("file"), (req, res) => _
     let isVerify = (0, HelperFunction_1.verifyToken)(req);
     if (isVerify === true) {
         if (req.file) {
-            let { screen, file } = req.body;
+            let { screen, file, title, mobile } = req.body;
             let filePath = req.file.filename;
             file = filePath;
-            DBConfig_1.connection.query("INSERT INTO ads SET ?", { screen: screen, file: file }, (err, result) => __awaiter(void 0, void 0, void 0, function* () {
+            DBConfig_1.connection.query("INSERT INTO ads SET ?", { screen: screen, file: file, title: title, mobile: mobile }, (err, result) => __awaiter(void 0, void 0, void 0, function* () {
                 if (err) {
                     res.json({
                         status: 500,

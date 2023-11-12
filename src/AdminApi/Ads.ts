@@ -10,12 +10,12 @@ Ads.post("/admin/add-ads", upload.single("file"), async (req, res) => {
     let isVerify = verifyToken(req);
     if (isVerify === true) {
         if (req.file) {
-            let { screen, file } = req.body;
+            let { screen, file , title , mobile } = req.body;
             let filePath = req.file.filename;
 
             file = filePath;
 
-            connection.query("INSERT INTO ads SET ?", { screen: screen, file: file }, async (err, result) => {
+            connection.query("INSERT INTO ads SET ?", { screen: screen, file: file , title:title , mobile:mobile }, async (err, result) => {
                 if (err) {
                     res.json({
                         status: 500,
