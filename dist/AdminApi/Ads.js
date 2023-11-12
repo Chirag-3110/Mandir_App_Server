@@ -160,6 +160,34 @@ Ads.get("/admin/get-ads", (req, res) => __awaiter(void 0, void 0, void 0, functi
         });
     }
 }));
+Ads.post("/search_ads", (req, res) => {
+    let isVerify = (0, HelperFunction_1.verifyToken)(req);
+    if (isVerify === true) {
+        DBConfig_1.connection.query("SELECT * FROM ads WHERE is_active = ? AND is_delete = ? And title LIKE ?", [1, 0, `%${req.body.search}%`], (err, result) => __awaiter(void 0, void 0, void 0, function* () {
+            if (err) {
+                res.json({
+                    status: 500,
+                    message: "Internal Srver Error",
+                    data: err
+                });
+            }
+            else {
+                res.json({
+                    status: 200,
+                    message: "Success",
+                    data: result
+                });
+            }
+        }));
+    }
+    else {
+        res.json({
+            status: 401,
+            message: "Unauthenticated",
+            data: null
+        });
+    }
+});
 Ads.post("/edit-ad", image_upload_1.upload.single("file"), (req, res) => {
     const isVerified = (0, HelperFunction_1.verifyToken)(req);
     if (isVerified === true) {

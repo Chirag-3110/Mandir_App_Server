@@ -157,6 +157,33 @@ Ads.get("/admin/get-ads", async (req, res) => {
 
 })
 
+Ads.post("/search_ads",(req,res)=>{
+    let isVerify = verifyToken(req);
+    if(isVerify === true) {
+        connection.query("SELECT * FROM ads WHERE is_active = ? AND is_delete = ? And title LIKE ?",[1,0,`%${req.body.search}%`], async (err, result) => {
+            if (err) {
+                res.json({
+                    status: 500,
+                    message: "Internal Srver Error",
+                    data: err
+                })
+            } else {
+                res.json({
+                    status: 200,
+                    message: "Success",
+                    data: result
+                })
+            }
+        })
+    }else {
+        res.json({
+            status: 401,
+            message: "Unauthenticated",
+            data: null
+        })
+    }
+})
+
 Ads.post("/edit-ad", upload.single("file"), (req, res) => {
     const isVerified = verifyToken(req)
     if (isVerified === true) {
