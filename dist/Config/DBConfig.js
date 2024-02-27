@@ -23,12 +23,13 @@ const options = {
 };
 exports.connection = mysql.createConnection(options);
 const configMongoDB = () => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(options, "options");
     exports.connection.connect(function (err, result) {
         if (err) {
+            console.log(options, "options");
             console.log(err, "error");
         }
         else {
+            console.log(options, "options");
             console.log("Connected");
             exports.connection.query(`CREATE DATABASE IF NOT EXISTS jaiDB`, function (err, result) {
                 return __awaiter(this, void 0, void 0, function* () {

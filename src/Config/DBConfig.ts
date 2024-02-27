@@ -14,13 +14,16 @@ const options = {
 export const connection = mysql.createConnection(options);
 const configMongoDB = async () => {
 
-  console.log(options,"options");
+  
   
 
   connection.connect(function (err, result) {
-    if(err){
-      console.log(err,"error");
+    if (err) {
+      console.log(options,"options");
+      console.log(err, "error");
+      
     } else {
+       console.log(options,"options");
       console.log("Connected");
       connection.query(`CREATE DATABASE IF NOT EXISTS jaiDB`, async function (err, result) {
         if (err) {
