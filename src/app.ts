@@ -24,6 +24,7 @@ const port = process.env.PORT || 8000;
 
 var allowedOrigins = ['http://localhost:3000',
   'http://139.144.1.59:9999', "http://139.144.1.59"];
+  
 app.use(express.json())
 
 app.use(cors({

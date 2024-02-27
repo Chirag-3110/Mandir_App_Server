@@ -49,18 +49,12 @@ const configMongoDB = async () => {
                 connection.query('INSERT INTO admin SET ?', body, (err, result) => {
                   console.log(err, "err");
                   console.log(result, "result");
-    
                 })
               }
             }
           })
-  
         }
-  
       });
-      
-
   });
-
 }
 export default configMongoDB 

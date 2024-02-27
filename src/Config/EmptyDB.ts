@@ -31,12 +31,7 @@ function clearDb(){
                  }
                });
            }
-            
         })
-
-
-        
-        
     })
 }
 
