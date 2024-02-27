@@ -17,7 +17,7 @@ const configMongoDB = async () => {
   connection.connect(function (err, result) {
     if(err){
       console.log(err);
-    }
+    } else {
       console.log("Connected");
       connection.query(`CREATE DATABASE IF NOT EXISTS jaiDB`, async function (err, result) {
         if (err) {
@@ -55,6 +55,8 @@ const configMongoDB = async () => {
           })
         }
       });
+    }
+      
   });
 }
 export default configMongoDB 
