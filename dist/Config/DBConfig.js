@@ -26,7 +26,7 @@ const configMongoDB = () => __awaiter(void 0, void 0, void 0, function* () {
     console.log(options, "options");
     exports.connection.connect(function (err, result) {
         if (err) {
-            console.log(err);
+            console.log(err, "error");
         }
         else {
             console.log("Connected");
