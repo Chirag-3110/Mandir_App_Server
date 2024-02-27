@@ -14,6 +14,9 @@ const options = {
 export const connection = mysql.createConnection(options);
 const configMongoDB = async () => {
 
+  console.log(options,"options");
+  
+
   connection.connect(function (err, result) {
     if(err){
       console.log(err);
