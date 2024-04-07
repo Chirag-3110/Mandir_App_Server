@@ -27,7 +27,11 @@ var allowedOrigins = ['http://localhost:3000',
   
 app.use(express.json())
 
-app.use(cors())
+app.use(cors({
+  origin: allowedOrigins,
+  
+
+}))
 
 app.use(express.urlencoded({ extended: true }))
 
