@@ -36,9 +36,14 @@ const port = process.env.PORT || 8000;
 var allowedOrigins = ['http://localhost:3000',
     'http://139.144.1.59:9999', "http://139.144.1.59"];
 app.use(express_1.default.json());
-app.use(cors({
-    origin: allowedOrigins,
-}));
+app.use(function (req, res, next) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.setHeader('Access-Control-Allow-Credentials', "true");
+    next();
+});
+// app.use(cors())
 app.use(express_1.default.urlencoded({ extended: true }));
 app.listen(port, () => __awaiter(void 0, void 0, void 0, function* () {
     yield (0, DBConfig_1.default)();
